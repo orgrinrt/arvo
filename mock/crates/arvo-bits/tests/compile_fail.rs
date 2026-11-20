@@ -81,13 +81,14 @@ const REFUSED: &[&str] = &[
     "a_proof_built_by_hand_is_refused",
     "a_packed_word_whose_fields_fall_short_is_refused",
     "a_call_of_get_on_a_short_word_is_refused",
-    "a_packed_word_whose_fields_share_a_bit_is_refused",
-    "a_call_of_of_on_a_word_whose_fields_share_a_bit_is_refused",
     "a_field_its_layout_does_not_list_is_refused",
     "a_call_of_with_on_a_field_not_listed_is_refused",
+    "a_field_listed_twice_is_refused",
     "an_impl_of_the_fields_of_a_packed_word_by_hand_is_refused",
     "a_field_zero_bits_wide_is_refused",
-    "a_field_reaching_past_bit_sixty_four_is_refused",
+    "a_field_sixty_five_bits_wide_is_refused",
+    "a_container_zero_bits_wide_is_refused",
+    "a_container_sixty_five_bits_wide_is_refused",
 ];
 
 #[test]

@@ -6,35 +6,34 @@
 use core::hint::black_box;
 
 use arvo_bits::{Bits, Field, Layout, Word};
-use arvo_format::{Bool, Width};
+use arvo_format::Bool;
 use mockspace_bench_core::{FfiBenchCall, abi_hash, timed};
+use notko_hlist::{Cons, Empty};
 
-struct Handle;
+#[derive(Clone, Copy)]
 struct Id;
+#[derive(Clone, Copy)]
 struct Kind;
+#[derive(Clone, Copy)]
 struct Flag;
 
-impl Layout for Handle {
-    type Container = Bits<32>;
-    type Fields = (Flag, (Kind, (Id, ())));
-}
-
 impl Field for Id {
-    type Layout = Handle;
     type Value = Bits<28>;
-    const BELOW: Width = Width::bits(0);
 }
 
 impl Field for Kind {
-    type Layout = Handle;
     type Value = Bits<3>;
-    const BELOW: Width = Width::bits(28);
 }
 
 impl Field for Flag {
-    type Layout = Handle;
     type Value = Bool;
-    const BELOW: Width = Width::bits(31);
+}
+
+struct Handle;
+
+impl Layout for Handle {
+    type Container = Bits<32>;
+    type Fields = Cons<Id, Cons<Kind, Cons<Flag, Empty>>>;
 }
 
 /// The word in and out of its container.
@@ -46,14 +45,14 @@ pub extern "C" fn packed_word_round_trip(raw: u32) -> u32 {
 /// The 3-bit kind.
 #[unsafe(no_mangle)]
 pub extern "C" fn packed_word_kind(raw: u32) -> u32 {
-    Word::<Handle>::of(Bits::masked(raw as u64)).get::<Kind>().raw() as u32
+    Word::<Handle>::of(Bits::masked(raw as u64)).get(Kind).raw() as u32
 }
 
 /// The word with its 28-bit id replaced.
 #[unsafe(no_mangle)]
 pub extern "C" fn packed_word_with_id(raw: u32, id: u32) -> u32 {
     Word::<Handle>::of(Bits::masked(raw as u64))
-        .with::<Id>(Bits::masked(id as u64))
+        .with(Id, Bits::masked(id as u64))
         .bits()
         .raw() as u32
 }
@@ -61,7 +60,7 @@ pub extern "C" fn packed_word_with_id(raw: u32, id: u32) -> u32 {
 /// The one-bit flag.
 #[unsafe(no_mangle)]
 pub extern "C" fn packed_word_flag(raw: u32) -> bool {
-    Word::<Handle>::of(Bits::masked(raw as u64)).get::<Flag>().get()
+    Word::<Handle>::of(Bits::masked(raw as u64)).get(Flag).get()
 }
 
 /// Over the 8-byte records of the input, each a word and a value, the sum of

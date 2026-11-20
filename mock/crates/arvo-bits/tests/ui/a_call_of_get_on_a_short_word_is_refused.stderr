@@ -2,7 +2,7 @@ error[E0080]: evaluation panicked: the field widths of a packed word do not sum 
  --> $RUST/core/src/panic.rs
   |
   |           $crate::panicking::panic_fmt($crate::const_format_args!($($t)+));
-  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Word::<Handle>::TILED` failed here
+  |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `arvo_bits::Word::<Short>::TILED` failed here
   |
  ::: src/word.rs
   |
@@ -19,11 +19,11 @@ note: erroneous constant encountered
   |         let () = Self::TILED;
   |                  ^^^^^^^^^^^
 
-note: the above error was encountered while instantiating `fn Word::<Handle>::of`
-  --> tests/ui/a_call_of_get_on_a_short_word_is_refused.rs:29:13
+note: the above error was encountered while instantiating `fn Word::<Short>::of`
+  --> tests/ui/a_call_of_get_on_a_short_word_is_refused.rs:28:16
    |
-29 |     let _ = Word::<Handle>::of(Bits::masked(0)).get::<Kind>();
-   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+28 |     let word = Word::<Short>::of(Bits::masked(0));
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 note: erroneous constant encountered
  --> src/word.rs

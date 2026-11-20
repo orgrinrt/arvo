@@ -22,9 +22,9 @@
 //! build, by the tier, once for every container.
 //!
 //! Beside the tier, `Word<L>` is a word of named fields of declared widths held
-//! in a container, each field read and replaced in a constant, a one-bit field
-//! read as `Bool`, and a layout whose fields do not tile the word refused at
-//! build.
+//! in a container, listed from the low bit up, each field read and replaced in
+//! a constant, a one-bit field read as `Bool`, and a layout whose field widths
+//! do not sum to the word's refused at build.
 //!
 //! This crate introduces the numeric category a second time, the way
 //! `arvo_format` does for its own reasons: the crate that defines a value at an
@@ -168,7 +168,7 @@ mod word;
 
 pub use bytes::Bytes;
 pub use tier::{BitAccess, BitAccessAt, BitLogic, BitSequence, BitSequenceBy, BitWidth, Within};
-pub use word::{Field, Fields, Holds, Lane, Layout, Word};
+pub use word::{Below, Field, Fields, Lane, Layout, Word};
 
 #[cfg(test)]
 mod tests;

@@ -9,6 +9,7 @@ readme = "README.md.tmpl"
 [dependencies]
 arvo-format.workspace = true
 notko.workspace = true
+notko-hlist.workspace = true
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"

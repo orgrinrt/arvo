@@ -3,20 +3,21 @@
   "flavour": "",
   "member": "arvo-bits",
   "green": {
-    "full": "3a1fb0fe71e3d9e88e340079ca322ffea19530e39fb12d59c521f7fb2063a165",
+    "full": "037853c6f4df0b1ed3854822c1092d868267a28df371707407dcde47825c3d25",
     "own": {
-      "arvo-bits": "d38f42f67c86c9ce2626fe1db2c11fcd3c166fc5883046c39140d55014aa55f5",
+      "arvo-bits": "bf178b5c71210ce6927166a7baf9dd4b7ad30398737411fb10c08986a9fdbea9",
       "arvo-format": "5d1da2e1a2bb888d036591c35e271ff936dea44879a0d57ae4638f7593c225fe"
     }
   },
   "tests": {},
   "bins": {
-    "arvo-bits": "feb2e3d5ef7bc3c4dc37ce09158612cdb961c8fee80323b80de60b1e80f49866",
-    "arvo-bits::compile_fail": "be99f8a0ae9c43caeb66bbaeb0091d1062452ab4ec22e45d68250bd8d4e17764",
-    "arvo-bits::the_bit_access": "13b361a9425fb8362957ea54d220e80347b1e84eaed4756f2be44508802a7d43",
-    "arvo-bits::the_bit_logic": "83b5690525817cdc28c8683f84651d60a8d59739b2512000ba11f3889be8fb97",
-    "arvo-bits::the_bit_sequence": "3017e5118afda3f96fb3e15654793e47555aa31695fc1f24c3d106baec0c99b1",
-    "arvo-bits::the_bit_tier_in_a_constant": "a6835f58757d71226509ba1b4e10e153340a706ac36d68c1a44409c5d64c6433",
-    "arvo-bits::the_packed_word": "ff13e56d8dedfd76bc943da9d982cf336c0d16392eb66f7046e8aee91d4907ae"
+    "arvo-bits": "fcfef7faae32d5f885cba0220a7415d923c8d57b28a3cd71a98ce9dad3eae741",
+    "arvo-bits::compile_fail": "09ea436ee534ad2bf90533c54a6e9b9be5286e543fd8ee40182cf80aaeb812c2",
+    "arvo-bits::the_bit_access": "bf183f10bee4729e585d5e2e706fbe86c16efb3474424cb35b19df8ebc09a389",
+    "arvo-bits::the_bit_logic": "bc1b82dc563aa4bb5ae2e2bf72d2935ffd2fde66f77bd5a24b4bd8854bed6a5c",
+    "arvo-bits::the_bit_sequence": "9c8ae022c91a801af986f43245ce50990a0bc3bd54720af059ab48ea33e6dc2c",
+    "arvo-bits::the_bit_tier_in_a_constant": "a16db5534d4383b25d88599964bf4ed3013857e810a0acc82f21aa899b0d74b4",
+    "arvo-bits::the_packed_word": "b3582d511617ea93a168e31c26a669e7cfd94f1c872769712e600aedb3416fe8",
+    "arvo-bits::the_packed_word_with_no_gates": "0391f28ab8eca47a0a9bf66f16abd0b2960e0dd6294df36b0acf39baf9bb67c2"
   }
 }

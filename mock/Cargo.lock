@@ -8,6 +8,7 @@ version = "0.0.0"
 dependencies = [
  "arvo-format",
  "notko",
+ "notko-hlist",
  "trybuild",
 ]
 

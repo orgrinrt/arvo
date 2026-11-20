@@ -6,28 +6,27 @@
 //! The packed word: a word of a declared width divided into named fields.
 //!
 //! A consumer declares a layout and its fields as marker types of its own.
-//! `Layout` names the container the word is held in and the fields as a list
-//! `(A, (B, (C, ())))` in any order; `Field` names the word it belongs to, the
-//! type it reads as and the count of the word's bits under it. `Word<L>` holds
-//! the container and nothing else, and reads and replaces one field at a time,
-//! each a `const fn`.
+//! `Field` names the type a field reads as; `Layout` names the container the
+//! word is held in and the fields as a `notko_hlist` list from the low bit up.
+//! A field's position is the sum of the widths listed before it and is written
+//! nowhere, so a field names no layout and sits at its own place in each layout
+//! that lists it. `Word<L>` holds the container and nothing else, and reads and
+//! replaces one field at a time, each a `const fn` a consumer with no feature
+//! line calls in a constant.
 //!
 //! The layout is checked at build and nowhere else: every entry point forces a
-//! `const` item asserting that the fields share no bit, sum to the container's
-//! width and cover it, and a read or a write forces one more asserting that the
-//! layout lists the field. Nothing is checked at run time. A width of zero or
-//! past sixty-four, and a field reaching past bit sixty-four, are refused
-//! before any shift is worked out.
+//! `const` item asserting that the field widths sum to exactly the container's
+//! width, each width one to sixty-four. A field the list does not hold, or
+//! holds twice, is refused at type check. Nothing is checked at run time.
 //!
-//! What the checks read of the list comes from `Fields` and `Holds`, sealed:
-//! a consumer names them in a bound and cannot implement them, so no list
-//! claims a sum, a union or an overlap its fields do not have.
-
-use core::marker::PhantomData;
+//! What the check reads of the list comes from `Fields` and `Below`, sealed: a
+//! consumer names them in a bound and cannot implement them, so no list claims
+//! a width or a position its fields do not have.
 
 use arvo_format::{Bool, Width};
+use notko_hlist::{Cons, Empty, Here, Place, PlaceOf, There};
 
-use crate::Bits;
+use crate::{BitWidth, Bits};
 
 /// A value carried in the low bits of a `Bits<64>`: what a word is held in,
 /// and what a field reads as.
@@ -46,7 +45,9 @@ pub const trait Lane: Copy {
 }
 
 const impl<const N: u32> Lane for Bits<N> {
-    const WIDTH: Width = Width::bits(N);
+    // Read through `BitWidth`, so a width of zero or past sixty-four is refused
+    // by the container's own admission.
+    const WIDTH: Width = <Self as BitWidth>::WIDTH;
 
     fn from_low(low: Bits<64>) -> Self {
         low.cast::<N>()
@@ -72,133 +73,95 @@ const impl Lane for Bool {
 
 /// A named field of a packed word.
 ///
-/// Implemented by a consumer's marker type. A field states where it sits; its
-/// layout states that the word has it.
-pub trait Field {
-    /// The word this field belongs to.
-    type Layout: Layout;
-
+/// Implemented by a consumer's marker type, passed by value to `Word::get` and
+/// `Word::with`. A field says only what it reads as; where it sits is its
+/// layout's list.
+pub trait Field: Copy {
     /// What the field reads as, and so how wide it is.
-    type Value: Lane;
-
-    /// How many of the word's bits lie below the field.
-    const BELOW: Width;
+    ///
+    /// Bound `const` here, so the accessors need no const bound of their own.
+    type Value: const Lane;
 }
 
-/// The layout of a packed word: what it is held in, and which fields it has.
+/// The layout of a packed word: what it is held in, and its fields in order.
 ///
 /// Implemented by a consumer's marker type.
 pub trait Layout {
     /// The container the word is held in, whose width the fields tile.
-    type Container: Lane;
+    type Container: const Lane;
 
-    /// The fields, as a list `(A, (B, (C, ())))` in any order.
+    /// The fields from the low bit up, as `Cons<A, Cons<B, Cons<C, Empty>>>`.
     type Fields: Fields;
 }
 
-/// The bits a field takes, as a mask over the sixty-four-bit carrier.
+/// The low `width` bits set.
 ///
-/// Callers reach it only through `placed`, which has refused every width and
-/// place the shifts below cannot take.
-const fn span(below: Width, width: Width) -> Bits<64> {
-    let low = u64::MAX >> (64 - width.count());
-    Bits::<64>::masked(low << below.count())
+/// Callers reach it only past `Word::TILED`, which has refused every width the
+/// shift cannot take.
+const fn low_bits(width: Width) -> u64 {
+    u64::MAX >> (64 - width.count())
 }
 
-/// The bits a field of `width` at `below` takes, refused at build where the
-/// field has no bits or does not fit the sixty-four-bit carrier.
-const fn placed(below: Width, width: Width) -> Bits<64> {
+/// The width of a field, refused at build where it has no bits or does not fit
+/// the sixty-four-bit carrier.
+const fn field_width<F: Field>() -> Width {
+    let width = <F::Value as Lane>::WIDTH;
     assert!(
         width.count() >= 1 && width.count() <= 64,
         "a field of a packed word is zero bits wide or wider than sixty-four; its value's \
          `Lane::WIDTH` must be one to sixty-four"
     );
-    assert!(
-        below.count() <= 64 - width.count(),
-        "a field of a packed word reaches past bit sixty-four; its `BELOW` and its width must \
-         sum to sixty-four at most"
-    );
-    span(below, width)
+    width
 }
 
-/// The seal on the list traits: implemented for `()` and `(H, T)` here and,
-/// being unnameable outside this crate, nowhere else.
+/// The seal on the list traits: implemented for `Empty` and `Cons<H, T>` here
+/// and, being unnameable outside this crate, nowhere else.
 mod sealed {
+    use notko_hlist::{Cons, Empty};
+
     use super::Field;
 
-    /// A list of fields, as only this crate can build one.
-    pub trait Sealed {}
+    /// A list of fields, as only this crate folds one.
+    pub trait ListOfFields {}
 
-    impl Sealed for () {}
+    impl ListOfFields for Empty {}
 
-    impl<H: Field, T: Sealed> Sealed for (H, T) {}
+    impl<H: Field, T: ListOfFields> ListOfFields for Cons<H, T> {}
 }
 
-/// A list of fields, folded into what the tiling check reads.
+/// A list of fields, folded into the width the tiling check reads.
 ///
-/// Sealed: implemented for `()` and for `(H, T)` with `H` a field and `T` a
-/// list, and by nothing outside this crate, so no list claims a sum, a union
-/// or an overlap its fields do not have.
-pub trait Fields: sealed::Sealed {
-    /// The field widths summed.
+/// Sealed: implemented for `Empty` and for `Cons<H, T>` with `H` a field and
+/// `T` a list, and by nothing outside this crate.
+pub trait Fields: sealed::ListOfFields {
+    /// The field widths summed, each refused at build outside one to sixty-four.
     const SUM: Width;
-
-    /// The union of every field's bits.
-    const COVER: Bits<64>;
-
-    /// Whether any two fields share a bit.
-    const OVERLAP: Bool;
 }
 
-impl Fields for () {
+impl Fields for Empty {
     const SUM: Width = Width::bits(0);
-    const COVER: Bits<64> = Bits::<64>::masked(0);
-    const OVERLAP: Bool = Bool::FALSE;
 }
 
-impl<H: Field, T: Fields> Fields for (H, T) {
-    const SUM: Width = <H::Value as Lane>::WIDTH.add(T::SUM);
-    const COVER: Bits<64> =
-        Bits::<64>::masked(placed(H::BELOW, <H::Value as Lane>::WIDTH).raw() | T::COVER.raw());
-    const OVERLAP: Bool =
-        Bool::of(placed(H::BELOW, <H::Value as Lane>::WIDTH).raw() & T::COVER.raw() != 0)
-            .or(T::OVERLAP);
+impl<H: Field, T: Fields> Fields for Cons<H, T> {
+    const SUM: Width = field_width::<H>().add(T::SUM);
 }
 
-/// Whether a list holds a field at the place and width of `F`.
+/// The position of the member at the place `P` of a list: the widths listed
+/// below it, summed.
 ///
-/// A marker at the place and width of a listed field is that field under a
-/// second name, and reads and writes the same bits. Sealed like `Fields`, and
-/// named in the bound on `Word::get` and `Word::with`, so code generic over a
-/// field writes `L::Fields: Holds<F>`.
-pub trait Holds<F: Field>: sealed::Sealed {
-    /// Whether it does.
-    const HOLDS: Bool;
+/// Sealed through `Fields`, and named in the bound on `Word::get` and
+/// `Word::with`, so code generic over a field writes `L::Fields: Below<P>`.
+pub trait Below<P: Place>: Fields {
+    /// How many of the word's bits lie below the member.
+    const BELOW: Width;
 }
 
-impl<F: Field> Holds<F> for () {
-    const HOLDS: Bool = Bool::FALSE;
+impl<H: Field, T: Fields> Below<Here> for Cons<H, T> {
+    const BELOW: Width = Width::bits(0);
 }
 
-impl<H: Field, T: Holds<F>, F: Field> Holds<F> for (H, T) {
-    const HOLDS: Bool = H::BELOW
-        .equals(F::BELOW)
-        .and(<H::Value as Lane>::WIDTH.equals(<F::Value as Lane>::WIDTH))
-        .or(T::HOLDS);
-}
-
-/// The proof that `F` is one of its layout's fields, refused at build otherwise.
-struct Listed<F>(PhantomData<F>);
-
-impl<F: Field> Listed<F>
-where
-    <F::Layout as Layout>::Fields: Holds<F>,
-{
-    const NEW: () = assert!(
-        <<F::Layout as Layout>::Fields as Holds<F>>::HOLDS.get(),
-        "a field read or written through a word whose layout does not list it; add the field's \
-         marker to the layout's `Fields`, or read it through the word it was declared for"
-    );
+impl<H: Field, P: Place, T: Below<P>> Below<There<P>> for Cons<H, T> {
+    const BELOW: Width = field_width::<H>().add(T::BELOW);
 }
 
 /// A word of the layout `L`, held in its container and nothing else.
@@ -220,18 +183,9 @@ impl<L: Layout> Word<L> {
              `Lane::WIDTH` must be one to sixty-four"
         );
         assert!(
-            !<L::Fields as Fields>::OVERLAP.get(),
-            "two fields of a packed word share a bit; each field's `BELOW` and width must leave \
-             every other field's bits alone"
-        );
-        assert!(
             <L::Fields as Fields>::SUM.equals(width).get(),
             "the field widths of a packed word do not sum to the width of its container; a bit \
              no field reads is still a field, so declare it as one"
-        );
-        assert!(
-            <L::Fields as Fields>::COVER.raw() == span(Width::bits(0), width).raw(),
-            "a field of a packed word reaches past its container"
         );
     };
 
@@ -248,33 +202,30 @@ impl<L: Layout> Word<L> {
         self.0
     }
 
-    /// The field `F`.
+    /// The field `F`, its place `P` in the layout's list inferred.
     #[must_use]
-    pub const fn get<F: Field<Layout = L>>(self) -> F::Value
+    pub const fn get<F: Field, P: Place>(self, _field: F) -> F::Value
     where
-        L::Container: [const] Lane,
-        F::Value: [const] Lane,
-        L::Fields: Holds<F>,
+        L::Fields: PlaceOf<F, P> + Below<P>,
     {
         let () = Self::TILED;
-        let () = Listed::<F>::NEW;
-        let down = self.0.low().raw() >> F::BELOW.count();
+        let down = self.0.low().raw() >> <L::Fields as Below<P>>::BELOW.count();
         // The mutant `arvo_mutant_bits_word_get` reads the field one bit up.
         let down = if cfg!(arvo_mutant_bits_word_get) { down >> 1 } else { down };
+        // Masked, so a value reading bits above its width sees none of another field's.
+        let down = down & low_bits(<F::Value as Lane>::WIDTH);
         F::Value::from_low(Bits::<64>::masked(down))
     }
 
     /// The word with the field `F` replaced by `to`, every other bit kept.
     #[must_use]
-    pub const fn with<F: Field<Layout = L>>(self, to: F::Value) -> Self
+    pub const fn with<F: Field, P: Place>(self, _field: F, to: F::Value) -> Self
     where
-        L::Container: [const] Lane,
-        F::Value: [const] Lane,
-        L::Fields: Holds<F>,
+        L::Fields: PlaceOf<F, P> + Below<P>,
     {
         let () = Self::TILED;
-        let () = Listed::<F>::NEW;
-        let field = span(F::BELOW, <F::Value as Lane>::WIDTH).raw();
+        let below = <L::Fields as Below<P>>::BELOW.count();
+        let field = low_bits(<F::Value as Lane>::WIDTH) << below;
         // The mutant `arvo_mutant_bits_word_with` keeps the field's old bits.
         let kept = if cfg!(arvo_mutant_bits_word_with) {
             self.0.low().raw()
@@ -282,7 +233,7 @@ impl<L: Layout> Word<L> {
             self.0.low().raw() & !field
         };
         // Masked, so a value leaving bits set above its width reaches no other field.
-        let put = (to.low().raw() << F::BELOW.count()) & field;
+        let put = (to.low().raw() << below) & field;
         Self(L::Container::from_low(Bits::<64>::masked(kept | put)))
     }
 }

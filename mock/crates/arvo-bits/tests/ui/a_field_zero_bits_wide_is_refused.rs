@@ -1,15 +1,17 @@
-// A field whose value is zero bits wide, in a word whose other field fills the
-// container, is refused at build with the width's own message.
+// A field whose value, a consumer's own `Lane`, claims zero bits, in a word
+// whose other field fills the container, is refused at build with the width's
+// own message.
 
 #![feature(const_trait_impl)]
 
 use arvo_bits::{Bits, Field, Lane, Layout, Word};
 use arvo_format::Width;
+use notko_hlist::{Cons, Empty};
 
 #[derive(Clone, Copy)]
 struct Nothing;
 
-impl Lane for Nothing {
+const impl Lane for Nothing {
     const WIDTH: Width = Width::bits(0);
 
     fn from_low(_: Bits<64>) -> Self {
@@ -21,27 +23,26 @@ impl Lane for Nothing {
     }
 }
 
-struct Handle;
+#[derive(Clone, Copy)]
 struct Id;
-struct Empty;
+#[derive(Clone, Copy)]
+struct Hollow;
+
+impl Field for Id {
+    type Value = Bits<32>;
+}
+
+impl Field for Hollow {
+    type Value = Nothing;
+}
+
+struct Handle;
 
 impl Layout for Handle {
     type Container = Bits<32>;
-    type Fields = (Empty, (Id, ()));
-}
-
-impl Field for Id {
-    type Layout = Handle;
-    type Value = Bits<32>;
-    const BELOW: Width = Width::bits(0);
-}
-
-impl Field for Empty {
-    type Layout = Handle;
-    type Value = Nothing;
-    const BELOW: Width = Width::bits(32);
+    type Fields = Cons<Hollow, Cons<Id, Empty>>;
 }
 
 fn main() {
-    let _ = Word::<Handle>::of(Bits::masked(0)).bits();
+    let _ = Word::<Handle>::of(Bits::masked(0)).get(Id);
 }
