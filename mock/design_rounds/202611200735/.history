@@ -1,0 +1,50 @@
+eab35e36 chore: lock src changelist 202611200739
+6821e1a3 test: hold the step's bound at every width and its 128-bit division
+7df1e65e chore: resolve the bench arms' lockfiles with arvo-contracts
+9f520590 test: run the member step's two flags red and regenerate its ui output
+9c790155 feat: form the exact step over members in the format, not the value
+5525e333 chore: lock doc changelist 202611200735
+8b228abb docs: design the exact step over members and call it from the value
+ea39ea78 docs: open the topic on the exact step over members
+72c08840 Merge remote-tracking branch 'origin/dev' into work/arvo-numeral-exact-step
+3c78ee81 feat: add the packed word and the bit tier to arvo-bits
+f7a54b1e chore: move arvo to the bumped nightly
+2ec1faa0 chore: close design round 202611200116
+2f8783b3 chore: lock src changelist 202611200117
+8fd8fae8 test: hold the room's predicates at their edge at every radix
+4d2429a6 chore: lock doc changelist 202611200116
+e41b2c3e docs: say what the format lacks for the room arm and who takes it
+c65658ff docs: open the topic on the second review and land its report
+39316635 docs: land the first review of the numeral doors
+365d6715 chore: close design round 202611200019
+9cc30093 chore: lock src changelist 202611200021
+47981713 test: hold the room arm at its edge and every landing of a divisor
+bb429523 chore: lock doc changelist 202611200019
+4f5fd608 docs: state the room bound as it is and regenerate the numeral docs
+0a3682a2 docs: attribute the remainder rows to the seat that said each part
+a2426475 docs: record the remainder panel and what its two seats agree on
+ad9ef225 chore: close design round 202611192051
+d69ea489 chore: lock src changelist 202611192056
+b5432091 docs: name the run and the baseline fix in the src changelist
+ff0ccd52 test: record the numeral-ratio run and what it decides
+a2b3d575 test: add the numeral-ratio bench of the host ratio against the hand
+15051e65 test: add the room mutant to the value mutant sketch
+bb190fa8 feat: form the host ratio in the value and divide by a landed member
+c6c4d64a chore: lock doc changelist 202611192051
+b3b011f4 docs: move the host-integer arm to the value and reopen the doc cl
+e9d43618 chore: lock doc changelist 202611192051
+9c973035 docs: design the host-integer exact step and the quotient by a value
+6def8831 feat: add the numeral value contracts crate
+d15dd473 feat: add `arvo-capacity`, a count fixed at build as a type
+f5bee87f docs: sketch and shape the numeral contracts
+38d78396 feat: land `arvo-digest` and decide the stranded arvo branches
+3d95d776 docs: land the closed digest rounds from `work/arvo-digest`
+80e5afac chore: configure the `commit-subject` gate
+6f718a88 refactor: port the benches to arms and sweeps under the harness
+f76108d6 fix: point the p3 probe at the moved warm container support crate
+8ed016a7 docs: land the second stack audit
+fac2c6aa docs: land the first stack audit
+130295d7 bench: regenerate the results index over every run on dev
+3b9aa53d bench: drop the false dirty mark from the 14 november run names
+1f860a90 bench: land the linux results of 14 november
+da169bec bench: record a linux container run of bitpack-sequential-sum
