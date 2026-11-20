@@ -1,0 +1,50 @@
+810fdd80 chore: lock src changelist 202611200616-o8z9
+d09d1b8a docs: record the derived packed word in its report
+7a9fee0b docs: rerun the packed word's mutants over the derived shape
+b0ee37f6 docs: record the derived packed word's disassembly
+cf70c6a1 chore: lock the packed word arm's list dependency
+581274ba feat: derive the packed word's field positions from its list
+f9b2dfc2 docs: write the src changelist deriving the packed word's positions
+e209ecc1 chore: lock doc changelist 202611200616-o8z9
+a6867b79 docs: derive the packed word's positions from its list
+e4c82eaf docs: open the round deriving the packed word's positions
+d822058e docs: sketch the packed word's derived positions and const reach
+020f43b6 docs: add the second seat's read of the packed word
+3bec4838 chore: close design round 202611200556-vw98
+567e8b18 chore: lock src changelist 202611200556-vw98
+f8010ae9 docs: record the packed word's clean disassembly and review answers
+774a9ced fix: seal the packed word's list and refuse widths past the carrier
+543c334c docs: src changelist sealing the packed word's list traits
+7df80768 chore: lock doc changelist 202611200556-vw98
+24c56495 docs: seal the packed word's list traits rather than hide them
+bca2b8ee docs: src changelist for the packed word after its first review
+ff8a5867 chore: lock doc changelist 202611200556-vw98
+751bd1b1 docs: seal the packed word's checks and widen its laws in `arvo-bits`
+8c0c79b6 docs: changelist for the packed word after its first review
+c1bfd92d docs: open the round answering the packed word's first review
+0c8ffe54 chore: close design round 202611200533-wwxt
+a5eef8fe chore: lock src changelist 202611200533-wwxt
+adf89a0a feat: add a packed word of named fields to arvo-bits
+192d5e77 docs: write the src changelist for the packed word
+59aa6c9c chore: lock doc changelist 202611200533-wwxt
+20d58a91 docs: design a packed word of named fields in arvo-bits
+66a7ce19 docs: write the doc changelist for the packed word
+b10bba5d docs: open the round for a packed word of named fields
+919c1ebe docs: sketch a packed word of named fields over the bit container
+1fd4d78e docs: regenerate the bit tier documents for its sealed guard
+403b6dfd chore: close design round 202611200402
+f5d81565 chore: lock src changelist 202611200406
+05b2ecea feat: give the bit tier one sealed index guard for every container
+41df1aa8 chore: lock doc changelist 202611200402
+510dd112 docs: design the bit tier owning its index guard, sealed
+56957d4f docs: open the topic on the bit tier owning its index guard
+7749646d test: sketch the bit tier owning its index guard, sealed
+28a85372 docs: record the second review of the bit tier
+74a7bd9b chore: record the bit tier test history at the closed round
+586bc48d chore: close design round 202611200328
+68dd7828 chore: lock src changelist 202611200329
+14e83448 fix: refuse the width outside the bound and pin the refusals at build
+6f6b7069 chore: lock doc changelist 202611200328
+237baaff docs: answer the first review of the bit tier in its design
+70e68022 docs: open the topic on the bit tier after its first review
+45453c9d docs: record the first review of the bit tier
