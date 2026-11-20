@@ -60,13 +60,13 @@ impl<S: DeclaredSignature> Operation for Mul<S> {
 }
 
 /// What a format owes the product, checked rather than asked for.
-struct Multipliable<F>(PhantomData<F>);
+pub(crate) struct Multipliable<F>(PhantomData<F>);
 
 impl<F: Format> Multipliable<F> {
     /// The three conditions, in the order `is_multipliable` asks them. The phase
     /// is asserted first because the others read its parts, and a zero
     /// denominator has none.
-    const ADMITTED: () = {
+    pub(crate) const ADMITTED: () = {
         assert!(
             F::PHASE.denotes().get(),
             "multiplication is refused over a phase whose denominator is zero: such a phase \

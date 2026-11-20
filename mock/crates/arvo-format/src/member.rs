@@ -6,17 +6,20 @@
 //! A slot the type knows is in its format's range.
 //!
 //! A `Slot` is an index shared by every format and says nothing about any range.
-//! `Member<F>` is a slot of `F`'s range, with a private field and two doors, and
-//! neither door reads a value at run time to decide anything. Both refuse a format
-//! whose phase does not denote, and neither admits one whose quantum is not
-//! constant yet. `constant`
-//! refuses a slot outside the range at build time; `adapted` is the applied map,
-//! which lands in range by its totality at every mode, policy and admitted shape. No
-//! door classifies a slot read at run time, since that would be a runtime test
-//! of membership.
+//! `Member<F>` is a slot of `F`'s range, with a private field and three doors,
+//! and no door reads a value at run time to decide anything. Each refuses a
+//! format whose phase does not denote, and none admits one whose quantum is not
+//! constant yet. `constant` refuses a slot outside the range at build time;
+//! `adapted` is the applied map, which lands in range by its totality at every
+//! mode, policy and admitted shape; `landed` is that map at a position on the
+//! grid, which only completes. No door classifies a slot read at run time, since
+//! that would be a runtime test of membership.
 //!
 //! The guarantee is over this perimeter: the field is not written outside the
-//! crate, both doors yield a slot in range, and `slot` hands out a copy.
+//! crate, each door yields a slot in range, and `slot` hands out a copy.
+//!
+//! The steps over two members, the product, the quotient and the conversion, are
+//! in `step`.
 
 use core::marker::PhantomData;
 
@@ -28,9 +31,10 @@ use crate::slots::{Slot, slot_in_range};
 
 /// A slot of `F`'s range.
 ///
-/// Built by `constant`, refused at build time outside the range, or by
-/// `adapted`, which is `adapt` and is in range by its totality. Every value of
-/// it that can be observed holds a slot of the range.
+/// Built by `constant`, refused at build time outside the range, by `adapted`,
+/// which is `adapt` and is in range by its totality, or by `landed`, which is
+/// `adapt` at a position on the grid. Every value of it that can be observed
+/// holds a slot of the range.
 pub struct Member<F: Format> {
     slot:   Slot,
     format: PhantomData<F>,
@@ -99,9 +103,8 @@ impl<F: Format> Member<F> {
     /// The member `adapt` places `exact` at under `S`.
     ///
     /// The dither is passed through for the one mode that reads it. In range by
-    /// the map's totality, so nothing is checked. A slot already on the grid and
-    /// in range reaches its member at `Exact::on_grid`, which every mode and policy
-    /// places on itself. Refused at build time where the format's phase does not
+    /// the map's totality, so nothing is checked. A slot on the grid reaches its
+    /// member through `landed`, which skips the rounding. Refused at build time where the format's phase does not
     /// denote, and not yet admitted where its quantum is not constant.
     #[must_use]
     #[inline]
@@ -120,6 +123,8 @@ impl<F: Format> Member<F> {
         self.slot
     }
 }
+
+mod step;
 
 #[cfg(test)]
 mod tests;

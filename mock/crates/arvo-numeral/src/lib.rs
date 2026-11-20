@@ -48,7 +48,6 @@ mod map;
 mod num;
 mod order;
 mod ratio;
-mod room;
 mod rung;
 
 pub use admit::Sole;
