@@ -1,0 +1,2 @@
+== a_covariant_proof exit 101 :: thread 'main' (24612) panicked at src/lib.rs:52:5:
+== an_invariant_proof exit 101 :: error[E0308]: mismatched types

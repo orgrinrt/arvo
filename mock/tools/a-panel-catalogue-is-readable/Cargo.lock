@@ -64,10 +64,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 
 [[package]]
+name = "mockspace-bench-layout"
+version = "0.0.0"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6eb94229b086022b017c37775f58caee95dae161"
+
+[[package]]
 name = "mockspace-lint-rules"
 version = "0.0.0"
-source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#9c36cfa335f4f22f34b04098727c7c80a8fa3da5"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6eb94229b086022b017c37775f58caee95dae161"
 dependencies = [
+ "mockspace-bench-layout",
  "mockspace-verdicts",
  "toml",
  "tree-sitter",
@@ -77,7 +83,7 @@ dependencies = [
 [[package]]
 name = "mockspace-verdicts"
 version = "0.0.0"
-source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#9c36cfa335f4f22f34b04098727c7c80a8fa3da5"
+source = "git+https://github.com/hiisi-digital/mockspace.git?branch=dev#6eb94229b086022b017c37775f58caee95dae161"
 
 [[package]]
 name = "proc-macro2"

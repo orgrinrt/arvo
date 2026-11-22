@@ -1,0 +1,3 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794795321	6f718a88	dense_n4194304	bitpack-footprint-dense	4194304	warm	676473.7	676473.7	679267.2
+1794795321	6f718a88	dense_n4194304	bitpack-footprint-dense-alt	4194304	warm	650444.9	650444.9	657652.2

@@ -1,0 +1,9 @@
+# A proof of an index below a container's width, covariant and invariant in the
+# container, against two containers related by subtyping.
+[workspace]
+
+[package]
+name = "a-proof-across-a-subtyping-coercion"
+version = "0.0.0"
+edition = "2024"
+publish = false

@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794812656	6f718a88	const-gate_n10000	satfold-gate-false	10000	warm	23014.5	23014.5	25308.4
+1794812656	6f718a88	const-gate_n10000	satfold-gate-true	10000	warm	3427.6	3427.6	3677.2
+1794812656	6f718a88	const-gate_n10000	satfold-lanes16	10000	warm	3228.6	3228.6	3508.2
+1794812656	6f718a88	const-gate_n10000	satfold-lanes16-3	10000	warm	2850.1	2850.1	3062.9
+1794812656	6f718a88	const-gate_n10000	satfold-seq	10000	warm	24862.2	24862.2	24875.0
