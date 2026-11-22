@@ -1,0 +1,5 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794794713	6f718a88	bitpack-decoder-shape_n98304	bitpack-plan-naive	98304	warm	52303.0	52303.0	52317.4
+1794794713	6f718a88	bitpack-decoder-shape_n98304	bitpack-plan-native	98304	warm	14960.6	14960.6	14966.9
+1794794713	6f718a88	bitpack-decoder-shape_n98304	bitpack-plan-simd	98304	warm	12066.5	12066.5	12095.7
+1794794713	6f718a88	bitpack-decoder-shape_n98304	bitpack-plan-windowed	98304	warm	12111.1	12111.1	12129.5

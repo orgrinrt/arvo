@@ -1,0 +1,3 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794811298	6f718a88	quantiser-vs-fadd-subnormal-sweep_n75	quantiser-hardware	75	warm	1153.4	1153.4	1249.8
+1794811298	6f718a88	quantiser-vs-fadd-subnormal-sweep_n75	quantiser-software	75	warm	3741.4	3741.4	3787.8

@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1794809474	6f718a88	precise-elementwise-width-l1_n160304	warm-container-headroom	160304	warm	2368.8	2368.8	3381.2
+1794809474	6f718a88	precise-elementwise-width-l1_n160304	warm-container-kernel	160304	warm	1124.6	1124.6	1125.5
+1794809474	6f718a88	precise-elementwise-width-l1_n160304	warm-container-minimum	160304	warm	1125.9	1125.9	1245.1
+1794809474	6f718a88	precise-elementwise-width-l1_n160304	warm-container-native	160304	warm	1219.0	1219.0	1320.9
+1794809474	6f718a88	precise-elementwise-width-l1_n160304	warm-container-plusone	160304	warm	2378.3	2378.3	4969.8
