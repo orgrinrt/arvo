@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795303266	eb17dd15	width-l2_n129103	wide-rung-align16	129103	warm	1061491.2	1061491.2	1063119.9
+1795303266	eb17dd15	width-l2_n129103	wide-rung-ragged	129103	warm	1023121.3	1023121.3	1035073.6
+1795303266	eb17dd15	width-l2_n129103	wide-rung-ragged-overread	129103	warm	889910.2	889910.2	945628.8
+1795303266	eb17dd15	width-l2_n129103	wide-rung-wordround	129103	warm	1030087.1	1030087.1	1040721.9
+1795303266	eb17dd15	width-l2_n129103	wide-rung-wordround-alias	129103	warm	984131.5	984131.5	995669.8

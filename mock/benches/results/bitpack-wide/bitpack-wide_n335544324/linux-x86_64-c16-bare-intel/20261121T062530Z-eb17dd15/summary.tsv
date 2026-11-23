@@ -1,0 +1,5 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795255416	eb17dd15	bitpack-wide_n335544324	bitpack-wide-d16	335544324	warm	2272938.1	2272938.1	2279737.1
+1795255416	eb17dd15	bitpack-wide_n335544324	bitpack-wide-d16-control	335544324	warm	2283108.9	2283108.9	2747013.6
+1795255416	eb17dd15	bitpack-wide_n335544324	bitpack-wide-d16-padal	335544324	warm	2269747.3	2269747.3	2294199.7
+1795255416	eb17dd15	bitpack-wide_n335544324	bitpack-wide-pipe4	335544324	warm	1815398.9	1815398.9	1817590.7

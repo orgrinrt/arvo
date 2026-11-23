@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-d16	41943042	warm	412423.8	412423.8	416654.6
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-d16-control	41943042	warm	405267.7	405267.7	413484.3
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-d32	41943042	warm	431836.3	431836.3	451137.2
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-d64	41943042	warm	874429.0	874429.0	889740.9
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-packed	41943042	warm	304743.8	304743.8	328569.9
+1795222184	eb17dd15	contention_n41943042	bitpack-contend-packed-simd	41943042	warm	330271.2	330271.2	335359.0

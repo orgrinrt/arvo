@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-acc64	160001	warm	218.7	218.7	219.0
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-accfit	160001	warm	220.3	220.3	220.6
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-accfit-dyn	160001	warm	179.6	179.6	197.9
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-head	160001	warm	206.7	206.7	218.8
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-min-lanes	160001	warm	85.6	85.6	95.0
+1795286931	eb17dd15	chain-l1_n160001	warm-clamp-minimum	160001	warm	138.0	138.0	157.8

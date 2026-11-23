@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-headroom	80403	warm	4111.7	4111.7	4576.1
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-kernel	80403	warm	931.5	931.5	933.2
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-lanes-deferred	80403	warm	930.8	930.8	932.4
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-minimum	80403	warm	924.4	924.4	929.3
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-native	80403	warm	927.2	927.2	929.3
+1795287653	eb17dd15	affine-collapse-l1_n80403	warm-container-plusone	80403	warm	3770.5	3770.5	5386.6

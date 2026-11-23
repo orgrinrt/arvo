@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795241322	eb17dd15	bitpack-kernel-amortisation_n16384	bitpack-mac-naive	16384	warm	11720.7	11720.7	11722.9
+1795241322	eb17dd15	bitpack-kernel-amortisation_n16384	bitpack-mac-narrow	16384	warm	7853.5	7853.5	7854.4
+1795241322	eb17dd15	bitpack-kernel-amortisation_n16384	bitpack-mac-native	16384	warm	8592.0	8592.0	8592.4
+1795241322	eb17dd15	bitpack-kernel-amortisation_n16384	bitpack-mac-simd	16384	warm	7853.0	7853.0	7854.0
+1795241322	eb17dd15	bitpack-kernel-amortisation_n16384	bitpack-mac-windowed	16384	warm	7846.1	7846.1	7853.2

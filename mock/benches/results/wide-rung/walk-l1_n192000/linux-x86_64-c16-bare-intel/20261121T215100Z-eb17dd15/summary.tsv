@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795298297	eb17dd15	walk-l1_n192000	wide-rung-align16	192000	warm	3079.4	3079.4	3505.8
+1795298297	eb17dd15	walk-l1_n192000	wide-rung-ragged	192000	warm	2670.3	2670.3	2772.8
+1795298297	eb17dd15	walk-l1_n192000	wide-rung-ragged-overread	192000	warm	2934.7	2934.7	3144.0
+1795298297	eb17dd15	walk-l1_n192000	wide-rung-wordround	192000	warm	2962.7	2962.7	3149.4
+1795298297	eb17dd15	walk-l1_n192000	wide-rung-wordround-alias	192000	warm	2390.7	2390.7	2665.1

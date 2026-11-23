@@ -1,0 +1,3 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795257495	eb17dd15	decimal-quantiser-radix-sweep_n8	quantiser-radix10	8	warm	6850.6	6850.6	6859.6
+1795257495	eb17dd15	decimal-quantiser-radix-sweep_n8	quantiser-radix2	8	warm	11220.0	11220.0	11959.6

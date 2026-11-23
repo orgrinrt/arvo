@@ -1,0 +1,6 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795234197	eb17dd15	decode_n83886084	bitpack-contend-d16	83886084	warm	572713.4	572713.4	596181.3
+1795234197	eb17dd15	decode_n83886084	bitpack-contend-d16-control	83886084	warm	595670.1	595670.1	596362.0
+1795234197	eb17dd15	decode_n83886084	bitpack-contend-packed-simd	83886084	warm	463561.2	463561.2	463928.5
+1795234197	eb17dd15	decode_n83886084	bitpack-contend-pipe2	83886084	warm	428967.2	428967.2	438598.8
+1795234197	eb17dd15	decode_n83886084	bitpack-contend-pipe4	83886084	warm	467140.1	467140.1	468030.9

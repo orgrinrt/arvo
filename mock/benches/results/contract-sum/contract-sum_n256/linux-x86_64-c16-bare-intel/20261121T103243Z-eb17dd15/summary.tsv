@@ -1,0 +1,3 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795257275	eb17dd15	contract-sum_n256	contract_sum_concrete	256	warm	47.5	47.5	49.2
+1795257275	eb17dd15	contract-sum_n256	contract_sum_generic	256	warm	47.5	47.5	54.3

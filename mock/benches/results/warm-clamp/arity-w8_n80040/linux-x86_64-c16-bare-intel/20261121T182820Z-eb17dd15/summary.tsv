@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-acc64	80040	warm	2921.4	2921.4	3132.5
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-accfit	80040	warm	1700.3	1700.3	1782.8
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-accfit-dyn	80040	warm	1679.8	1679.8	1795.8
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-head	80040	warm	1498.3	1498.3	1516.8
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-min-lanes	80040	warm	2186.4	2186.4	2411.4
+1795286387	eb17dd15	arity-w8_n80040	warm-clamp-minimum	80040	warm	2396.4	2396.4	5003.1

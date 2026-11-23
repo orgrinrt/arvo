@@ -1,0 +1,10 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795275565	eb17dd15	length-l1_n7000	satfold-iterfold	7000	warm	15646.5	15646.5	17197.9
+1795275565	eb17dd15	length-l1_n7000	satfold-lanes16	7000	warm	2890.3	2890.3	3048.8
+1795275565	eb17dd15	length-l1_n7000	satfold-lanes16-constl	7000	warm	3017.5	3017.5	3030.4
+1795275565	eb17dd15	length-l1_n7000	satfold-lanes4-idx	7000	warm	2164.6	2164.6	5093.1
+1795275565	eb17dd15	length-l1_n7000	satfold-lanes64	7000	warm	3633.4	3633.4	4451.0
+1795275565	eb17dd15	length-l1_n7000	satfold-neon	7000	warm	1949.2	1949.2	4969.1
+1795275565	eb17dd15	length-l1_n7000	satfold-neon8	7000	warm	1952.5	1952.5	5126.9
+1795275565	eb17dd15	length-l1_n7000	satfold-nolaw	7000	warm	7411.2	7411.2	7423.0
+1795275565	eb17dd15	length-l1_n7000	satfold-seq	7000	warm	17205.5	17205.5	17214.4

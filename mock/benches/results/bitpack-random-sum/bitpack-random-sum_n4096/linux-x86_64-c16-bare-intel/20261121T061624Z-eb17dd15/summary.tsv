@@ -1,0 +1,4 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795241945	eb17dd15	bitpack-random-sum_n4096	bitpack-aligned-rand	4096	warm	5067.6	5067.6	5503.5
+1795241945	eb17dd15	bitpack-random-sum_n4096	bitpack-native-rand	4096	warm	3614.5	3614.5	3851.8
+1795241945	eb17dd15	bitpack-random-sum_n4096	bitpack-zeropad-rand	4096	warm	4597.1	4597.1	4601.5

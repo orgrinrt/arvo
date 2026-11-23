@@ -1,0 +1,7 @@
+# schema_v1	timestamp	git_commit	benchmark	variant	n	mode	median_ns	ci_lo_ns	ci_hi_ns
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-d16	8388608	warm	1415097.2	1415097.2	1415625.5
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-d16-control	8388608	warm	1418520.4	1418520.4	1420015.9
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-d32	8388608	warm	1655133.5	1655133.5	1664994.2
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-d64	8388608	warm	2854900.3	2854900.3	2885005.6
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-packed	8388608	warm	1168220.5	1168220.5	1264988.2
+1795212706	eb17dd15	bitpack-carrier-width_n8388608	bitpack-carrier-packed-simd	8388608	warm	1181449.1	1181449.1	1228433.9
