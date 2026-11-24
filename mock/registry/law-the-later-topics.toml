@@ -85,8 +85,8 @@ equivariance test was decided over a window its author chose, and a clean sweep 
 does not settle a property the way a counterexample settles its negation.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::53",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::53",
 ]
 keywords = ["fusion", "fused multiply-add", "fma", "equivariance", "translation equivariant", "rounding", "unsigned", "nearest-half-even", "IEEE default", "relocation", "free lowering"]
 
@@ -138,8 +138,8 @@ denote different functions outright, which is the separate law row \
 `the_fused_and_the_stepwise_multiply_add_denote_one_function`.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::58",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::58",
 ]
 keywords = ["fusion", "fused multiply-add", "fma", "equivariance", "signed", "wrapping", "rounding", "toward zero", "away from zero", "relocation"]
 
@@ -196,8 +196,8 @@ No witness. The failing cell is established by a count of differing triples \
 rather than by a named instance.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::372",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::434",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::372",
 ]
 keywords = ["fused", "stepwise", "multiply-add", "denotation", "extensional identity", "intermediate", "exact intermediate", "signed saturating", "accumulator", "substitution"]
 
@@ -271,9 +271,9 @@ records that its rate does not carry; the instance itself is not quoted in the \
 governing files.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::138_leroy_the_restoration_pass::49",
-  "panel::202608072330_the-numeral-canon-panel::136_leroy_the_candidate_revised_against_three_signatures::355",
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::344",
+  "panel::t202608072330_the_numeral_canon_panel::t138_leroy_the_restoration_pass::49",
+  "panel::t202608072330_the_numeral_canon_panel::t136_leroy_the_candidate_revised_against_three_signatures::355",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::344",
 ]
 keywords = ["commutation", "commute", "quantise", "reduce", "range policy", "toward zero", "wrapping", "decomposition", "composition order", "representative", "quotient"]
 
@@ -317,8 +317,8 @@ proof is owed on them until a run varies them.
 """
 gap = "No failing region, because the source states none. The argument needs the clamp's endpoints to be grid points, which the governing revision assumes and does not write as a region entry."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::136_leroy_the_candidate_revised_against_three_signatures::369",
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::253",
+  "panel::t202608072330_the_numeral_canon_panel::t136_leroy_the_candidate_revised_against_three_signatures::369",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::253",
 ]
 keywords = ["commutation", "commute", "quantise", "reduce", "saturate", "saturating", "clamp", "endpoints", "grid points", "deterministic", "range policy", "composition order"]
 
@@ -352,8 +352,8 @@ that grid, which its own coverage note calls a thin base for a universal. The \
 sweep's thinness bounds the reproduction rather than the claim.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::69",
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::575",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::69",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::575",
 ]
 keywords = ["licence", "deletion licence", "range licence", "algebraic licence", "congruence", "absorption", "boundary function", "singleton", "stretch", "biconditional", "chain", "interior resolution"]
 
@@ -386,7 +386,7 @@ No witness quoted. The construction is named in the governing files and its \
 instance is not reproduced there.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::556",
-  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#13-the-chain-and-the-composite-topic-ten-files-166-through-178",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::556",
+  "panel::t202608072330_the_numeral_canon_panel::agreements::t13_the_chain_and_the_composite_topic_ten_files_166_through_178",
 ]
 keywords = ["double rounding", "staged narrowing", "intermediate width", "innocuous", "grades", "composite correct rounding", "stepwise", "no threshold", "F", "fraction width"]

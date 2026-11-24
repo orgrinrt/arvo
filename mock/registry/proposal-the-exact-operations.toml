@@ -11,7 +11,7 @@ standing = "one_expert"
 topic = "the_format"
 says = "The remainder of an exact position is a coordinate of its own, a numerator below an unsigned 128-bit denominator in `[0, 1)`, rather than the signed 64-bit ratio a caller hands the position. A quotient by any 64-bit member and a product whose remainder denominator is the square of a 64-bit phase denominator then both have a position to land at."
 because = "The remainder is never negative and never reaches one, so a sign and a second 64 bits of numerator were carrying nothing. At 64 unsigned bits the quotient by a 64-bit member fits only at zero phase and exponent zero, and a phase or a positive exponent passes it again; at 128 bits every phase is admitted at a non-negative exponent, the radix two exponent reaches -127, and the quotient by a 64-bit divisor fits at every phase whose denominator times the divisor's span stays under `2^128`. The compromise: the dither comparison is a 192-bit cross product rather than a 128-bit one, and no public constructor takes such a remainder yet, so a consumer forming its own exact position over a 64-bit divisor has no door."
-provenance = ["mock::design_rounds/202611130438/202611130436_topic.the-remainder-carries-a-128-bit-denominator.md::#the-stance-the-remainder-is-its-own-coordinate-unsigned-and-128-bits-wide"]
+provenance = ["mock::design_rounds::t202611130438::t202611130436_topic::the_stance_the_remainder_is_its_own_coordinate_unsigned_and_128_bits_wide"]
 keywords = ["remainder", "exact position", "128 bit", "denominator", "quotient", "product", "wide remainder", "dither comparison"]
 
 [[proposal]]
@@ -22,7 +22,7 @@ standing = "one_expert"
 topic = "validation"
 says = "The quotient of two members is admitted over a divisor whose type cannot hold the zero member. The divisor is named either by a constant the build refuses at the zero or outside the range, or by a slot read at run time of a format in which no slot names the zero, which is a format whose phase denominator in lowest terms is past one. No door classifies a value at run time, and the step never meets a zero factor."
 because = "The quotient is a function of the declared signature wherever the divisor's value is not zero and is no function at the zero, so by the admission rule the zero is what the operation is not admitted over. A test on the divisor's value, or a constructor that classifies a slot and answers with a maybe, is a runtime check, which `ruling::never_a_runtime_check_and_one_lowered_path` rules out. What is left is a type, and a slot is not typed as a member of its format, so at a whole phase the one slot naming the zero is reachable whether or not the range holds it. The compromise: a whole-phase format divides only by constants, a plain integer range and a range leaving the zero out alike, until a slot can be typed by membership."
-provenance = ["mock::design_rounds/202611130510/202611130509_topic.the-quotient-and-the-conversion.md::#the-quotient-and-why-its-divisor-is-non-zero-by-type", "mock::design_rounds/202611130659/202611130657_topic.the-divisor-and-the-exact-door.md::#the-stance-no-slot-names-the-zero-so-the-step-has-nothing-to-branch-on"]
+provenance = ["mock::design_rounds::t202611130510::t202611130509_topic::the_quotient_and_why_its_divisor_is_non_zero_by_type", "mock::design_rounds::t202611130659::t202611130657_topic::the_stance_no_slot_names_the_zero_so_the_step_has_nothing_to_branch_on"]
 keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "constant divisor", "runtime check", "admission"]
 
 [[proposal]]
@@ -34,7 +34,7 @@ topic = "the_chain"
 says = "Converting a member of one format to another is one exact placement onto the target's grid and one adaptation under the target's signature, across any pair of phases and any pair of radixes. A conversion is never a chain through a format between the two."
 because = "The position on the target's grid is a function of the source format and the target signature together, so the admission rule admits it as one step. Two adaptations round twice and the second reads a value the first already moved, so a chain is a composition a consumer writes from two calls, where the double rounding is visible at the call site rather than inside one name. The compromise: a conversion whose denominator, the product of both phases' denominators and both exponents' moves, passes `2^128 - 1` is held out under the remainder coordinate's placeholder rather than routed through an intermediate that would fit."
 answers = ["whose_reduction_governs_a_lossy_crossing"]
-provenance = ["mock::design_rounds/202611130510/202611130509_topic.the-quotient-and-the-conversion.md::#the-conversion-one-step-onto-another-grid", "mock::research/202611140010_q36-two-readings/NOTES::#where-the-two-readings-agree"]
+provenance = ["mock::design_rounds::t202611130510::t202611130509_topic::the_conversion_one_step_onto_another_grid", "mock::research::t202611140010_q36_two_readings::notes::where_the_two_readings_agree"]
 stamped_by = "experts"
 stamp = "Two experts, the second without the first's file, each picked the target's reduction for `question::whose_reduction_governs_a_lossy_crossing`: a lossy conversion is rounded by the target's mode and completed by the target's policy, and a site that wants another names a sibling of the target. Their probes cover a change of width, range and exponent at radix two, zero phase and a constant quantum, under wrap and saturate and the five modes other than the stochastic one, at widths of 8 bits and under; above 8 bits, at another radix and at a nonzero phase the pick rests on argument in both readings. Recorded in `mock/research/202611140010_q36-two-readings/NOTES.md`. Question ticket `does_the_target_s_reduction_govern_a_lossy_conversion_in_arv` asks him to make it formal. The question row stays open."
 keywords = ["conversion", "convert", "placement", "grid", "single step", "double rounding", "radix", "phase", "chain"]
@@ -55,8 +55,8 @@ membership. The member is that typing, so this row restates the stance with the 
 third door and without the compromise.
 """
 provenance = [
-  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#a-member-is-a-type-and-the-divisor-takes-one",
-  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#the-members-range-lies-inside-the-divisors",
+  "mock::design_rounds::t202611140438::t202611140438_topic::a_member_is_a_type_and_the_divisor_takes_one",
+  "mock::design_rounds::t202611140438::t202611140438_topic::the_members_range_lies_inside_the_divisors",
 ]
 keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "member", "member door", "whole phase", "runtime check", "admission"]
 
@@ -78,8 +78,8 @@ signed division by a divisor read at run time of either sign still has no door, 
 which is put to op as an open question.
 """
 provenance = [
-  "panel::202611140602_review-arvo-format-member-2/REVIEW.md::#findings",
-  "mock::design_rounds/202611140438/202611140438_topic.a-member-is-a-type.md::#a-member-is-a-type-and-the-divisor-takes-one",
+  "panel::t202611140602_review_arvo_format_member_2::review::findings",
+  "mock::design_rounds::t202611140438::t202611140438_topic::a_member_is_a_type_and_the_divisor_takes_one",
 ]
 keywords = ["quotient", "division", "divisor", "non-zero", "zero member", "by type", "member", "member door", "one quantum", "grid", "signed division", "runtime check", "admission"]
 
@@ -92,10 +92,10 @@ topic = "the_format"
 says = "A remainder is `r = a - b n`, with `n` an integer rounding of the exact quotient `a / b` and `b` a divisor non-zero by type through the quotient's own doors. Within one format of constant quantum and whole phase, `r` is exact and on the grid at every radix, exponent, signedness, rounding and policy: its slot is the integer remainder of the value indices shifted by the phase, which reads neither the radix nor the exponent, so the adaptation's rounding never acts and only its completion does, exactly where that slot leaves the range. `|r| < |b|` under every rounding of the count and `|r| <= |b| / 2` under the nearest ones; a non-zero `r` takes the dividend's sign under `toward_zero`, the divisor's under `floor` and the opposite under `ceil`. The Euclidean remainder is `floor` by a positive divisor and `ceil` by a negative one. The axis that decides exactness is the phase, not the exponent."
 because = "For `a - b n` to stay on a grid of quantum `Q` for every divisor, `b n` must be a multiple of `Q` at the divisor `Q` itself, which forces `n` to be an integer; a count on the operands' own grid at a negative exponent puts `b n` on the grid of `Q^2`. At a whole phase `b n` is then a whole number of quanta and `r` lies on the dividend's coset. Both seats derived this cold and each swept it in a sketch over the exact rationals. The first found a rule keyed on the exponent alone wrong at 306 of 720 formats; the second planted a quotient taken on the grid and a sign taken from the dividend, and each went red at its own check."
 provenance = [
-  "panel::202611192115_the-remainder-panel::fabian-giesen::52",
-  "panel::202611192115_the-remainder-panel::fabian-giesen::84",
-  "panel::202611192115_the-remainder-panel::donald-knuth::130",
-  "panel::202611192115_the-remainder-panel::donald-knuth::208",
+  "panel::t202611192115_the_remainder_panel::fabian_giesen::52",
+  "panel::t202611192115_the_remainder_panel::fabian_giesen::84",
+  "panel::t202611192115_the_remainder_panel::donald_knuth::130",
+  "panel::t202611192115_the_remainder_panel::donald_knuth::208",
 ]
 keywords = ["remainder", "rem", "modulus", "fmod", "euclid", "integer count", "whole phase", "quotient", "divisor", "exact"]
 
@@ -108,7 +108,7 @@ topic = "the_format"
 says = "The remainder ships as an operation of the format, beside the quotient, read through the value by equality as every other operation is, and not as a consumer composition of the quotient, the product and the difference. The filed option keyed on a zero exponent alone is drawn on the wrong axis and is not the remainder away from that exponent."
 because = "Through the shipped quotient the count is rounded twice, onto the grid and then onto the integers, which misses under the nearest modes at an even radix and under every mode at a positive exponent; forming `a - b n` on the operands' signature completes the intermediate product under saturation where the remainder itself is in range, so it fails for every mode but `toward_zero`, the mechanism the fused-result ruling records for saturation. A consumer recomputing on integers one bit wider reaches it only at a zero phase and is a reimplementation, not a composition. Both standards in scope carry a remainder, so by the parity ruling a hole here is a defect of the framework."
 provenance = [
-  "panel::202611192115_the-remainder-panel::fabian-giesen::98",
-  "panel::202611192115_the-remainder-panel::donald-knuth::241",
+  "panel::t202611192115_the_remainder_panel::fabian_giesen::98",
+  "panel::t202611192115_the_remainder_panel::donald_knuth::241",
 ]
 keywords = ["remainder", "composition", "double rounding", "saturation", "option c", "locus", "format", "parity", "ieee 754", "matlab mod"]
