@@ -42,8 +42,8 @@ why = "Refused by op directly, and independently undercut by measurement: the re
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["hilavitkutin", "relocation", "associativity", "parallel reduction", "law machinery", "scheduler", "regrouping"]
 
@@ -56,8 +56,8 @@ replacement = "The monotonicity marker over addition, which is the atom the gate
 topic = "algebraic_laws"
 obligation = ["ordering_a_directed_acyclic_graph", "a_cost_dynamic_program", "a_spectral_partition_of_a_dependency_graph"]
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["AddAssoc", "gate", "arvo-graph", "arvo-comb", "arvo-spectral", "distributivity", "Monotone", "preset", "recurrence"]
 
@@ -68,8 +68,8 @@ why = "Wrong axis. Associativity is about grouping rather than order, and contig
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["traversal order", "grouping", "associativity", "chunking", "element order"]
 
@@ -80,8 +80,8 @@ why = "Refused by measurement: signed saturating addition's regrouping diameter 
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["diameter", "budget", "regrouping", "combinator", "saturating", "fold", "representable range"]
 
@@ -92,8 +92,8 @@ why = "Refuted by exhaustive measurement: every non-homomorphism resolution reac
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["accumulator", "threshold", "recovery map", "monotonicity", "interior safety", "homomorphism", "resolution"]
 
@@ -105,8 +105,8 @@ kind = "unpayable"
 replacement = "Type-level binary width encoding, itself later replaced by the value-unique natural, positive and bias encoding."
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["min_generic_const_args", "const generic", "width arithmetic", "type level", "definition site", "sound subset"]
 
@@ -118,8 +118,8 @@ kind = "unpayable"
 replacement = "Fixing the per-element product's type and checking accumulator sufficiency as a compile-time bound, with a renormalising step as the property that closes the gap."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["accumulator", "runtime bound", "loop", "type dependency", "sufficiency", "renormalising", "trip count"]
 
@@ -130,8 +130,8 @@ why = "Compiles clean when corrupted, with zero diagnostic, because a permission
 kind = "wrong"
 replacement = "Recomputing the relation inline in an ordinary const block at every consumption site, which satisfies the adoption in substance because recomputing inline is checking rather than asserting."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["fidelity", "licence", "marker trait", "coercion", "trusted", "witness", "disarmable", "const block", "grant"]
 
@@ -142,8 +142,8 @@ why = "Strictly worse information than the pull-shaped symbol-table read, since 
 kind = "wrong"
 replacement = "The pull-shaped symbol-table read."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["manifest", "build layer", "monomorphisation", "symbol table", "instantiation", "generic function", "type parameter"]
 
@@ -155,8 +155,8 @@ kind = "wrong"
 replacement = "A fused operation belongs in the design as a named operation rather than as a fidelity permission."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["mul_add", "FMA", "contraction", "fidelity", "liberty", "no_std", "libm", "IEEE", "Fused"]
 
@@ -167,8 +167,8 @@ why = "It does not exist as any implementation, only as an unlocked design-round
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Monotone", "shipped", "false citation", "quantiser", "ReduceModulo", "grep", "design round"]
 
@@ -178,8 +178,8 @@ claim = "The recovery-map classification's cheapness transfers automatically to 
 why = "Refuted twice independently. The classification is a property of the pair of the map and the operation rather than of the map alone."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["recovery map", "classification", "transfer", "operation", "pair", "cheapness"]
 
@@ -190,8 +190,8 @@ why = "False. Infinity changes the over-range position's neighbour rather than r
 kind = "wrong"
 topic = "overflow_policy"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["infinity", "over-range", "unreachable", "midpoint", "overflow", "grid", "round first"]
 
@@ -202,8 +202,8 @@ why = "Refuted by compiled counterexample: substituting zero breaks associativit
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["faithfulness", "unsigned", "blanket impl", "SubstituteZero", "associativity", "clamp", "modular reduction", "truncated addition"]
 
@@ -215,8 +215,8 @@ kind = "superseded"
 replacement = "Round first, classify second."
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["quantiser", "classify", "round", "order", "half a quantum", "largest representable", "band"]
 
@@ -227,8 +227,8 @@ why = "The second is false the moment signed zero, payload-carrying not-a-number
 kind = "wrong"
 replacement = "The section-retraction triple."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["round trip", "crossing contract", "encode", "decode", "identity", "signed zero", "NaN payload", "cohort", "section", "retraction"]
 
@@ -240,8 +240,8 @@ kind = "superseded"
 replacement = "A split into a sign domain, which is identity, and a sign indexing, which is encoding."
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Sign", "sign axis", "SignDomain", "SignIndexing", "range", "zero count", "identity", "encoding"]
 
@@ -252,8 +252,8 @@ why = "The nesting decision stands on the underflow argument alone; block floati
 kind = "misattributed"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["block floating point", "BFP", "nesting", "Adjustment", "Bias", "Underflow", "Specials", "shared exponent", "composite"]
 
@@ -264,8 +264,8 @@ why = "Fails the ordinary case of storing a product in a declared numeral, and i
 kind = "wrong"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["referential uniqueness", "value uniqueness", "invariant", "convention", "declared numeral", "product"]
 
@@ -276,8 +276,8 @@ why = "Refused, the feature named being neither the permitted one nor the forbid
 kind = "unpayable"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["projection", "trait level", "const parameter", "value uniqueness", "generic_const_args", "unvetted feature"]
 
@@ -288,8 +288,8 @@ why = "False for the width chain, since the zero-terminated encoding admits a se
 kind = "wrong"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["value uniqueness", "width chain", "UTerm", "B0", "second spelling", "zero", "normalise", "adder"]
 
@@ -300,8 +300,8 @@ why = "Two distinct conditions serving two distinct promises."
 kind = "wrong"
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["interior safety", "total safety", "spelling", "condition", "promise", "accumulator"]
 
@@ -312,8 +312,8 @@ why = "Replaced outright by the nine-point view lattice, which is not a chain an
 kind = "superseded"
 replacement = "The nine-point view lattice."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["relation ladder", "weak", "Kleene", "graded", "view lattice", "chain", "incomparable", "preset"]
 
@@ -325,8 +325,8 @@ kind = "superseded"
 replacement = "The nine-point view lattice, which states the point positively at the position where a view preserves values and events while losing definedness, which is the definedness reading the partial law was for."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["partial associativity", "algebra vocabulary", "Precise", "regrouping", "definedness", "view lattice", "op adoption"]
 
@@ -337,8 +337,8 @@ why = "Removed, because the transfer-ground scheme replaces what it was credited
 kind = "superseded"
 replacement = "The transfer-ground scheme."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["ffl", "physical grounds", "registry", "transfer ground", "silent removal", "undefined term"]
 
@@ -348,8 +348,8 @@ claim = "The reification-stability generalisation, that the graded relation is t
 why = "True of one reifier and false in general. Under an out-of-set absorbing special, the Kleene relation is stable too; under substituting zero, nothing is."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["reification", "stability", "graded", "Kleene", "Refuse", "absorbing special", "SubstituteZero"]
 
@@ -361,8 +361,8 @@ kind = "wrong"
 replacement = "The conjunction of the exactness flag with totality over the operation."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["IS_EXACT", "grade monoid", "trivial", "Total", "conjunction", "operation"]
 
@@ -373,8 +373,8 @@ why = "Killed by the compiler mid-dispatch, because the licence check refused ex
 kind = "wrong"
 replacement = "The transfer rule, carried by a type projection rather than by a declared const."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["required view", "licence", "regrouping", "gate", "transfer rule", "type projection", "declared const"]
 
@@ -385,8 +385,8 @@ why = "Not closed under meet."
 kind = "superseded"
 replacement = "The quotient-of-the-grade reading."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["view parameter", "subset domain", "meet", "closure", "quotient", "grade"]
 
@@ -398,8 +398,8 @@ kind = "wrong"
 replacement = "A signed, greatest-common-divisor-normalised rational, built and sealed."
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Bias", "signed integer", "rational", "gcd normalised", "MATLAB", "numerictype", "slope", "standard"]
 
@@ -410,8 +410,8 @@ why = "None of the review's compiled results depended on any of them."
 kind = "superseded"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Numeral", "member list", "restatement", "duplication", "compiled result"]
 
@@ -423,8 +423,8 @@ kind = "wrong"
 replacement = "The two-clause lattice-plus-reachability form."
 topic = "overflow_policy"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["overflow band", "closed form", "lattice", "reachability", "exhaustive enumeration", "quantum"]
 
@@ -436,8 +436,8 @@ kind = "superseded"
 replacement = "The two-fact product."
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Specials", "three instance", "chain", "infinity", "IEEE", "witness", "two-fact product"]
 
@@ -449,8 +449,8 @@ kind = "unpayable"
 replacement = "The radix-and-exponent spelling."
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["decimal", "quantum", "adjustment", "exponent axis", "radix", "grid", "compile time"]
 
@@ -461,8 +461,8 @@ why = "Does not exist on the stable-track surface as tested. The workaround, dis
 kind = "unpayable"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["reassociation", "licence", "algebraic_add", "bundle", "flags", "stable track", "companion permission"]
 
@@ -472,8 +472,8 @@ claim = "The vectorisable-loop-idiom finding held unconditionally."
 why = "It holds, but only under a single codegen unit, a setting inherited by accident from an earlier unrelated investigation and never identified as load-bearing until it was checked directly against the real crate."
 kind = "unpredicated"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["vectorisation", "loop idiom", "codegen units", "unconditional", "inherited setting", "load-bearing"]
 
@@ -484,8 +484,8 @@ why = "Refused on principle, and a second, independent route to the identical re
 kind = "unpayable"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["notation table", "bounded", "enumeration", "macro", "face", "const generic", "sealed"]
 
@@ -496,8 +496,8 @@ why = "The presets the design admits today both return wrong answers under the e
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Precise", "exile", "algorithm crates", "admission", "return type", "exact bound", "preset"]
 
@@ -508,8 +508,8 @@ why = "Flush-to-zero changes no representable set and is a quantisation resoluti
 kind = "wrong"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Underflow", "flush to zero", "gradual", "abrupt", "quantisation", "resolution", "representable set"]
 
@@ -520,8 +520,8 @@ why = "Refused by coherence and, separately, by minimal specialization twice; th
 kind = "unpayable"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["door", "projection", "strategy", "fallback", "coherence", "E0119", "min_specialization", "host implemented"]
 
@@ -533,8 +533,8 @@ kind = "wrong"
 replacement = "A justification that does imply it."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Cold", "door", "semantics first", "storage", "arithmetic lowering", "justification"]
 
@@ -545,8 +545,8 @@ why = "Refuted by compile as a design-wide verdict, correct only for the spectra
 kind = "wrong"
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["TotalOrd", "law expressible", "algorithm crates", "arvo-spectral", "design-wide", "compile"]
 
@@ -556,8 +556,8 @@ claim = "A pure declarative-macro decimal-to-binary muncher."
 why = "Refused structurally rather than merely found expensive. No fragment specifier, restringify trick, or const-generic escape reaches a decimal literal's digits."
 kind = "unpayable"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["macro_rules", "muncher", "decimal", "binary", "fragment specifier", "restringify", "literal digits"]
 
@@ -568,8 +568,8 @@ why = "Produced a misleading result in the wrong direction on its own first atte
 kind = "wrong"
 replacement = "Forcing the bound in both arms before comparing, which is now a stated convention."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["pricing", "checked sweep", "type alias", "forced bound", "control", "convention", "compile time"]
 
@@ -579,8 +579,8 @@ claim = "A universal unreproducibility claim grounded on compiling one file in i
 why = "Refuted by the committed recipe and the rebuild. The unreproducible ground's own exhibit was struck while the ground survived on its second exhibit."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["unreproducible", "isolation", "recipe", "rebuild", "exhibit", "ground", "universal claim"]
 
@@ -591,8 +591,8 @@ why = "Refuted twice by compiled counterexample with the bans in force. It promo
 kind = "wrong"
 topic = "the_predicate_notation"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["monomorphisation", "uniform", "transfer", "sound", "necessary", "sufficient", "property uniformity", "unstable features"]
 
@@ -603,8 +603,8 @@ why = "Refuted by a shipped, permitted third mechanism, const-tag container disp
 kind = "wrong"
 topic = "the_predicate_notation"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["instantiation", "observation", "specialization", "TypeId", "const tag", "container dispatch", "exhaustive", "enumeration"]
 
@@ -614,8 +614,8 @@ claim = "The refused-at-nine-bits wall as a width ceiling."
 why = "Refuted; it is a total-step-count budget, and a cheaper predicate compiles clean at nine and refuses one bit later."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["nine bits", "wall", "width ceiling", "step count", "budget", "const eval", "predicate"]
 
@@ -625,8 +625,8 @@ claim = "Exactly one cell of the matrix leaks."
 why = "Refuted; the matrix held the specials axis fixed, the full product leaks at six of eight cells, and the correct framing is a family of configurations."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["matrix", "cell", "leak", "Specials", "product", "configuration family"]
 
@@ -636,8 +636,8 @@ claim = "Widening the crossing contract's target through the quantiser, as an al
 why = "Refused on every escaping datum tried, against a 2701-value negative control confirming the quantiser is otherwise the identity. Not a preference, an arithmetic fact."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["crossing contract", "quantiser", "widening", "target", "escaping datum", "negative control", "identity"]
 
@@ -647,8 +647,8 @@ claim = "Cross-call-site face identity as something needing a mechanism."
 why = "Refused; nothing that affects compilation is keyed on the face, per-site display is the better diagnostic, and unifying faces would build the exact false-refusal failure the layer-keying rule forbids."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["face", "call site", "identity", "diagnostic", "layer keying", "false refusal", "unification"]
 
@@ -658,8 +658,8 @@ claim = "The facade's only live generic-const-expression constructs are two stat
 why = "Refuted by a whole-crate compile, at two of 478 spans, and it is the origin of the whole-crate-compile convention."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["facade", "generic_const_exprs", "static assert", "whole crate compile", "span", "universal claim", "sketch"]
 
@@ -669,8 +669,8 @@ claim = "The facade fix touches every consumer of the bit, unsigned fixed and si
 why = "Refuted; three of the four things a consumer writes are unaffected and the real public break is twenty-one call sites naming the three-parameter fixed types directly."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["facade", "consumer", "Bits", "UFixed", "IFixed", "call site", "public break", "migration"]
 
@@ -680,8 +680,8 @@ claim = "Route X for the facade migration: a const-keyed projection with only th
 why = "Refused structurally, six ways across two compiled attempts."
 kind = "unpayable"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["facade", "migration", "route X", "const keyed", "projection", "computed width", "structural refusal"]
 
@@ -692,8 +692,8 @@ why = "Fails guarantee parity three separate ways, each a compiler diagnostic ra
 kind = "unpayable"
 replacement = "Route Z, which the compiler's own diagnostic names."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["facade", "migration", "route Y", "route Z", "orphan rule", "E0117", "emit metadata", "emit link", "impl table", "quartic"]
 
@@ -703,8 +703,8 @@ claim = "The capacity unification's naive spelling, the shared carrier answering
 why = "Refused four ways, citing the forbidden generic-const-expressions feature and, behind the compiler's own suggested successor, the inductive doubling step, which the restricted successor cannot express either."
 kind = "unpayable"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["capacity", "unification", "carrier", "backing array", "generic_const_exprs", "min_generic_const_args", "inductive step"]
 
@@ -714,8 +714,8 @@ claim = "The feasibility probe's implicit claim that the capacity unification's 
 why = "It was not; the probe declared the capacity trait as a bare const and never reached the associated array type the domain exists for."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["feasibility probe", "capacity", "load bearing", "bare const", "associated type", "array", "setup that helps"]
 
@@ -726,8 +726,8 @@ why = "Superseded. The axis has one meaning; the byte-aligned reading was always
 kind = "superseded"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Layout", "Bitpacked", "Dense", "StoredWidth", "byte aligned", "two instances", "axis meaning"]
 
@@ -738,8 +738,8 @@ why = "It was always a measurement of the dense layout at a narrow width, correc
 kind = "misattributed"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["bitpacked", "dense", "measurement", "mislabelled", "narrow width", "Layout"]
 
@@ -750,8 +750,8 @@ why = "Corrected to four cells of sixteen once the warm preset's door moved to t
 kind = "superseded"
 replacement = "The four-of-sixteen statement."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["hardware reachability", "Hot", "Warm", "door", "HostFloat", "uniform expression", "cells"]
 
@@ -761,8 +761,8 @@ claim = "One file's strategy-door table, that every row below is derived from wh
 why = "Void, and it is the exhibit the whole tree-meaning prohibition rests on."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["strategy door", "table", "shipped tree", "tree meaning", "void", "prohibition", "preset"]
 
@@ -772,8 +772,8 @@ claim = "The nine-bit companion's original characterisation, as the first point 
 why = "Superseded. It measured the ungoverned container level rather than the statement's content."
 kind = "superseded"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["nine bits", "companion", "padding", "crossing contract", "observable content", "container level"]
 
@@ -783,8 +783,8 @@ claim = "One file's naming principle, applied as written."
 why = "Dead. It forbids op's own intent pillar and was never op's own hand."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["naming principle", "intent pillar", "op", "agent authored", "dead"]
 
@@ -794,8 +794,8 @@ claim = "The quantify-over-every-inhabitant-of-the-carrier-type amendment to the
 why = "Dead, killed by a compiled asymmetry between an error and a warn-level lint. It laundered a trusted-base fact into a provable one."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["quantifier", "inhabitant", "carrier type", "E0004", "lint", "trusted base", "laundering"]
 
@@ -806,8 +806,8 @@ why = "Superseded by the two-tier repair."
 kind = "superseded"
 replacement = "The two-tier repair."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["mutation gap", "re-canonicalise", "release", "enforcement", "two tier", "repair"]
 
@@ -818,8 +818,8 @@ why = "Superseded. It does not exist above the widest binary interchange format,
 kind = "superseded"
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["AllOnes", "fold width", "recursion limit", "binary128", "ceiling", "Nat", "accidental"]
 
@@ -829,8 +829,8 @@ claim = "The byte-image chapter's own prior framing, that an invertible external
 why = "Superseded; the structure has three."
 kind = "superseded"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["byte image", "external image", "crossing contract", "statement structure", "invertible", "three statements"]
 
@@ -840,8 +840,8 @@ claim = "One file's division instinct, alternative one, placing the speed-first 
 why = "Dead, killed on four compiled or silicon-read facts, and the fork's other alternative carried the identical smuggle at a different address."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["division", "Hot", "Door", "smuggle", "silicon", "alternative", "fork"]
 
@@ -852,8 +852,8 @@ why = "Superseded. It guards a region the entry-level totality refusal, ratified
 kind = "superseded"
 replacement = "A regression pin in the test suite."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["door", "domain preservation", "vacuous guard", "totality refusal", "regression pin", "ratifying text"]
 
@@ -863,8 +863,8 @@ claim = "One file's reader-quantified replacement naming test."
 why = "Superseded. It cannot fail in the hands of the person running it, which is the identical defect it correctly diagnosed in the parity suite it struck."
 kind = "superseded"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["naming test", "reader quantified", "cannot fail", "parity suite", "tautological", "self-check"]
 
@@ -874,8 +874,8 @@ claim = "One file's citation of a section's second, weaker sentence as the guard
 why = "Corrected. The operative sentence is the first."
 kind = "misattributed"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["citation", "weaker sentence", "guard", "Door", "operative", "correction"]
 
@@ -885,8 +885,8 @@ claim = "One file's periphery assessment, that five or six crate-level subjects 
 why = "False. The ground is op-ratified, distilled into the panel's required reading from its first hour, and row-rechecked at an earlier file before the claim was written."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["periphery", "unexamined", "error bar", "required reading", "ratified", "absence claim"]
 
@@ -896,8 +896,8 @@ claim = "The storage argument for rotors over matrices, on a component count of 
 why = "Wrong from rank four, reversing its own comparison against matrix storage at rank seven. The decision survives on the grounds it also gives; the count does not."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["rotor", "matrix", "storage", "component count", "rank", "geometric algebra"]
 
@@ -907,8 +907,8 @@ claim = "The capacity claim that it is checked to agree in an inline const block
 why = "False above rank zero. The trait-method route bypasses the door entirely."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["capacity", "construction door", "inline const", "trait method", "bypass", "rank"]
 
@@ -918,8 +918,8 @@ claim = "The ratified sentence that the array grammar's pairing is forced by the
 why = "The second clause is true and the first is false, twice. Recorded as a correction to ratified text rather than as an ordinary droplist entry, and the replacement sentence is offered rather than adopted, because a call about ratified text needs two independent agreements and the record has two compiles from two members but one design reading."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["array grammar", "pairing", "forced by the language", "ratified text", "two agreements", "design reading"]
 
@@ -930,8 +930,8 @@ why = "Corrected by one word, to the placement map's occupancy. A widening rathe
 kind = "wrong"
 replacement = "The same sentence with occupancy in place of width."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["digest", "datum keyed", "mask", "container", "occupancy", "placement map", "ratified sentence"]
 
@@ -941,8 +941,8 @@ claim = "The persona's third clause of the truth-contract shape, that the fiftee
 why = "Backwards, and ratified as such. Binding them on the exit refuses the multi-lane instance at the impl, and that instance is the entire thing the generic branch buys."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["truth contract", "declarations", "exit", "multi-lane", "generic branch", "backwards", "impl"]
 
@@ -952,8 +952,8 @@ claim = "The perimeter-rule citation on the boolean type."
 why = "Struck. The rule's own boundary section excludes a type with no invariant, and a decorative citation is worse than none because it makes a taste question look settled, and because the two grounds put the call in different hands."
 kind = "misattributed"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["perimeter rule", "Bool", "invariant", "decorative citation", "taste", "boundary section"]
 
@@ -964,8 +964,8 @@ why = "Does not survive deleting its shipped-source citation."
 kind = "wrong"
 replacement = "The variety-closure theorem, with the mask operations demoted to a witness."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["truth type", "shipped", "fork", "lean", "variety closure", "MaskOps", "witness"]
 
@@ -975,8 +975,8 @@ claim = "The derived-storage construction is new to this panel."
 why = "False. It is a committed probe recorded as working with two controls, thirty-one files before it was re-derived."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["derived storage", "new", "novelty claim", "structural array", "controls", "re-derivation", "absence claim"]
 
@@ -986,8 +986,8 @@ claim = "The derived-storage construction costs a quadratic in the number of cap
 why = "False. The type machinery is free; the cost was one operation per element from a structurally recursive fill, and rewriting it as a provided method over the projected slice collapsed 3.24 seconds to 0.12."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["derived storage", "quadratic", "capacity", "structural recursion", "provided method", "projected slice", "compile time"]
 
@@ -997,8 +997,8 @@ claim = "The five-way grouping of the route-multiplicity finding."
 why = "Retired. It is three defects with three existing owners plus one non-instance, and route multiplicity is a defect only relative to a guarantee."
 kind = "superseded"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["route multiplicity", "five-way grouping", "defect", "owner", "guarantee", "non-instance"]
 
@@ -1009,8 +1009,8 @@ why = "Not adopted. The three instances it would govern are governed better by t
 kind = "superseded"
 replacement = "The pricing pillar, plus a named moment at which the separation requirement runs."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["pricing pillar", "fifth clause", "route", "separation requirement", "symptom", "repair", "unrun"]
 
@@ -1020,8 +1020,8 @@ claim = "The claim that the definitional-completeness line and the separation re
 why = "False, at three of its own sentences, grep-checkable. A fabricated diligence claim rather than a design error, in the same register as another file's search sentence."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["diligence claim", "completeness line", "separation requirement", "fabricated", "grep", "consolidation"]
 
@@ -1031,8 +1031,8 @@ claim = "I searched for the arity token across every file; the hits are all fold
 why = "False, confirmed independently three times. The substance of its conclusion survives on grounds it did not give."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["diligence sentence", "arity", "search", "grep", "absence claim", "fabricated"]
 
@@ -1043,8 +1043,8 @@ why = "None adopted; the premise dissolved instead."
 kind = "superseded"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["quantize", "failure kind", "resolutions", "premise", "dissolved"]
 
@@ -1054,8 +1054,8 @@ claim = "The eleventh consolidation's completeness line, scoped to this document
 why = "Struck. The line quantifies over the whole ratifying text, and the exemption removed exactly the population a restoration consists of, which is where six undefined terms were sitting."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["completeness line", "scope", "new prose", "exemption", "restoration", "undefined terms"]
 
@@ -1065,8 +1065,8 @@ claim = "The trusted-base sentence that an unrelated lowering dependency makes t
 why = "False, refuted by re-running the projection with the lowering fully in scope in the same crate, where it still refuses at the associated-item error and names its own repair."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["trusted base", "lowering", "contract split", "silent", "diagnostic", "E0220", "projection"]
 
@@ -1076,8 +1076,8 @@ claim = "Keying the policy and the lowering on the numeral, as the repair for a 
 why = "Refuted at exit zero. Two implicitly-typed numerals, one number kind, disagreeing on what the warm preset means, with nothing in the language relating them, which is the layer-keying rule failing in its original direction."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Policy", "Lowering", "keying", "numeral", "preset", "layer keying", "Warm", "two rows"]
 
@@ -1087,8 +1087,8 @@ claim = "Per-kind preset markers, as the other repair for a preset denoting two 
 why = "Refuted at exit zero and on ratified text. A number over a kind and a kind-specific warm marker type-checks at a value position, and one ratified decision makes compositions public and bindable so aliases hide the mispairing only for the four pairs they cover; another gives the strategy crate four named markers that the eight-marker shape deletes."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["preset marker", "per kind", "WarmFixed", "alias", "mispairing", "arvo-strategy", "ratified text"]
 
@@ -1098,8 +1098,8 @@ claim = "Renaming the precision marker trait, as the repair for the bridge's tok
 why = "Not taken. It rewrites a name ratified under op's own principle that the mechanism unifies and the vocabulary does not, plus two bounds and a three-member alias family, for no gain, and an existing tiebreaker decides against it."
 kind = "superseded"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["Precision", "marker trait", "rename", "token collision", "bridge", "alias family", "tiebreaker"]
 
@@ -1110,8 +1110,8 @@ why = "Refuted three ways. It refuses a legitimate product at precision eighty; 
 kind = "wrong"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["ceiling", "total width", "emitted marker", "where clause", "type alias", "unvetted feature", "diagnostic"]
 
@@ -1122,8 +1122,8 @@ why = "Does not survive the extension past 4096 rows. Each doubling costs betwee
 kind = "wrong"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["bridge table", "linear", "quadratic", "doubling", "container dispatch", "compile time", "rows"]
 
@@ -1133,8 +1133,8 @@ claim = "The reading that the braces around a const parameter in a type-level na
 why = "Half right. They are required exactly when the const parameter's name also names a type in scope, which it does here structurally, and renaming the parameters compiles unbraced."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
-  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::t6_the_droplist_cumulative",
+  "panel::t202607301300_formalization_spec_panel::old_124_consolidation_twelve::t6_the_droplist_cumulative",
 ]
 keywords = ["braces", "NatOf", "const parameter", "name shadowing", "type in scope", "general requirement"]
 
@@ -1147,7 +1147,7 @@ why = "Closed by a probe arm: the compiler refuses with \"generic parameters may
 kind = "unpayable"
 topic = "the_format"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::closed_by_the_numeral_canon_panel_2026_08_08",
 ]
 keywords = ["const generic", "where clause", "width comparison", "generic_const_exprs", "min_generic_const_args", "bound", "relation"]
 
@@ -1158,7 +1158,7 @@ why = "Proposed and closed in the same file by its own probe. It absorbs correct
 kind = "wrong"
 topic = "overflow_policy"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::closed_by_the_numeral_canon_panel_2026_08_08",
 ]
 keywords = ["interior wrapping", "absorbing top", "monotonicity", "min-plus", "tropical", "shortest path", "additive inverse"]
 
@@ -1169,7 +1169,7 @@ why = "Closed by a probe: all twenty-four placements of four labels onto a two-b
 kind = "wrong"
 topic = "the_strategy_axis"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+  "panel::t202608072330_the_numeral_canon_panel::droplist::closed_by_the_numeral_canon_panel_2026_08_08",
 ]
 keywords = ["two-by-two", "headroom", "layout", "decomposition", "bijection", "placement", "preset table", "evidence"]
 
@@ -1183,7 +1183,7 @@ kind = "unpredicated"
 replacement = "The same claim predicated at saturating only."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["F111-15", "soundness", "overflow policy", "wrap", "sat", "predicate", "region"]
 
@@ -1195,7 +1195,7 @@ kind = "unpredicated"
 replacement = "The correctly predicated source finding it was a flat restatement of."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["result checking", "node checking", "unsound", "homomorphism", "predicate", "F112-21", "flat statement"]
 
@@ -1207,7 +1207,7 @@ kind = "unpredicated"
 replacement = "The same claim with the non-negative lower bound stated."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["F112-24", "beaten on none", "lower bound", "zero", "domain", "predicate"]
 
@@ -1219,7 +1219,7 @@ kind = "superseded"
 replacement = "The formula, which is bilinear in the construction."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["F112-14", "per-construction table", "formula", "transformer", "bilinear", "extension"]
 
@@ -1230,7 +1230,7 @@ why = "Superseded by the closed forms of the two costs, and the superseded form 
 kind = "superseded"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["F111-18", "compile cost", "ratio", "closed form", "composition argument", "F114-18"]
 
@@ -1242,7 +1242,7 @@ kind = "superseded"
 replacement = "The condition split."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["wrap dimension", "deletion", "repair", "condition split", "A11", "framing retired"]
 
@@ -1253,7 +1253,7 @@ why = "Under-determined: the guard makes the map the identity, and the general a
 kind = "misattributed"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["kernel", "arm", "attribution", "guard", "identity map", "under-determined", "W1", "A6"]
 
@@ -1264,7 +1264,7 @@ why = "The finding stands and is better than its own claim; the clause is wrong.
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["F115-4", "trait projection", "untried", "absence claim", "framing retired"]
 
@@ -1275,7 +1275,7 @@ why = "Corrected within the hour by its own author against a member's probe outp
 kind = "wrong"
 replacement = "The tests run and one command reports a false green."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["bench variant", "untested surface", "false green", "test gate", "correction", "probe output"]
 
@@ -1286,7 +1286,7 @@ why = "All four measured wrong, with the measurements kept in the probe headers.
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["cut", "operands", "result", "requantise", "rounding mode", "discriminator", "non-homomorphism", "refuted mechanism"]
 
@@ -1297,7 +1297,7 @@ why = "It degenerates instead."
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["two-part rule", "saturation", "degenerate", "F118-12", "locality"]
 
@@ -1308,7 +1308,7 @@ why = "Refuted by its own author's probe."
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["grid condition", "requantisation", "product", "F116-9", "refuted by its author"]
 
@@ -1319,7 +1319,7 @@ why = "Recorded as an expectation by one file and refuted by another."
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::t13_closed_retired_or_corrected_so_a_later_reader_knows_what_to_stop_repeating",
 ]
 keywords = ["fraction grid", "additive", "propagation", "expectation", "F116-7", "refuted"]
 
@@ -1330,7 +1330,7 @@ why = "Withdrawn by the candidate's own author on revision."
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::#7-what-i-withdraw-and-what-the-revision-did-not-settle",
+  "panel::t202608072330_the_numeral_canon_panel::t122_leroy_the_candidate_revised_against_two_partial_signatures::t7_what_i_withdraw_and_what_the_revision_did_not_settle",
 ]
 keywords = ["F118-5", "witness", "isolation", "withdrawn", "operation"]
 
@@ -1341,7 +1341,7 @@ why = "All four withdrawn by their author in the revision, alongside the flat st
 kind = "wrong"
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::#7-what-i-withdraw-and-what-the-revision-did-not-settle",
+  "panel::t202608072330_the_numeral_canon_panel::t122_leroy_the_candidate_revised_against_two_partial_signatures::t7_what_i_withdraw_and_what_the_revision_did_not_settle",
 ]
 keywords = ["withdrawn", "candidate clause", "predicate", "saturating", "only mechanism", "F115-5", "revision"]
 
@@ -1354,7 +1354,7 @@ why = "False for the shared threshold, conceded by its author."
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["F8", "saturating", "stochastic rounding", "monotone family", "shared threshold", "conceded"]
 
@@ -1365,7 +1365,7 @@ why = "Wrong, conceded in the same reply, whose author records that a second fil
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["boundary", "deterministic", "stochastic", "line", "conceded", "hedge"]
 
@@ -1376,7 +1376,7 @@ why = "The same fact as the boundary placement, and its own open item already sa
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["either-or fork", "boundary", "exhibited", "proved", "Finding 4", "framing"]
 
@@ -1388,7 +1388,7 @@ kind = "wrong"
 replacement = "The residue-class condition."
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["per-cell", "wrap compatibility", "residue class", "refuted run", "prediction", "dither"]
 
@@ -1400,7 +1400,7 @@ kind = "wrong"
 replacement = "A witness whose points share a cell."
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["non-monotonicity", "witness", "grid interval", "cell", "refuted attempt", "setup that helps"]
 
@@ -1411,7 +1411,7 @@ why = "True as written and corrected in reach, because the property an arm actua
 kind = "unpredicated"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["correlated", "independent", "dominates", "decorrelation", "shared threshold", "reach", "dither"]
 
@@ -1422,7 +1422,7 @@ why = "Corrected at ties, and the correction was accepted by a third file."
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["F127-2", "midpoint", "half up", "ties", "F128-5", "correction"]
 
@@ -1433,7 +1433,7 @@ why = "Must no longer be cited as naming a mode. They name two distinct operatio
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
 ]
 keywords = ["truncation", "trunc", "floor", "toward zero", "signed", "mode name", "vocabulary", "predicate"]
 
@@ -1444,8 +1444,8 @@ why = "Must no longer be cited at all: it did not reproduce on either natural sw
 kind = "wrong"
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
-  "panel::202608072330_the-numeral-canon-panel::136_leroy_the_candidate_revised_against_three_signatures::#2-1-the-figure-was-fabricated-in-a-report-message-and-i-relayed-it",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::t17_retired_so_a_later_reader_knows_what_to_stop_citing",
+  "panel::t202608072330_the_numeral_canon_panel::t136_leroy_the_candidate_revised_against_three_signatures::t21_the_figure_was_fabricated_in_a_report_message_and_i_relayed_it",
 ]
 keywords = ["21204", "32768", "signed negative", "fabricated figure", "relay", "report message", "attribution", "impossible count"]
 
@@ -1458,7 +1458,7 @@ why = "Conceded by its own author, on a probe built from that author's own commi
 kind = "wrong"
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["declared slack", "repair", "fusion", "answer preserving", "rounding relocation", "residual unit", "conceded"]
 
@@ -1470,7 +1470,7 @@ kind = "wrong"
 replacement = "The shape-to-count function, which is monotone in the observation set and saturates."
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["count", "shape to count", "well defined", "conceded", "too strong", "design property"]
 
@@ -1482,7 +1482,7 @@ kind = "wrong"
 replacement = "The amended form of the same finding."
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["F2", "strictly increasing", "counterexample", "axis set", "amended", "monotone"]
 
@@ -1494,7 +1494,7 @@ kind = "wrong"
 replacement = "The primed form of the same replacement, plus the naming obligation."
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["replacement B", "arithmetic shift right", "fractional shift", "spelling", "policy change", "signed", "F142-4"]
 
@@ -1505,7 +1505,7 @@ why = "The gap decomposes as an exact-duplicate control arm losing a tie-break, 
 kind = "wrong"
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["seven-arm table", "Pareto", "second instance", "duplicate arm", "tie break", "F144-3", "witness"]
 
@@ -1516,7 +1516,7 @@ why = "Each refuted by its own probe before either file read anything, which is 
 kind = "wrong"
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::t18_retired",
 ]
 keywords = ["prediction", "refuted", "cold derivation", "own probe", "protocol", "blind phase"]
 
@@ -1527,7 +1527,7 @@ why = "False, found independently by two signatures and then measured rather tha
 kind = "wrong"
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["clause 5.5", "predicate", "nearest half even", "wrapping", "saturating", "fraction width", "exhaustive", "candidate"]
 
@@ -1539,7 +1539,7 @@ kind = "wrong"
 replacement = "The corrected statement, that the conforming-arm count is a function of the whole assignment, rounding included, rather than of the overflow position."
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["wrapping clause", "conforming arm", "committed output", "verdict", "F150-6", "absorption", "toward zero", "equivariant"]
 
@@ -1551,7 +1551,7 @@ kind = "unpredicated"
 replacement = "The same finding scoped to the reading actually implemented."
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["gate", "generalisation", "reading", "B2", "overreach", "scope"]
 
@@ -1562,7 +1562,7 @@ why = "Wrong in three directions, two of them mechanical and both reproduced."
 kind = "wrong"
 topic = "the_strategy_object"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["contamination", "scoping", "independence", "three directions", "reproduced", "mechanical"]
 
@@ -1574,7 +1574,7 @@ kind = "superseded"
 replacement = "The replaced reason, at the revision's own section on it."
 topic = "canon_form"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["firewall", "unpredicated", "reason", "cost", "overstated", "gateable", "signature"]
 
@@ -1586,7 +1586,7 @@ kind = "wrong"
 replacement = "The repaired instrument, which intersects over values."
 topic = "the_predicate_notation"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::t9_what_i_got_wrong_collected",
 ]
 keywords = ["intersection", "names", "values", "dimension", "partition", "z6", "empty region", "convergence"]
 
@@ -1600,7 +1600,7 @@ kind = "wrong"
 replacement = "The same conclusion, on the three independent instruments that carry it."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["0 of 48", "law set", "freedom", "vacuous", "dead branch", "collision test", "mutation", "R1"]
 
@@ -1612,7 +1612,7 @@ kind = "wrong"
 replacement = "Three instruments."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["F6", "five instruments", "three", "dependency family", "instance count", "R2"]
 
@@ -1624,7 +1624,7 @@ kind = "unpredicated"
 replacement = "The four-file count."
 topic = "the_predicate_notation"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["F157-10", "width", "universal", "generalisation", "four files", "spelling", "R3"]
 
@@ -1636,7 +1636,7 @@ kind = "wrong"
 replacement = "The distinction that refutes them, which is the candidate's own machinery for it."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["F11", "F12", "F13", "127 primitives", "degenerate", "declaration criterion", "thin signature", "R4"]
 
@@ -1648,7 +1648,7 @@ kind = "wrong"
 replacement = "The wall itself, stated as the refusal it is."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["const eval", "function pointer", "operation", "type carrier", "match", "macro", "duplication", "R5"]
 
@@ -1660,7 +1660,7 @@ kind = "unpredicated"
 replacement = "The restated form carrying its region."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["F8", "no repair", "type equality", "consumer", "boundary", "three-armed", "R6"]
 
@@ -1672,7 +1672,7 @@ kind = "wrong"
 replacement = "The lens-one-level-down formulation, adopted."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["requirement 1", "value", "container", "instrument bound", "withdrawn", "lens", "S-1", "R7"]
 
@@ -1684,8 +1684,8 @@ kind = "wrong"
 replacement = "Both numbers, each carrying the build profile it was taken under."
 topic = "the_predicate_notation"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
-  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q52-what-a-primitive-is-and-two-convergences-that-did-not-survive-being-checked",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
+  "panel::t202608072330_the_numeral_canon_panel::options::q52_what_a_primitive_is_and_two_convergences_that_did_not_survive_being_checked",
 ]
 keywords = ["107 seconds", "wide-rung", "debug", "release", "build profile", "retirement retired", "unpredicated", "R8"]
 
@@ -1697,7 +1697,7 @@ kind = "wrong"
 replacement = "One expert, on the cut."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["number system", "convergence", "two instances", "one expert", "category claim", "cut", "radix", "R9"]
 
@@ -1709,8 +1709,8 @@ kind = "superseded"
 replacement = "The three-outcome form, with the per-pair scope kept."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-1-r10-amended-name-which-half-of-the-sentence-died",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::t51_r10_amended_name_which_half_of_the_sentence_died",
 ]
 keywords = ["S-14", "S-16", "completeness", "gap", "refinement parameter", "per-pair", "witness", "R10", "amended"]
 
@@ -1722,7 +1722,7 @@ kind = "superseded"
 replacement = "Sole occupancy."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["S-8", "degeneracy", "sole occupancy", "lens", "wording", "R11"]
 
@@ -1733,7 +1733,7 @@ why = "False as stated. Independence accounting that rests on it is unreliable i
 kind = "wrong"
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["auto-load", "agent context", "workspace rule", "independence", "shared exposure", "contamination", "R12"]
 
@@ -1744,7 +1744,7 @@ why = "Withdrawn by its author on adopting the lens formulation: under the lens 
 kind = "wrong"
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["O-B", "cost clause", "Bool", "USize", "one-element column", "lens", "native end", "R13"]
 
@@ -1755,7 +1755,7 @@ why = "Closed by the container premise on either branch: under the observable br
 kind = "superseded"
 topic = "the_container_premise"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["O-D", "over-counting index", "container premise", "observable", "internal", "licence machinery", "R14"]
 
@@ -1767,7 +1767,7 @@ kind = "superseded"
 replacement = "The candidate's own statement of what a primitive is."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["four-part", "working assumption", "format", "number system", "law set", "strategy", "refinement", "R15"]
 
@@ -1779,8 +1779,8 @@ kind = "unpayable"
 replacement = "The adequacy decomposition, dischargeable at the shipped widths."
 topic = "the_primitive"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-2-r16-amended-the-reason-is-a-category-mismatch-not-a-missing-discharge",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::t3_closed_or_retired_including_what_must_no_longer_be_cited",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::t52_r16_amended_the_reason_is_a_category_mismatch_not_a_missing_discharge",
 ]
 keywords = ["adequacy", "checkability", "model width", "transfer argument", "soundness", "completeness", "category mismatch", "R16", "amended"]
 
@@ -1792,7 +1792,7 @@ kind = "wrong"
 replacement = "The existence claim, on the finding whose witness carries it."
 topic = "rounding"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-3-r17-new-the-register-s-literal-sentence-on-rounding-observability",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::t53_r17_new_the_registers_literal_sentence_on_rounding_observability",
 ]
 keywords = ["non-grid literal", "observable", "F = 0", "ties to even", "truncation", "necessary", "sufficient", "R17"]
 
@@ -1802,7 +1802,7 @@ claim = "Zero novel anchors means, being the closing sentence of the primitive c
 why = "Must no longer be cited. It sits three lines below that section's own table reporting one novel anchor, so the document contradicts itself on the page. One signature found it, the revision repaired the class in its own accounting and left no entry naming the specific false sentence, and the independent check recorded that gap rather than escalating it. The candidate stands as landed, because both signatures cite it by line."
 kind = "wrong"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-4-r18-new-added-after-165-161-s-own-accounting-sentence",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::t54_r18_new_added_after_165_161s_own_accounting_sentence",
 ]
 keywords = ["zero novel anchors", "accounting", "self-contradiction", "anchor table", "R18", "provenance string"]
 
@@ -1816,7 +1816,7 @@ kind = "wrong"
 replacement = "The discount, on the shared premise set."
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["heading", "discount", "independence", "strict prefix", "shared premise", "auto-loaded", "R-a"]
 
@@ -1828,7 +1828,7 @@ kind = "wrong"
 replacement = "Two instances plus a composing third definition."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["three-way", "convergence", "definition", "two hats", "instance count", "R-b"]
 
@@ -1840,7 +1840,7 @@ kind = "superseded"
 replacement = "The delimiter and the schedule-conflict result."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["region", "framing", "contribution", "DAG", "sharing", "delimiter", "schedule conflict", "R-c"]
 
@@ -1851,7 +1851,7 @@ why = "Withdrawn: the register's own entry carried the measurement, the mechanis
 kind = "wrong"
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["priced", "nobody was told", "negative claim", "Q42", "noise bound", "extraction table", "R-d"]
 
@@ -1863,7 +1863,7 @@ kind = "superseded"
 replacement = "The window, plus the additive-window state-saving refinement."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["carried residual", "product chain", "window", "dominates", "state saving", "R-e"]
 
@@ -1875,7 +1875,7 @@ kind = "misattributed"
 replacement = "The accumulator projection."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["F9", "interior projection", "affine collapse", "accumulator projection", "attribution", "bench title", "R-f"]
 
@@ -1887,7 +1887,7 @@ kind = "wrong"
 replacement = "The narrower forms of both points."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["negative claim", "grep", "warm-affine-collapse", "absence claim", "within-run", "R-g"]
 
@@ -1899,7 +1899,7 @@ kind = "superseded"
 replacement = "The theorem."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["pointwise search", "placement", "theorem", "sweep", "evidence", "R-h"]
 
@@ -1911,7 +1911,7 @@ kind = "misattributed"
 replacement = "Entailed, for the original construction."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["conflict band", "measured", "entailed", "T1", "variant construction", "R-i"]
 
@@ -1923,7 +1923,7 @@ kind = "unpredicated"
 replacement = "The same result carrying its region."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["probe F", "reassociation safety", "unqualified", "adaptation", "additive", "relative precision", "R-j"]
 
@@ -1934,7 +1934,7 @@ why = "Unestablished: largest gap 1.2 percent, inside the harness's measured 4.9
 kind = "unpredicated"
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["static length", "lever", "noise floor", "between-dylib", "sign flip", "unestablished", "R-k"]
 
@@ -1946,7 +1946,7 @@ kind = "wrong"
 replacement = "The earlier file, read at source."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["carrier", "account", "incomplete", "enumeration", "read at source", "compression", "R-l"]
 
@@ -1958,7 +1958,7 @@ kind = "wrong"
 replacement = "The commuting pair."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["lead pair", "order dependence", "commuting", "different functions", "heterogeneity bound", "R-m"]
 
@@ -1969,7 +1969,7 @@ why = "The unit's opening ground, true of units and false of the corpus: two ear
 kind = "wrong"
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::t3_closed_or_retired_including_what_must_no_longer_be_cited",
 ]
 keywords = ["never had a unit", "chains", "corpus", "reading list", "absence claim", "brief writer", "R-n"]
 
@@ -1980,7 +1980,7 @@ why = "The option is closed, by a second read that is the decider it named, and 
 kind = "misattributed"
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::#6-the-register-repairs",
+  "panel::t202608072330_the_numeral_canon_panel::t176_leroy_the_candidate_revised_against_two_signatures::t6_the_register_repairs",
 ]
 keywords = ["O-171-1", "closure", "rung history", "option set diff", "census", "second read", "R-o"]
 
@@ -1992,7 +1992,7 @@ kind = "wrong"
 replacement = "The same list, read as an enumeration bound rather than as a perimeter."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::#6-the-register-repairs",
+  "panel::t202608072330_the_numeral_canon_panel::t176_leroy_the_candidate_revised_against_two_signatures::t6_the_register_repairs",
 ]
 keywords = ["channels", "residue", "partiality", "enumeration bound", "perimeter", "debug assertions", "O-5"]
 
@@ -2004,7 +2004,7 @@ kind = "wrong"
 replacement = "The implication that holds, with the composition claim kept and the converse dropped."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#2-f177-1-the-biconditional-becomes-the-implication-that-holds",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t2_f177_1_the_biconditional_becomes_the_implication_that_holds",
 ]
 keywords = ["biconditional", "deletion licence", "singleton family", "converse", "under-approximate", "counterexample", "F177-1"]
 
@@ -2016,7 +2016,7 @@ kind = "misattributed"
 replacement = "The same sentence cited from the establishing sources, the degeneracy table over ring-affine chains and its own control outside that region."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#3-f177-2-the-wrap-sentence-repaired-from-the-establishing-sources",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t3_f177_2_the_wrap_sentence_repaired_from_the_establishing_sources",
 ]
 keywords = ["identity column", "wrap column", "control", "degeneracy", "ring affine", "right shift", "F177-2"]
 
@@ -2028,7 +2028,7 @@ kind = "superseded"
 replacement = "The clause without the figures, plus a ledger note carrying the counts with their nine-dimension predicate."
 topic = "the_chain"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#4-f177-3-the-counts-leave-the-statement-and-keep-their-predicate",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t4_f177_3_the_counts_leave_the_statement_and_keep_their_predicate",
 ]
 keywords = ["counts", "sweep scoped", "clause", "permanence", "ledger", "predicate", "shortfall", "F177-3"]
 
@@ -2040,7 +2040,7 @@ kind = "superseded"
 replacement = "The three-position convention: an opening mark gives a clause's primary kind, a trailing mark attaches to the sentence immediately before it, and a mark inside a sentence attaches to the separated clause it follows."
 topic = "canon_form"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#5-f177-4-the-legend-s-third-mark-position",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t5_f177_4_the_legends_third_mark_position",
 ]
 keywords = ["legend", "mark", "convention", "sentence kind", "intra-sentential", "position", "F177-4"]
 
@@ -2052,7 +2052,7 @@ kind = "superseded"
 replacement = "The discount at full strength, with the reason and the evidential anchor restored."
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#6-f177-5-the-discount-restored-to-full-strength",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t6_f177_5_the_discount_restored_to_full_strength",
 ]
 keywords = ["discount", "independence", "components", "model family", "shared input", "corroboration", "F177-5"]
 
@@ -2064,7 +2064,7 @@ kind = "superseded"
 replacement = "The complete enumeration of all six reserved items."
 topic = "canon_form"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#7-f177-6-the-canon-gate-s-enumeration-completed",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t7_f177_6_the_canon_gates_enumeration_completed",
 ]
 keywords = ["canon gate", "universal", "enumeration", "reserved", "partial list", "op's items", "F177-6"]
 
@@ -2075,7 +2075,7 @@ why = "Repaired at the artifact and the accounting regenerated, with the diff of
 kind = "misattributed"
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#8-f177-7-the-instrument-s-docstring-repaired-numbers-unchanged",
+  "panel::t202608072330_the_numeral_canon_panel::t178_leroy_the_restoration_pass::t8_f177_7_the_instruments_docstring_repaired_numbers_unchanged",
 ]
 keywords = ["docstring", "positive control", "instrument", "provenance string", "regenerated", "empty diff", "F177-7"]
 
@@ -2089,7 +2089,7 @@ kind = "wrong"
 replacement = "Three separated predicates, one per job the sentence was trying to do at once, endorsed and restated as a specification by the second read."
 topic = "the_realisation_map"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-1-the-retirement",
+  "panel::t202608072330_the_numeral_canon_panel::t53_leroy_consolidation_the_container_derivation::t41_the_retirement",
 ]
 keywords = ["criterion", "output", "derivation", "fixpoint", "antitone", "site model", "strategy set", "kind regime", "sixteen cells", "two outputs"]
 
@@ -2103,8 +2103,8 @@ kind = "wrong"
 replacement = "The corrected account in the entry's own addendum, with the write-side measurement that closes the gap."
 topic = "panel_conduct"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-the-doability-claims-are-workload-claims-and-no-workload-evidence-exists-above-one-thread",
-  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-addendum-from-78",
+  "panel::t202608072330_the_numeral_canon_panel::options::q32_the_doability_claims_are_workload_claims_and_no_workload_evidence_exists_above_one_thread",
+  "panel::t202608072330_the_numeral_canon_panel::options::q32_addendum_from_78",
 ]
 keywords = ["one thread", "instrument", "threads", "contention", "packing", "write hazard", "read-modify-write", "absence claim", "Q32"]
 
@@ -2116,11 +2116,11 @@ kind = "wrong"
 replacement = "The gap is a per-element tail-residue effect, 3 * max(0, popcount(rag_bytes(W) mod 8) - 1) instructions, flat across operation density, and it does not decide the trade: no measured configuration shows the byte-count difference costing throughput. A separate width-dependent effect between W=129 and W=192 is real, roughly 2.1x, and its mechanism is unresolved; that is the open lead for whoever picks this back up."
 topic = "the_container_premise"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::seed::OLD_SETTLED_container.md::#14-the-wide-payload-above-the-native-rungs-is-a-strategy-axis-consequence-ragged-byte-exact-for-cold-and-precise-word-rounded-whole-64-bit-limbs-for-hot-and-warm",
-  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#four-the-instruction-half-of-the-ratified-claim-in-its-own-units",
-  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#five-the-footprint-half-past-l2-and-why-it-does-not-pay-either",
-  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#six-attacking-the-mechanism-and-where-it-led",
-  "panel::202608072330_the-numeral-canon-panel::22_xu_the_bench_that_was_missing.md::#what-i-could-not-close",
+  "panel::t202608072330_the_numeral_canon_panel::seed::old_settled_container::t14_the_wide_payload_above_the_native_rungs_is_a_strategy_axis_consequence_ragged_byte_exact_for_cold_and_precise_word_rounded_whole_64_bit_limbs_for_hot_and_warm",
+  "panel::t202608072330_the_numeral_canon_panel::t22_xu_the_bench_that_was_missing::four_the_instruction_half_of_the_ratified_claim_in_its_own_units",
+  "panel::t202608072330_the_numeral_canon_panel::t22_xu_the_bench_that_was_missing::five_the_footprint_half_past_l2_and_why_it_does_not_pay_either",
+  "panel::t202608072330_the_numeral_canon_panel::t22_xu_the_bench_that_was_missing::six_attacking_the_mechanism_and_where_it_led",
+  "panel::t202608072330_the_numeral_canon_panel::t22_xu_the_bench_that_was_missing::what_i_could_not_close",
 ]
 keywords = ["wide rung", "ragged", "word-rounded", "item 14", "instruction count", "byte count", "footprint", "tail residue", "popcount", "137b"]
 
@@ -2132,8 +2132,8 @@ kind = "wrong"
 replacement = "law::multiplicative_associativity_under_wrapping's holds/fails regions, which state directly that wrap induces a ring only at F = 0 and degrades to a non-associative, non-distributive multiplicative structure over an abelian additive group at F > 0."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::#6-what-the-register-should-gain",
-  "panel::202608072330_the-numeral-canon-panel::61_probes::q2_wrap_ring_at_nonzero_fraction.rs::1",
+  "panel::t202608072330_the_numeral_canon_panel::t61_absorption_against_coherence::t6_what_the_register_should_gain",
+  "panel::t202608072330_the_numeral_canon_panel::t61_probes::q2_wrap_ring_at_nonzero_fraction::1",
 ]
 keywords = ["wrap", "induced ring", "fraction width", "abelian group", "semiring", "droplist", "abandoned"]
 
@@ -2145,7 +2145,7 @@ kind = "wrong"
 replacement = "The general geometric criterion (mirror-symmetric or nonnegative range) already in the registry, of which two's-complement's failure is the un-mirror-symmetric instance."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::62_carmack_the_signed_cell::#5-what-the-register-should-gain",
+  "panel::t202608072330_the_numeral_canon_panel::t62_carmack_the_signed_cell::t5_what_the_register_should_gain",
 ]
 keywords = ["signed", "two's complement", "saturating", "multiplication", "semigroup", "asymmetric absorption", "droplist"]
 
@@ -2157,7 +2157,7 @@ kind = "wrong"
 replacement = "law::multiplicative_associativity_under_wrapping's holds region (F = 0 only) states the actual scope of the relabelling; the fails region states where it stops applying."
 topic = "algebraic_laws"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::62_carmack_the_signed_cell::#5-what-the-register-should-gain",
+  "panel::t202608072330_the_numeral_canon_panel::t62_carmack_the_signed_cell::t5_what_the_register_should_gain",
 ]
 keywords = ["wrap", "relabelling", "residue class", "section", "fraction width", "droplist"]
 
@@ -2171,9 +2171,9 @@ kind = "misattributed"
 replacement = "22 triples under `warm-container-*`, or 57 across the nine sections commit `ccf05099` landed, depending on which is wanted. The 147 committed CSV predating this panel span 21 families, and the four prefixes the archaeology names reach 92 of them; the other 55 sit in families it does not name, `precise-*` and `quantiser-vs-fadd-subnormal-sweep` among them."
 topic = "the_strategy_axis"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS::#32-the-strategy-axis",
-  "panel::202607301300_formalization-spec-panel::OLD_141_xu_the_container_fork_benched::8",
-  "panel::202608072330_the-numeral-canon-panel::208_probes::p3_bench_artifacts.out::1",
+  "panel::t202608072330_the_numeral_canon_panel::seed_talking_points::t32_the_strategy_axis",
+  "panel::t202607301300_formalization_spec_panel::old_141_xu_the_container_fork_benched::8",
+  "panel::t202608072330_the_numeral_canon_panel::t208_probes::p3_bench_artifacts<out>::1",
 ]
 keywords = ["57", "triples", "warm-container", "bench", "CSV", "meta", "findings", "count", "headroom", "container fork", "141"]
 
@@ -2187,9 +2187,9 @@ kind = "wrong"
 replacement = "The suite establishes that the container is invisible to arithmetic under a fixed semantics, which is a real and useful result and is cited for that. It establishes nothing about two markers sharing a realisation map. The escape the paragraph tried to close stays exactly as open as the signature that raised it left it."
 topic = "the_container_premise"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#1-4-what-the-reproductions-caught-that-the-signatures-did-not-state",
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#3-route-two-closed-x3-and-what-op-has-already-said-about-it",
-  "panel::202608072330_the-numeral-canon-panel::210_probes::p1.out::1",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::t14_what_the_reproductions_caught_that_the_signatures_did_not_state",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t3_route_two_closed_x3_and_what_op_has_already_said_about_it",
+  "panel::t202608072330_the_numeral_canon_panel::t210_probes::p1::1",
 ]
 keywords = ["oracle", "agreement test", "carrier rule", "semantics", "marker", "realisation map", "X3", "reading 2", "quantifier", "warm-container-shared"]
 
@@ -2201,8 +2201,8 @@ kind = "wrong"
 replacement = "The container premise is a projection of the operation-set question onto one operation, so it is answered by naming the signature rather than by ruling on a representation. Nothing about the second half of the retired sentence changes: the chain is still workable without op, and it is workable from the operation-set question downward rather than upward."
 topic = "the_container_premise"
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#7-the-container-premise-now-blocks-a-clause-of-the-candidate-not-just-an-option",
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question",
+  "panel::t202608072330_the_numeral_canon_panel::t156_checkpoint_nine_the_queue_for_ops_seat::t7_the_container_premise_now_blocks_a_clause_of_the_candidate_not_just_an_option",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t1_what_i_did_first_which_was_try_to_break_the_question",
 ]
 keywords = ["container premise", "operation set", "downstream", "upstream", "circular", "dependency", "Q61", "clause 4", "coordinate", "loop"]
 
@@ -2213,7 +2213,7 @@ why = "Both halves are false and each was measured separately by an instrument t
 kind = "unpredicated"
 topic = "the_format"
 replacement = "Whether the set carries an additive identity is decided by the phase being a whole multiple of the quantum, not by its being nonzero. What survives of the original is narrower and is about the half-step geometry alone: that grid is not closed under exact addition, and every exact sum of two of its points lands half a step off it.\n\n**The same clause stands in a row this retirement cannot reach**, and it is named here rather than edited. `proposal::membership_of_the_representable_set_is_one_affine_predicate` closes on the words that a nonzero phase decides whether the set carries an additive identity at all, at `standing = \"two_experts\"`, and `ruling::the_format_spine_is_canon` stamps it, so it is canon by ratification. Correcting a stamped row is not a retirement's act and is not one instrument's: it wants a `ruling` carrying `corrects`, on two agreements about the correction rather than about the measurement underneath it. Until then that row's phase sentence reads wider than the evidence, and the sentence around it, that membership is one affine predicate, is untouched by any of this and is what the correction here rests on.\n\nThe claim also stands in the crate's design, its rustdoc and one of its tests, which the design and code tiers correct in their own order rather than here. Both are corrected, and the stamped row's clause is what remains."
-provenance = ["panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::#5-the-findings-with-their-predicates", "panel::202608072330_the-numeral-canon-panel::237_the_format_proposals_against_the_ratification_gate::#5-a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t240_the_format_layer_derived_from_its_denotation::t5_the_findings_with_their_predicates", "panel::t202608072330_the_numeral_canon_panel::t237_the_format_proposals_against_the_ratification_gate::t5_a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"]
 keywords = ["phase", "additive identity", "biased grid", "half step", "whole step", "zero on the grid", "monoid", "closure", "nearest"]
 
 [[retirement]]
@@ -2224,9 +2224,9 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "The weaker form the same file states later in the same section, which is defensible and is a real cost argument: amending the slot arity would take R3's count with it, and R3 is the row the numeric door is built on, so the amendment is not local to the membership clause."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::338",
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::417",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::469",
+  "panel::t202608072330_the_numeral_canon_panel::t241_kiselyov_admission_is_a_resolution_not_a_verdict::338",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::417",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::469",
 ]
 keywords = ["arity", "ratified count", "R3", "slot", "coordinate count", "ten", "door", "spelling", "set-valued carriers"]
 
@@ -2238,9 +2238,9 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "22 of 105 at the tree the sitting measured, and the count moves with the tree, so a reader wanting it now runs the census rather than quoting a number."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::242_what-admits-a-number-system::26",
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::654",
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::110",
+  "panel::t202608072330_the_numeral_canon_panel::t242_what_admits_a_number_system::26",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::654",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::110",
 ]
 keywords = ["bound", "question rows", "24", "22", "census", "count", "tree", "erratum"]
 
@@ -2252,8 +2252,8 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "The four rows that were counted are the four carrying an `unblocks`, not four carrying a `note`, since all eighteen carry a `note`."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::169",
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::658",
+  "panel::t202608072330_the_numeral_canon_panel::t241_kiselyov_admission_is_a_resolution_not_a_verdict::169",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::658",
 ]
 keywords = ["erratum", "miscount", "bound", "note", "unblocks", "eighteen", "question rows", "diagnosis"]
 
@@ -2265,9 +2265,9 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "`NonZero` is six under trailing-boundary counting and thirteen under plain substring. The defect was never a number: it is that four numbers were reported as one census under at least two conventions, which is invisible until somebody runs all of them."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::238",
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::304",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::242",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::238",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::304",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::242",
 ]
 keywords = ["NonZero", "census", "counting convention", "substring", "word boundary", "tokeniser", "six", "thirteen"]
 
@@ -2279,9 +2279,9 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "Nothing identifies the method. Each of the four numbers is reproducible under at least one convention and no single convention reproduces all four."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::235",
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::59",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::242",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::235",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::59",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::242",
 ]
 keywords = ["census", "method", "identification", "substring", "trailing boundary", "three of four", "convention", "hand check"]
 
@@ -2293,10 +2293,10 @@ kind = "superseded"
 topic = "the_number_system"
 replacement = "The sitting produced no promotion of either admission row as written. It produced second instances for some clauses of two rows and nothing for others, and it produced no counter-instance. What a row carrying clauses of different standing should become is unsettled and is not a count."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::553",
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::247",
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::214",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::142",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::553",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::247",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::214",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::142",
 ]
 keywords = ["promotion", "promotable", "L2", "second instance", "clause", "standing", "one promotable result", "admission"]
 
@@ -2308,8 +2308,8 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "The growth between the two trees includes the commit that adds the admission obligation to three further contracts, so anything the sitting established about which tiers carry an obligation holds at the tree it names and nowhere later."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::23",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::285",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::23",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::285",
 ]
 keywords = ["growth", "regression", "admission", "ADMITTED", "tree", "merge", "registry diff", "obligation", "Slots"]
 
@@ -2321,8 +2321,8 @@ kind = "wrong"
 topic = "the_number_system"
 replacement = "The file neither seconds the enumeration clause nor contradicts it. It supplies no derivation of that clause, which is a gap in what can be counted and not a counter-instance."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::224",
-  "panel::202608072330_the-numeral-canon-panel::247_leroy_the_cold_seats_answered_rows_73_wrote::126",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::224",
+  "panel::t202608072330_the_numeral_canon_panel::t247_leroy_the_cold_seats_answered_rows_73_wrote::126",
 ]
 keywords = ["counter-instance", "enumeration clause", "vocabulary", "coordinate", "chain", "drafting", "second instance", "Gray code"]
 
@@ -2334,8 +2334,8 @@ kind = "misattributed"
 topic = "the_number_system"
 replacement = "The compositional route for set-valued carriers has one independent prior instance in an earlier Knuth seat, which counts. This bears on that route only; the separate demotion of the refusal argument is untouched by it."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::241_kiselyov_admission_is_a_resolution_not_a_verdict::658",
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::507",
+  "panel::t202608072330_the_numeral_canon_panel::t241_kiselyov_admission_is_a_resolution_not_a_verdict::658",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::507",
 ]
 keywords = ["persona", "Kiselyov", "Knuth", "instance", "under-count", "compositional route", "interval", "declined"]
 
@@ -2347,9 +2347,9 @@ kind = "misattributed"
 topic = "the_number_system"
 replacement = "The tier-count question row is about a different pair of lists and is not a dependency of the admission subject. What is genuinely unheld is a drafting convention for which vocabulary a canon sentence about admission speaks, and no row asks it."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::406",
-  "panel::202608072330_the-numeral-canon-panel::246_kiselyov_the_two_promotions_and_what_they_second::540",
-  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::406",
+  "panel::t202608072330_the_numeral_canon_panel::t246_kiselyov_the_two_promotions_and_what_they_second::540",
+  "panel::t202608072330_the_numeral_canon_panel::t257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
 ]
 keywords = ["tier count", "level cut", "C2", "coordinate", "chain components", "container", "four lists", "dependency"]
 
@@ -2361,8 +2361,8 @@ kind = "wrong"
 topic = "panel_conduct"
 replacement = "Both readings are discharged. What the sitting still owes is elsewhere: a second reader on the exposure-list derivation, and the locus questions the standing thread opened."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::109",
-  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::107",
+  "panel::t202608072330_the_numeral_canon_panel::t256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::109",
+  "panel::t202608072330_the_numeral_canon_panel::t257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::107",
 ]
 keywords = ["owed", "second reader", "handover", "stale", "discharged", "consolidation", "ledger", "dispatch"]
 
@@ -2374,9 +2374,9 @@ kind = "misattributed"
 topic = "panel_conduct"
 replacement = "Nothing attributable to that seat says the two readings must be kept apart or that the tier count is to be recorded as contested. A brief carrying either sentence is carrying a coordinator's framing as a member's position."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::244_orchard_consolidation_admission_and_the_number_system::63",
-  "panel::202608072330_the-numeral-canon-panel::245_ringer_entailment_check_on_the_admission_consolidation::25",
-  "panel::202608072330_the-numeral-canon-panel::256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::49",
-  "panel::202608072330_the-numeral-canon-panel::257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
+  "panel::t202608072330_the_numeral_canon_panel::t244_orchard_consolidation_admission_and_the_number_system::63",
+  "panel::t202608072330_the_numeral_canon_panel::t245_ringer_entailment_check_on_the_admission_consolidation::25",
+  "panel::t202608072330_the_numeral_canon_panel::t256_giesen_the_sitting_was_consolidated_at_244_and_the_brief_did_not_know::49",
+  "panel::t202608072330_the_numeral_canon_panel::t257_kiselyov_the_fourth_brief_and_what_the_sitting_still_owes::48",
 ]
 keywords = ["merged", "two readings", "attribution", "brief", "premise", "contested", "tier count", "state file", "convergence"]

@@ -55,8 +55,8 @@ value for a definition.
 """
 gap = "Which branch of the container premise holds is not the panel's to choose, and the extension of this clause moves with it."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::521",
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::159",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::521",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::159",
 ]
 keywords = ["primitive", "value set", "realisation map", "identity", "denotation", "isomorphism", "sameness", "nominal", "representational", "denotational", "congruence", "substitution", "composite"]
 
@@ -78,8 +78,8 @@ region, and the claim is about the map's structure rather than about a numeral's
 behaviour at a width.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::85",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::521",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::85",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::521",
 ]
 keywords = ["realisation map", "two regions", "rounding", "completion", "range", "grid", "one map", "not two mechanisms", "magnitude bound", "grid bound"]
 
@@ -94,7 +94,7 @@ because = "Closure is prior to every law. An operation that leaves its value set
 instead = "Read as a demand rather than as an assertion, a law is a predicate over the configuration space: a surface a consumer may query, and never a field a consumer may set."
 answers = ["how_the_law_inventory_is_named"]
 note = "`normative` because it is a prohibition on the design rather than a measured claim. A region on it would say the design may declare laws everywhere unmeasured."
-provenance = ["panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::531"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::531"]
 keywords = ["law", "declared law", "read off", "algebra", "demand", "predicate", "configuration space", "closure", "query", "gated optimisation"]
 
 [[proposal]]
@@ -120,9 +120,9 @@ sentence is not in this file at all. The second and third parts are untouched by
 the premise and are signed.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::558",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::334",
-  "panel::202608072330_the-numeral-canon-panel::163_lamport_signature_in_part::276",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::558",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::334",
+  "panel::t202608072330_the_numeral_canon_panel::t163_lamport_signature_in_part::276",
 ]
 keywords = ["type parameter", "spurious axis", "parameterisation", "weakening", "arm selection", "missed merge", "two names", "monomorphic", "polymorphic", "homogeneous container", "storage path"]
 
@@ -154,8 +154,8 @@ measured. The three failure directions are measured and belong to the criterion'
 justification rather than to a region the definition holds in.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::548",
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::257",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::548",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::257",
 ]
 keywords = ["lens", "realisation", "placement", "carrier", "offset", "width", "sole occupancy", "padding", "sharing", "degenerate", "standalone type", "Sized", "packed column"]
 
@@ -173,8 +173,8 @@ two halves were derived by two members and neither derived the composed claim. \
 The composed statement, that the two halves are complementary, is one file's.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::605",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::321",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::605",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::321",
 ]
 keywords = ["naming", "partial", "injective", "existence claim", "validator", "nameable", "unnameable", "compile-time validation", "missed merge", "composition"]
 
@@ -199,8 +199,8 @@ from that. The unsoundness of borrowing is measured and sits underneath as the \
 reason.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::610",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::340",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::610",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::340",
 ]
 keywords = ["configuration", "composition", "construction", "composite", "algebra", "one concept", "transformer", "predicate on the base", "equality transports", "refinement"]
 
@@ -227,8 +227,8 @@ at the region its instrument ran; the rest are in the gap.
 """
 gap = "Most of what this character licenses is unported. Counted against the axes declared now, `dimension::ambient_domain`, `dimension::radix` and `dimension::toolchain` among them, the source's clauses after this one are nine, 4.2 to 4.10, carrying eleven predicates because 4.5 and 4.7 carry two each. Ten are still blocked on a coordinate no axis declares: 4.2 on the value set's size and an operation set written as containing addition, 4.3 on a construction being an interval, 4.5 on the restrictions in force and on a declared grid step, 4.6 and both halves of 4.7 on term shapes, declarations and the discharge check, 4.8 on term shapes and declarations, 4.9 on dimension and structure constants and declarations, 4.10 on crate type, feature gates, the term and the recursion limit. 4.4 names declared axes only, and is not written at its own predicate: it states saturation over `F in {0, 1, 2}` and both signednesses under a rounding word now outside the vocabulary, and its committed instrument on a one-signed domain ran at `F = 0`, unsigned, only. The measured row the note names carries both its halves at that region, and the wider region is not written."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::379",
-  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::347",
+  "panel::t202608072330_the_numeral_canon_panel::t119_leroy_the_canon_candidate_for_the_realisation_map::379",
+  "panel::t202608072330_the_numeral_canon_panel::t122_leroy_the_candidate_revised_against_two_partial_signatures::347",
 ]
 keywords = ["realisation map", "algebraic character", "homomorphism", "order-preserving", "monotone", "reduce", "defer", "licence family", "exact result", "value set"]
 
@@ -280,9 +280,9 @@ the entry claims the region with no warrant.
 """
 gap = "Signed formats are not run on this table, and neither is any width but 4 nor any fraction width but 0. Of the domain shapes, a non-positive domain and a domain closed under negation, which is the shape the source clause names, are not run: the straddling window `-16..=32` is not closed under negation. The deferral half of the same instrument, at W in {3, 4} over terms of arity 2 and 3, is stated over declarations and a discharge check that no axis declares, and is not in this row."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::397",
-  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::609",
-  "panel::202608072330_the-numeral-canon-panel::122_probes::u3_output.txt::5",
+  "panel::t202608072330_the_numeral_canon_panel::t122_leroy_the_candidate_revised_against_two_partial_signatures::397",
+  "panel::t202608072330_the_numeral_canon_panel::t122_leroy_the_candidate_revised_against_two_partial_signatures::609",
+  "panel::t202608072330_the_numeral_canon_panel::t122_probes::u3_output::5",
 ]
 keywords = ["saturation", "wrapping", "homomorphism", "ambient domain", "one-signed", "straddling", "subtraction", "algebraic character", "licence", "reduce"]
 
@@ -308,7 +308,7 @@ once. The additive half of that is its own row, \
 a theorem over the ambient domain with both domain shapes in its region.
 """
 gap = "The order-preserving half of the obstruction, that every deterministic member is monotone, is not written as a row, so the degeneration in both directions is carried by this note and the theorem row together rather than by one claim."
-provenance = ["panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::292"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::292"]
 keywords = ["realisation map", "factors", "quantisation", "range policy", "overflow", "disjoint", "quantise then reduce", "modifier", "two axes", "independent"]
 
 [[proposal]]
@@ -362,10 +362,10 @@ steps; the second ruling's own note names this price.
 """
 gap = "`stochastic` is outside the region: it is not deterministic and the proof's map is a function. Whether it is additive in expectation is a different property and is not stated here."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::303",
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::69",
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::95",
-  "panel::202608072330_the-numeral-canon-panel::125_probes::p1_output.txt::8",
+  "panel::t202608072330_the_numeral_canon_panel::t132_leroy_the_canon_candidate_for_the_rounding_axis::303",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::69",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::95",
+  "panel::t202608072330_the_numeral_canon_panel::t125_probes::p1_output::8",
 ]
 keywords = ["quantisation", "rounding", "additive", "homomorphism", "divisible group", "divisibility", "off the grid", "one-signed", "closed under negation", "obstruction", "impossibility"]
 
@@ -410,8 +410,8 @@ region and cannot be gated on. The membership test's own region names an \
 assignment set and an observation set and is likewise unwritable.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::314",
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::30",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::314",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::30",
 ]
 keywords = ["strategy", "pair", "two components", "assignment", "weighting", "policy axis", "cost coordinate", "denotation", "closed", "open", "membership test", "observable"]
 
@@ -451,8 +451,8 @@ coordinates, none of which any `dimension` row declares, so none of the three is
 written into the canon.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::386",
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::160",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::386",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::160",
 ]
 keywords = ["firewall", "cost model", "answer", "denoted answer", "policy", "unpredicated", "imposed", "enforceability", "conforming arm", "target change", "arm set"]
 
@@ -475,7 +475,7 @@ kind as a derivation from the object, which is how it was reached rather than \
 what kind of statement it is; the statement is a prescription and carries no \
 region.
 """
-provenance = ["panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::534"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::534"]
 keywords = ["policy first", "weighting", "consumer", "semantics", "measurements", "preset", "wrong answer", "slow answer", "indistinguishable presets"]
 
 [[proposal]]
@@ -525,8 +525,8 @@ clause is not in this file and no row supersedes it, because it was never ported
 """
 gap = "The property is stated over 'the domain the cell reaches', and no `dimension` row declares an axis for that domain. The predicate above is the swept region and does not carry the quantifier the statement turns on."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::86",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::86",
 ]
 keywords = ["fusion", "fused multiply-add", "fma", "translation equivariance", "reachable domain", "rounding position", "signedness", "free lowering", "relocation", "nearest-half-even"]
 
@@ -562,8 +562,8 @@ is not one of them, so the standing is over the region the two files state rathe
 than over a verified intersection.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
-  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::438",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::434",
+  "panel::t202608072330_the_numeral_canon_panel::t146_leroy_the_canon_candidate_for_the_strategy_object::438",
 ]
 keywords = ["fusion", "fused", "stepwise", "denotation", "lowering", "intermediate axis", "exact intermediate", "determinism", "signed saturating", "extensional identity"]
 
@@ -621,8 +621,8 @@ width 6 or the fold at `F = 1`, did not run.
 """
 gap = "One expert, and one instrument at one width. The rounding half's region is `W = 6` and this half's is `W = 4`, so nothing yet measures the whole sentence at one cell."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::383",
-  "panel::202608072330_the-numeral-canon-panel::149_lamport_signature_in_part_on_the_strategy_object::409",
+  "panel::t202608072330_the_numeral_canon_panel::t151_leroy_the_candidate_revised_against_four_signatures::383",
+  "panel::t202608072330_the_numeral_canon_panel::t149_lamport_signature_in_part_on_the_strategy_object::409",
 ]
 keywords = ["congruence", "reduction", "relocation", "fusion", "accumulator", "one question", "three tables", "multiply-add", "fold", "saturating", "wrapping", "mutation control"]
 
@@ -670,8 +670,8 @@ imposed proposition would invert it. The bound is `debug-assertions = off` for \
 the licence to hold, and it is stated in the sentence rather than in a predicate.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::93",
-  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::80",
+  "panel::t202608072330_the_numeral_canon_panel::t176_leroy_the_candidate_revised_against_two_signatures::93",
+  "panel::t202608072330_the_numeral_canon_panel::t173_leroy_the_canon_candidate_for_the_chain::80",
 ]
 keywords = ["licence", "normative", "unbound stretch", "boundary function", "declared grade", "definedness domain", "observability perimeter", "underivable", "build profile", "debug-assertions", "partial operation", "composite correct rounding", "structural exactness"]
 
@@ -702,8 +702,8 @@ compulsion is its reason and sits in `because`.
 """
 gap = "The second read the rung requests has not happened. A reader treating the criterion as settled is treating a one-instance entailment as two."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
-  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::240",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::t202608072330_the_numeral_canon_panel::t164_leroy_the_candidate_revised_against_two_signatures::240",
 ]
 keywords = ["type", "const-available", "compelled", "validity", "lowering", "runtime check", "parameter", "binding time", "emitted path", "monomorphisation"]
 
@@ -727,8 +727,8 @@ rung.
 rather than measured.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::214",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::214",
 ]
 keywords = ["membership", "identity", "two criteria", "type", "const-available", "denotation", "isomorphism", "collapse", "axis"]
 
@@ -771,7 +771,7 @@ other are the extension of one parametric definition at two values of its \
 parameter, and clause 2 says the definition is parametric in words.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t1_what_i_did_first_which_was_try_to_break_the_question",
 ]
 keywords = ["observable", "observability", "signature", "operation set", "footprint", "container premise", "parametric", "relative", "theorem schema", "extension"]
 
@@ -819,7 +819,7 @@ limit worth reading twice, because a fractional format is where arvo's float \
 side lives and nothing here reaches it.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#42-the-standards-bound-which-forces-the-other-half-and-forces-it-the-other-way",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t42_the_standards_bound_which_forces_the_other_half_and_forces_it_the_other_way",
 ]
 keywords = ["declared width", "encoding", "MATLAB", "fi", "bin", "storedInteger", "IEEE 754", "interchange", "projection", "carrier", "alias", "adequacy"]
 
@@ -865,7 +865,7 @@ container rule. `ruling::what_is_ratifiable_is_the_intent_not_the_concretes` is 
 why it is written that way.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t5_the_answer",
 ]
 keywords = ["footprint", "observable", "carrier", "layout", "size_of", "align_of", "denotational", "representational", "ambient", "sized", "host language"]
 
@@ -891,7 +891,7 @@ rather than a claim about where anything holds. The measured claims it rests on 
 are the two neighbouring rows and carry their own regions.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t5_the_answer",
 ]
 keywords = ["realisation", "identity", "denotational", "representational", "nominal", "carrier", "congruence", "substitution", "memory reinterpretation", "clause 6"]
 
@@ -939,7 +939,7 @@ rather than a doubt: it buys tidiness rather than reach, and replacing a clause 
 under signature is a larger act than repairing what is wrong with it.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t5_the_answer",
 ]
 keywords = ["completeness", "adequacy", "witness", "nullary", "quantifier", "spurious split", "weakening", "context", "contextual equivalence", "clause 9"]
 
@@ -978,6 +978,6 @@ declared as a region. That is the narrower thing to do and it is flagged rather 
 than hidden.
 """
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#6-the-arm-boundary-which-the-candidate-already-contains",
+  "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t6_the_arm_boundary_which_the_candidate_already_contains",
 ]
 keywords = ["occupancy", "sole occupant", "shared", "packed", "lens", "stride", "column", "placement", "sized", "arm boundary", "footprint"]
