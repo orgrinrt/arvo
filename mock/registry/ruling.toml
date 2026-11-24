@@ -52,7 +52,7 @@ perfect and there's simply no open things to settle.
 '''
 because = "The previous panel treated early opinions as closures, stopped work on questions that were not settled, and had to reopen them when a later expert found the gap."
 note = "He said this while answering a different question, about `Precise` on `inexact`, and went past it. It governs how every other row here is read, including itself. It is also what makes the carried RATIFIED rung from the prior panel untrustworthy: those rows were classified under the superseded reading."
-provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#0-the-correction-an-ack-is-not-a-ratification"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t01_op_answers::t0_the_correction_an_ack_is_not_a_ratification"]
 keywords = ["ack", "ratification", "ratify", "converged", "convergence", "settle", "authority", "rung", "provenance", "terminal"]
 
 [[ruling]]
@@ -71,7 +71,7 @@ Is it ambiguous what intent means?
 because = "Treating every clause of a transcript as load-bearing turns thinking-aloud into doctrine, gives it an open-question marker, and eventually hands it back to him as something he owes an answer to."
 corrects = ["the_strategies_weigh_measurements_differently"]
 note = "He was asked whether he still held the instinct recorded in the second half of the I8 quotation. The question itself is what he is objecting to. The options put to him are not recorded in the source; what is recorded is that the panel had measurements pointing both ways."
-provenance = ["panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#2-the-intent-is-what-the-words-are-about-not-every-clause-of-the-quotation"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t88_op_the_intent_is_not_every_clause_and_there_is_no_universal::t2_the_intent_is_what_the_words_are_about_not_every_clause_of_the_quotation"]
 keywords = ["intent", "quotation", "verbatim", "filler", "musing", "speculation", "hedge", "concretes", "provenance"]
 
 [[ruling]]
@@ -89,7 +89,7 @@ clear I think, but nothing about them is absolute otherwise.
 '''
 because = "All the strategies are decided by measurement and weigh what they measure differently, so a per-strategy conclusion written as a rule outruns what he stated."
 note = "He said the same thing from the other side one file earlier, offering the descriptions for the canon and adding in the same sentence: \"though don't have to be; Open for discussion and exploration!\" (`36`). `INTENTS.md` carries this as a standing instruction applying to every entry in the catalogue."
-provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#his-words-verbatim", "panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t38_op_the_strategies_weigh_measurements_differently::his_words_verbatim", "panel::t202608072330_the_numeral_canon_panel::t36_op_the_intent_behind_each_strategy::his_words_verbatim"]
 keywords = ["clear cut", "settled", "absolute", "intent", "standing instruction", "how to read"]
 
 [[ruling]]
@@ -104,7 +104,7 @@ and prior
 '''
 because = "He had just named the possibility that the strategies genuinely differ for the most part rather than agreeing, so a conclusion resting on the convenient case cannot be ratified."
 note = "`INTENTS.md` quotes this in its own \"What may be in here\" section as the rule excluding every conclusion, mechanism and number derived from an intent."
-provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#standing-and-it-is-now-precise"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t38_op_the_strategies_weigh_measurements_differently::standing_and_it_is_now_precise"]
 keywords = ["ratify", "intent", "absolutes", "concretes", "derived", "catalogue"]
 
 [[ruling]]
@@ -128,7 +128,7 @@ inferred can feed my persona and also feed exploration and testing though.
 '''
 because = "The crate tree those calls produced was nuked, and the canon being written replaces what they built."
 note = "This is the one place where his own words are ranked below a panel finding, and he is the one who ranked them there. It is why no substantive entry from `PRIOR_CALLS.md` appears in this namespace: porting one would restore the authority he removed."
-provenance = ["panel::202608072330_the-numeral-canon-panel::PRIOR_CALLS::#the-status-of-everything-below-in-op-s-own-words"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::prior_calls::the_status_of_everything_below_in_ops_own_words"]
 keywords = ["prior calls", "historical", "failure", "lineage", "taste", "inference", "mining", "reference"]
 
 [[ruling]]
@@ -143,7 +143,7 @@ or other files, I explicitly frame something I say as absolute. Not many have I 
 only two, and both of those were very abstract intents only, not specific calls of concrete things
 '''
 note = "\"I remember only two\" is his recollection and is not a count anybody should treat as exact; he words it as recall. It generalises the demotion of the prior corpus to his current statements, which is what makes `stated` the ordinary rung here rather than an exception."
-provenance = ["panel::202608072330_the-numeral-canon-panel::PRIOR_CALLS::#and-the-gap-to-the-current-intents-is-narrower-than-dead-against-binding"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::prior_calls::and_the_gap_to_the_current_intents_is_narrower_than_dead_against_binding"]
 keywords = ["demoted", "voice", "absolute", "abstract intent", "concrete call", "currency", "lineage"]
 
 [[ruling]]
@@ -162,7 +162,7 @@ statements are still valid for the time, and valuable as precedence
 '''
 because = "He was asked which statements in the closed panel the carve-out reaches, under four options that all presented the demotion as total with one exception. He rejected that premise rather than picking among them."
 note = "The row it corrects states the demotion as a binary with one carve-out, and is faithful to its own quote. This is the later statement, and nothing in the corrected row points at it, so a reader working from the `ruling` namespace alone had no way to learn the qualification existed. Found by seat 218.\n\nWhat follows for the closed formalization panel: its nine op statements are precedent, readable and citable as such. A member wanting one to bind puts it to him again rather than arguing it through the carve-out, and he is no longer available to ask, so in practice they stay precedent."
-provenance = ["panel::202608072330_the-numeral-canon-panel::212_op_the_alias_scope_the_demotion_and_observability::#what-the-demotion-of-his-own-voice-actually-did", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#ops-refusal-is-nowhere-in-the-canon-and-neither-are-three-of-his-statements"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t212_op_the_alias_scope_the_demotion_and_observability::what_the_demotion_of_his_own_voice_actually_did", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::ops_refusal_is_nowhere_in_the_canon_and_neither_are_three_of_his_statements"]
 keywords = ["demotion", "partial", "rule of thumb", "carve-out", "exceptions", "precedence", "precedent", "prior calls", "closed panel", "still valid"]
 
 [[ruling]]
@@ -176,7 +176,7 @@ says = "The twenty-one decisions attributed to him outside the intent catalogue,
 instead = "Nothing is promoted from them. The panel re-derives anything it needs, and they stay useful only for inferring taste and for giving experts things to test."
 because = "They were made before this panel's experts converged on anything, so by his own ack rule they were acks at the time and never ratifications."
 note = "No verbatim quotation exists for this one. The source records that he chose the first of three options and does not quote him. The options were: dead, do not mine them; mine them case by case and re-quote anything still meant; or they are live as they stand. Asked again at `104` he answered only \"Already answered.\""
-provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#4-the-twenty-one-d-numbered-decisions-are-dead"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::t4_the_twenty_one_d_numbered_decisions_are_dead"]
 keywords = ["D-number", "decisions", "formalization talk", "dead", "mine", "prior calls", "promotion"]
 
 [[ruling]]
@@ -190,7 +190,7 @@ Already answered.
 '''
 because = "His ack rule is a general statement about the status of his own prior calls, so it answers every question of the form \"is this old call of yours still binding\" without being asked again."
 note = "The options put to him were: premature, discard; still his, fold into the catalogue; mixed, needs a pass.\n\nThe `says` used to build a general pre-ask filter out of two words: that a question whose answer is implied by an intent he has stated is not a question for him. The rule is a good one and `a-zero-from-a-search-is-not-an-answer.md` in the workspace carries it. Two words do not establish it, and a canon sentence carrying his authority is the wrong place for it, so it is out of the `says` and stated here as the coordinator's.\n\nThis row carried `supersedes = [\"the_d_numbered_decisions_are_dead\"]` and the edge said the opposite of what happened. He was asked a second time what becomes of the numbered decisions and answered that it was already answered, which **confirms** that ratified row rather than replacing it. The graph therefore recorded a row he stamped as dead, killed by a row he never stamped, which inverts the provenance ladder in the one namespace that exists to hold it. Found by seat 218's supersession sweep."
-provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#4-the-21-numbered-decisions-outside-the-intent-catalogue"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::t4_the_21_numbered_decisions_outside_the_intent_catalogue"]
 keywords = ["already answered", "pre-ask", "filter", "queue", "derivable", "D-number"]
 
 # --- how the panel is run -----------------------------------------------------
@@ -211,7 +211,7 @@ work you do tonight with the panel is prepping and going through a lot of differ
 concepts, theory, ready to be presented to me when I come back in the morning.
 '''
 note = "Written for one night and later extended by him to roughly the panel's first hundred expert stretches. The same utterance carries the limit on the persona, recorded separately."
-provenance = ["panel::202608072330_the-numeral-canon-panel::04_op_no_settlements_tonight::#op-s-instruction"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t04_op_no_settlements_tonight::ops_instruction"]
 keywords = ["explore", "do not settle", "breadth", "angles", "canon", "ratified", "overnight"]
 
 [[ruling]]
@@ -226,7 +226,7 @@ and aid you, give you different perspectives imitating me, but don't let any of 
 as ratified or canon.
 '''
 note = "The quote is the clause of the `04` instruction that carries this call, not a separate utterance. Where the persona's steer and his recorded words appear to conflict, his govern."
-provenance = ["panel::202608072330_the-numeral-canon-panel::04_op_no_settlements_tonight::#op-s-instruction"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t04_op_no_settlements_tonight::ops_instruction"]
 keywords = ["persona", "orgrinrt", "stand in", "authority", "not my calls", "steer"]
 
 [[ruling]]
@@ -239,7 +239,7 @@ quote = '''
 We will adopt the very same "explore, don't settle" angle for the first 100 expert stretches I think
 '''
 note = "He words the number as approximate (\"I think\"), so it is a horizon rather than a counter. He was asked nothing further at the time; this was volunteered after the eight answers.\n\nThis row carried `supersedes = [\"nothing_settles_during_the_breadth_pass\"]`, which read the extension as a replacement. Saying the mode runs a hundred stretches rather than one night **extends** that ratified row's reach; it does not retire the rule that nothing slips in as ratified while the mode runs. As written the graph said a row he stamped was dead, on the authority of a row he did not. Found by seat 218's supersession sweep, alongside one other of the same shape."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#the-horizon-stated-after-the-eight-answers"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::the_horizon_stated_after_the_eight_answers"]
 keywords = ["explore", "do not settle", "hundred", "horizon", "stretches", "mode", "scope"]
 
 [[ruling]]
@@ -255,7 +255,7 @@ deny what they tell, and if it isn't, then the thing is still settling and there
 rule on it
 '''
 note = "He was answering a question about Warm's headroom rule, and his answer is that it should not have been asked. The options put to him were: dispatch a second expert to audit the existing bench work; delete headroom now on the evidence in hand; or keep the rule until something better is proven."
-provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#3-warm-s-headroom-rule"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t01_op_answers::t3_warms_headroom_rule"]
 keywords = ["bench", "measurement", "dispute", "escalate", "settling", "rule on", "confidence"]
 
 [[ruling]]
@@ -270,7 +270,7 @@ rules.
 '''
 because = "The shape is chosen by what serves the rest of arvo, and that answer was not available."
 note = "Given as the answer to whether a consumer writes the integer width or the total width, and reused by reference for whether a mixed-numeral addition exists (\"See previous answer. Keep all options open and explore.\") and for whether the arithmetic column is one axis or two (\"Same as prior answers.\"). Read as indifference it is misread; the same sentence names the method."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q2-does-a-consumer-write-the-integer-width-or-the-total-width", "panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q3-does-the-design-have-a-mixed-numeral-addition-at-all"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q2_does_a_consumer_write_the_integer_width_or_the_total_width", "panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q3_does_the_design_have_a_mixed_numeral_addition_at_all"]
 keywords = ["options", "convenient", "married", "explore", "standing rules", "method", "coordinate"]
 
 [[ruling]]
@@ -284,7 +284,7 @@ Option 1, but don't even restrict the panel to these three. Free reign to conver
 logic to the best one that serves all other parts of arvo best.
 '''
 note = "Given as the answer to what a datum stands for. The three options were: point with the absorbing behaviour written as a restriction; the constructor-level reading; or sets admitted. Option 1 as offered was \"explore all three\". This is the one question of the eight where he widened the space rather than declining to narrow it.\n\nThe `says` read \"and is what he is asking for\", which licenses more than lifting a restriction does. He removed a bound; he did not ask for an unwritten shape. The difference is load-bearing against `the_prior_strategy_split_was_well_enough_defined`, which is the counterweight to churning a decomposition that already works."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q4-what-does-a-datum-stand-for"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q4_what_does_a_datum_stand_for"]
 keywords = ["options", "boundary", "free reign", "converge", "theory", "logic", "fourth option"]
 
 [[ruling]]
@@ -298,7 +298,7 @@ Free reign to converge by theory and logic to the best one that serves all other
 '''
 because = "An option's value is partly a fact about the other options, which is why every option has to stay visible at once."
 note = "The same sentence as the row above; the two calls inside it are separable. The criterion is what makes the option register load-bearing rather than bookkeeping."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#the-method-he-named-which-governs-the-rest-of-this-file"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::the_method_he_named_which_governs_the_rest_of_this_file"]
 keywords = ["criterion", "selection", "serves", "rest of arvo", "converge", "synergy", "options"]
 
 [[ruling]]
@@ -314,7 +314,7 @@ they have, adapt the instructions and learnings to arvo as they apply here, and 
 Not sure what all of it was made into actual rules now that I think about it.
 '''
 note = "The last sentence is him flagging his own uncertainty about which of that material had been written into rules, not an instruction."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#the-method-he-named-which-governs-the-rest-of-this-file"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::the_method_he_named_which_governs_the_rest_of_this_file"]
 keywords = ["rules", "standing rules", "brief", "tarina", "memo", "adapt"]
 
 [[ruling]]
@@ -332,7 +332,7 @@ end with solutions and agreements at least with something, so the process can ac
 get a strong consensus and agreement between experts eventually).
 '''
 note = "One clause of a single addendum he appended to a proposed overnight goal; the other three calls in that addendum are separate rows. The goal text it was appended to is the coordinator's and is not his. This does not touch the explore-do-not-settle mode, which governs whether the coordinator closes questions, and it never could."
-provenance = ["panel::202608072330_the-numeral-canon-panel::95_op_the_panel_runs_to_ratification_and_units_must_converge::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t95_op_the_panel_runs_to_ratification_and_units_must_converge::verbatim"]
 keywords = ["converge", "convergence", "agreement", "consensus", "attack", "disprove", "unit", "steer"]
 
 [[ruling]]
@@ -346,7 +346,7 @@ Once gone through the initial named 4-4-1 stretch, continue working in the same 
 consolidation, choosing the topic yourself, the most impactful one as per our previous discussion.
 '''
 note = "One clause of the same addendum. \"As per our previous discussion\" points at the bottom-up criterion he gave earlier."
-provenance = ["panel::202608072330_the-numeral-canon-panel::95_op_the_panel_runs_to_ratification_and_units_must_converge::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t95_op_the_panel_runs_to_ratification_and_units_must_converge::verbatim"]
 keywords = ["unit", "topic", "next", "impactful", "consolidation", "continue", "4-4-1"]
 
 [[ruling]]
@@ -360,7 +360,7 @@ This goal is not met until the full canon is ratified by op, or if op comes and 
 wake up.
 '''
 note = "One clause of the same addendum. It puts the goal's finish line at the same point as the canon's single writing act, so a consolidation, a tidy stopping point, or a well-closed unit is not it. He scoped it on 13 November, in `ruling::the_august_goal_and_the_panel_finish_each_bind_in_their_own_scope`: it binds only the overnight goal it was written for, and the canon is finished under `ruling::the_panel_finishes_the_canon_without_him`."
-provenance = ["panel::202608072330_the-numeral-canon-panel::95_op_the_panel_runs_to_ratification_and_units_must_converge::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t95_op_the_panel_runs_to_ratification_and_units_must_converge::verbatim"]
 keywords = ["goal", "ratification", "finish", "canon", "clears", "standing"]
 
 [[ruling]]
@@ -375,7 +375,7 @@ important for the continuation of the panel (such as adding a missing feature to
 upstream or whatever).
 '''
 note = "One clause of the same addendum. It forecloses the drift where a run wanders into unrelated repair because something looked wrong in passing."
-provenance = ["panel::202608072330_the-numeral-canon-panel::95_op_the_panel_runs_to_ratification_and_units_must_converge::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t95_op_the_panel_runs_to_ratification_and_units_must_converge::verbatim"]
 keywords = ["scope", "extra work", "panel", "bench harness", "upstream", "exception", "drift"]
 
 [[ruling]]
@@ -392,7 +392,7 @@ it, determine the bounds it holds in, and then establish it as a canon candidate
 '''
 because = "Convergence is two people arguing to a stop, and that cannot happen if the refuted expert never speaks twice."
 note = "The mechanism it requires, resuming the refuted expert rather than dispatching a fresh one, is the coordinator's reading rather than his wording. He also names the counterweight in the same sentence, recorded separately: work together but do not yes-man each other."
-provenance = ["panel::202608072330_the-numeral-canon-panel::113_op_steer_them_and_make_them_build_it_together::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t113_op_steer_them_and_make_them_build_it_together::verbatim"]
 keywords = ["attack", "refutation", "solutions", "several", "reply", "resume", "converge", "together"]
 
 [[ruling]]
@@ -407,7 +407,7 @@ the bounds it holds in, and then establish it as a canon candidate together. The
 thing and do the same.
 '''
 note = "Same sentence as the row above; the formalising half is a separable instruction and is a different job from attacking. It rules out one compressor writing over files it did not participate in."
-provenance = ["panel::202608072330_the-numeral-canon-panel::113_op_steer_them_and_make_them_build_it_together::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t113_op_steer_them_and_make_them_build_it_together::verbatim"]
 keywords = ["formalise", "bounds", "holes", "canon candidate", "together", "establish", "consolidation"]
 
 [[ruling]]
@@ -421,7 +421,7 @@ Okay, so after current one, from now on, as you do these panel rounds, just make
 experts like lambs to the pasture you want, make them work together but not just yes-man each other.
 '''
 note = "He says both halves in one sentence: work together, but not just yes-man each other. Steering says what the work is; it is not licence to telegraph which answer is wanted."
-provenance = ["panel::202608072330_the-numeral-canon-panel::113_op_steer_them_and_make_them_build_it_together::#verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t113_op_steer_them_and_make_them_build_it_together::verbatim"]
 keywords = ["steer", "dispatch", "brief", "yes-man", "coordinator", "push", "neutrality"]
 
 [[ruling]]
@@ -433,7 +433,7 @@ says = "Nothing moves into the canon until every topic is done. The canon is the
 because = "A consolidation is the topic's best available compression and has no standing beyond that. Writing the canon from all of them at once is what makes cross-topic conflicts findable."
 instead = "A consolidation is input, not canon in miniature."
 note = "No verbatim quotation exists for this one. The source records that he took the third of three options and does not quote him. The options were: op ratifies a consolidation and the blessing moves it into the canon; the independent entailment check is enough and it moves with no further act; or nothing moves until every topic is done and the canon is written fresh as one act that op ratifies. The consequence that a dropped finding is recoverable at the end from the file it came from is the coordinator's reading."
-provenance = ["panel::202608072330_the-numeral-canon-panel::87_op_the_canon_is_written_once_at_the_end::#1-nothing-moves-into-the-canon-until-the-end-and-the-canon-is-written-once"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t87_op_the_canon_is_written_once_at_the_end::t1_nothing_moves_into_the_canon_until_the_end_and_the_canon_is_written_once"]
 keywords = ["canon", "consolidation", "end", "one act", "ratify", "promote", "candidate"]
 
 [[ruling]]
@@ -443,7 +443,7 @@ rung = "stated"
 topic = "panel_conduct"
 says = "The panel's branch is not opened as a pull request until the canon exists and is ratified. The branch keeps growing and the whole arc lands as one unit tied to a finished artifact."
 note = "No verbatim quotation exists for this one. The source records that he took the second of three options and does not quote him. The options were: land what exists now as one pull request and continue on a fresh branch; wait until the canon is written and ratified, then land the whole arc; or land now and keep working on the same branch."
-provenance = ["panel::202608072330_the-numeral-canon-panel::87_op_the_canon_is_written_once_at_the_end::#2-the-branch-waits-for-the-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t87_op_the_canon_is_written_once_at_the_end::t2_the_branch_waits_for_the_canon"]
 keywords = ["branch", "pull request", "PR", "land", "canon", "arc", "one unit"]
 
 [[ruling]]
@@ -459,7 +459,7 @@ once the ery fundamentals and the basic paradigms and conventions are in place, 
 actually use those to define the things arvo needs defined and then one tier up etc etc.
 '''
 note = "He declined to pick between the three topics offered and gave the criterion instead. The options were: topic four as planned; the strategy set first; or a unit spent pricing what is unpriced. The call made under the criterion is the coordinator's and is attackable."
-provenance = ["panel::202608072330_the-numeral-canon-panel::87_op_the_canon_is_written_once_at_the_end::#3-the-next-unit-is-chosen-bottom-up-by-how-much-it-settles-at-once"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t87_op_the_canon_is_written_once_at_the_end::t3_the_next_unit_is_chosen_bottom_up_by_how_much_it_settles_at_once"]
 keywords = ["next", "unit", "topic", "bottom up", "ground up", "tier", "unblock", "downstream", "criterion"]
 
 [[ruling]]
@@ -473,7 +473,7 @@ What is happening, what are you doing here? Weren't and aren't we working on arv
 '''
 because = "Putting an unrelated question in front of him spends his attention on a context switch he did not ask for."
 note = "He wrote \"What is happening\" a second time to the next such question. The questions themselves were real and were parked by him; the defect was the batch they arrived in. The rule drawn from it, that everything in a batch is either about the work in flight or blocking it, is the coordinator's wording."
-provenance = ["panel::202608072330_the-numeral-canon-panel::105_op_notko_renames::#the-queue-being-drained-is-arvo-s-and-that-is-a-correction-of-the-dispatcher"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t105_op_notko_renames::the_queue_being_drained_is_arvos_and_that_is_a_correction_of_the_dispatcher"]
 keywords = ["queue", "batch", "scope", "repository", "context switch", "parked", "attention"]
 
 # --- what arvo is -------------------------------------------------------------
@@ -494,7 +494,7 @@ I have, downstream, use. As well as the contracts for things that compose to big
 numerals alone. But we need this base to work, to build the bigger things.
 '''
 note = "Said inside the answer about thread counts, and it is the half with the wider reach. He marks the whole answer a ratifiable intent, which is not the same as ratified."
-provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t32_op_arvo_adapts_to_the_cores_it_finds::his_answer_verbatim"]
 keywords = ["library", "program", "consumer", "downstream", "algo crates", "contracts", "composition", "identity", "selling point"]
 
 [[ruling]]
@@ -514,7 +514,7 @@ in a single-threaded realm.
 '''
 because = "A library does not know how it will be used, so it cannot name a regime."
 note = "This dissolves the question it was asked rather than picking among its options. The options were: the canon's claim is about one core; about the declared parallel workload; or the inequality alone with no regime. Whether the core count is detected at build time, at run time, or supplied by the consumer is not stated and is not to be assumed."
-provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t32_op_arvo_adapts_to_the_cores_it_finds::his_answer_verbatim"]
 keywords = ["threads", "cores", "parallel", "single-threaded", "detect", "regime", "no stance", "concurrency"]
 
 [[ruling]]
@@ -530,7 +530,7 @@ Yes, arvo will be multi-threadanle wherever it is proven to improve performance 
 the soundness.
 '''
 note = "Read alone this makes soundness a uniform side condition over every strategy. He corrected that within the hour, and the correction is a separate row."
-provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t32_op_arvo_adapts_to_the_cores_it_finds::his_answer_verbatim"]
 keywords = ["multi-threadable", "proven", "soundness", "performance", "adaptation", "condition"]
 
 # --- the strategy axis --------------------------------------------------------
@@ -548,7 +548,7 @@ panel settled with, and what my amateur ass had written for arvo that we are now
 from that what you will..), so it's entirely open to discussion and exploration
 '''
 note = "Volunteered rather than answered; no options were put to him. It demoted the catalogue's first entry from a carried RATIFIED to OPEN hours after that catalogue opened, and the entry is kept rather than deleted so the demotion stays legible. Openness is a licence to question the decomposition, not an instruction to replace it: he has stated repeatedly that a prior design can name the parts well and go wrong in execution."
-provenance = ["panel::202608072330_the-numeral-canon-panel::39_op_the_strategy_set_is_not_closed::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t39_op_the_strategy_set_is_not_closed::his_words_verbatim"]
 keywords = ["strategy set", "four", "closed", "open", "Hot", "Cold", "Warm", "Precise", "decomposition", "names", "demoted"]
 
 [[ruling]]
@@ -562,7 +562,7 @@ Warm is what regular old rust would do. In fact, this is the one thing you can c
 panel. I think the strategy conceptually was well enough defined and split.
 '''
 note = "Said before he opened the set at `39`. The two are not in conflict: a decomposition can be well enough defined and still not be closed. It is the counterweight to reading openness as an instruction to churn the vocabulary."
-provenance = ["panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::his_words_verbatim"]
 keywords = ["strategy", "prior panel", "well defined", "split", "keep", "counterweight", "decomposition"]
 
 [[ruling]]
@@ -581,7 +581,7 @@ behaves intuitively.
 '''
 note = "The shape of the claim survives and its enumeration does not, because the set is open. The wording is the prior panel's record of him rather than a statement he made in this panel, and the catalogue marks it STATED rather than importing the prior panel's RATIFIED rung. Two files in this corpus still call these four descriptions ratified; both are wrong and neither is his."
 gap = "Whether these four are the right cut, and whether there are four of them, is open under the entry above."
-provenance = ["panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#first-the-part-that-is-about-this-panel-s-competence-rather-than-about-arvo"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::first_the_part_that_is_about_this_panels_competence_rather_than_about_arvo"]
 keywords = ["preset", "intent", "derived", "Hot", "Cold", "Warm", "Precise", "four", "enumeration"]
 
 [[ruling]]
@@ -597,7 +597,7 @@ intent, here, is what matters. The mechanisms and theory may live freely and shi
 it, the intent is what remains and matters.
 '''
 note = "Restated by him at least four times across two panels because it kept failing to stick, which the record treats as a presentation defect rather than a content dispute. Whether a strategy named Warm exists in the final decomposition is open. What the imitation is about was clarified later and is a separate row."
-provenance = ["panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#first-the-part-that-is-about-this-panel-s-competence-rather-than-about-arvo"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::first_the_part_that_is_about_this_panels_competence_rather_than_about_arvo"]
 keywords = ["Warm", "native", "primitive", "Rust", "imitation", "mimic", "standing call", "intuitive"]
 
 [[ruling]]
@@ -612,7 +612,7 @@ Neither, it's ergonomics
 answers = ["which_reading_of_i3_at_a_non_native_width"]
 corrects = ["warm_behaves_as_a_native_rust_primitive_would"]
 note = "The options put to him were: the declared width, so a 13-bit type wraps at 2^13 with the container invisible; the container, so a 13-bit value in a u16 wraps at 2^16; or neither, it is ergonomics. The panel had built a fork between the first two and measured that they disagree at all fourteen non-native widths swept. That measurement is correct and is about something this intent does not range over. Where the arithmetic boundaries do land is the panel's to answer, from the width and the overflow policy, and he did not answer it here: what he said is that the imitation does not decide it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#1-what-i3-s-imitation-targets-at-a-width-rust-has-no-primitive-for"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::t1_what_i3s_imitation_targets_at_a_width_rust_has_no_primitive_for"]
 keywords = ["ergonomics", "imitation", "declared width", "container", "boundary", "unsurprising", "13-bit", "non-native width"]
 
 [[ruling]]
@@ -658,7 +658,7 @@ every use case, and the intuitive part demands it mimics, but it does not make i
 required, if mimicking is consistently just worse choice.
 '''
 note = "This sharpens the standing call rather than contradicting it: the objective sits underneath the imitation, so there is an escape from imitation the earlier statement did not describe."
-provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t38_op_the_strategies_weigh_measurements_differently::his_words_verbatim"]
 keywords = ["Warm", "intuitive", "best choice", "objective", "mimic", "imitation", "default", "escape"]
 
 [[ruling]]
@@ -682,7 +682,7 @@ corrects = ["adaptation_is_conditional_on_proof_and_on_soundness"]
 because = "Each strategy has its own purpose and intent, and that is what shapes what the answer is."
 note = "He stated the same intent from the other side one file later: \"the intent behind Hot is performance, efficiency, even at the cost of accuracy or soundness\" (`36`). The catalogue attributes that sentence to `34`; it is in `36`. Nobody has set the threshold hidden in \"meaningful\", and it is not the same word as provable."
 gap = "What counts as a meaningful gain is unset. A real but negligible gain does not buy a soundness loss, and no number for it exists."
-provenance = ["panel::202608072330_the-numeral-canon-panel::34_op_hot_may_sacrifice_soundness_for_proven_gain::#his-correction-verbatim", "panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t34_op_hot_may_sacrifice_soundness_for_proven_gain::his_correction_verbatim", "panel::t202608072330_the_numeral_canon_panel::t36_op_the_intent_behind_each_strategy::his_words_verbatim"]
 keywords = ["Hot", "soundness", "sacrifice", "performance", "efficiency", "provable", "meaningful", "gain", "accuracy"]
 
 [[ruling]]
@@ -696,7 +696,7 @@ If throughput gives *performance* wins and efficiency gains, then that is for Ho
 Hot would choose those options.
 '''
 note = "It says which strategy a throughput measurement answers for. It does not say the other strategies ignore such a measurement: he corrected that reading one file later, where all the strategies decide by measurement and differ in how they weigh it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#two-further-clarifications-same-moment-and-they-resolve-the-carrier-question-per-strategy"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::two_further_clarifications_same_moment_and_they_resolve_the_carrier_question_per_strategy"]
 keywords = ["throughput", "Hot", "performance", "efficiency", "measurement", "carrier", "evidence"]
 
 [[ruling]]
@@ -714,7 +714,7 @@ bitpacks, *but* because it optimises for cold paths, it has more leeway to do th
 '''
 because = "The data is at rest. In his words at `37`: \"It's intent is that it is for cold paths, cold use. Which means, it should remain small for memory or disk storage, because it's just sitting basically.\""
 note = "The objective spans memory and disk, so it is not only a cache-occupancy question. The leeway is a licence granted by the intent rather than a cost grudgingly accepted, and the bound on it is a separate row."
-provenance = ["panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim", "panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#two-further-clarifications-same-moment-and-they-resolve-the-carrier-question-per-strategy"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t36_op_the_intent_behind_each_strategy::his_words_verbatim", "panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::two_further_clarifications_same_moment_and_they_resolve_the_carrier_question_per_strategy"]
 keywords = ["Cold", "cold path", "cold storage", "bitpack", "minimise", "residency", "footprint", "memory", "disk", "leeway"]
 
 [[ruling]]
@@ -732,7 +732,7 @@ intent, then it's not for Cold.
 '''
 corrects = ["cold_is_for_cold_paths_and_cold_storage"]
 note = "The rule is stated as a test rather than a preference, so the leeway goes unused whenever a fast path costs nothing in residency. It corrects a reading of the leeway as a disposition to be slow."
-provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t38_op_the_strategies_weigh_measurements_differently::his_words_verbatim"]
 keywords = ["Cold", "leeway", "efficiency", "fast path", "fights the intent", "test", "residency"]
 
 [[ruling]]
@@ -749,7 +749,7 @@ to be the most precise possible answer, throwing out all cold or hot axis optimi
 '''
 note = "It throws out both the hot and the cold optimisations, which is stronger than being the opposite end of the speed-first strategy. The clause about chains makes it a claim about composed computation rather than about a single operation."
 gap = "Its objective had no measurement and no analysis in the panel at the time; accuracy across chains was named in the intent and nowhere instrumented."
-provenance = ["panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t36_op_the_intent_behind_each_strategy::his_words_verbatim"]
 keywords = ["Precise", "accuracy", "precision", "chains", "ops", "composed", "sacrifice", "performance"]
 
 [[ruling]]
@@ -782,7 +782,7 @@ perhaps my instinct is wrong there, and all truly differ for the most part.
 '''
 because = "A strategy is not a rule that short-circuits evidence; it is a weighting over evidence, which is why an answer that decides without measurement would be unfalsifiable."
 note = "The intent is the first sentence only. Everything from \"For the most part, they probably agree\" onward is kept here for provenance and is not part of the intent: asked later whether he still held that instinct, he answered that it does not matter and that it was filler noise he mused on the spot. Whether the weightings agree in practice is an ordinary empirical question, not an intent he owes."
-provenance = ["panel::202608072330_the-numeral-canon-panel::38_op_the_strategies_weigh_measurements_differently::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t38_op_the_strategies_weigh_measurements_differently::his_words_verbatim"]
 keywords = ["measurement", "weighting", "weigh", "mental unlock", "evidence", "falsifiable", "agree", "differ"]
 
 [[ruling]]
@@ -797,7 +797,7 @@ The strategies aren't orthogonal to the threaded question you had, or its answer
 variables that change what the "correct" answer is for what we choose as the path.
 '''
 note = "It means the adaptation rule is parameterised by strategy rather than sitting beside it, so a question whose answer could differ per objective has as many candidate answers as there are strategies, and a single answer to such a question should be suspected of having collapsed the axis."
-provenance = ["panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t37_op_warm_imitates_rust_and_strategy_is_not_orthogonal::his_words_verbatim"]
 keywords = ["strategy", "orthogonal", "correct", "variable", "path", "parameterised", "collapse"]
 
 [[ruling]]
@@ -812,7 +812,7 @@ by experts (plural, iterative)
 '''
 instead = "The experts converge on it, plural and iteratively, and the answer is whichever is optimal."
 note = "The options put to him were: only the policy half; the pair, both halves; or the pair framing is wrong. He declined rather than picking, and the decline is the answer. The decomposition into a pair is the panel's invention. The test the coordinator drew from it, that a question leaving the intent intact either way is not his, is the coordinator's wording."
-provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#3-whether-i9-describes-the-strategy-pair-or-only-its-policy-half"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::t3_whether_i9_describes_the_strategy_pair_or_only_its_policy_half"]
 keywords = ["I9", "pair", "policy", "weighting", "impl detail", "decline", "not his", "converge", "optimal"]
 
 [[ruling]]
@@ -826,7 +826,7 @@ Mostly option 1, but a little bit of option 3 with it. Hard to put into words, h
 meaning here
 '''
 note = "The options were: a preset naming a point in a space of independent axes, with the presets being the points worth naming; an irreducible identity not decomposable into axes at all; or nothing but a weighting over measurements, with every concrete difference falling out of optimising under those weights. He flagged his own difficulty putting it into words, so an expert finding the two readings pull apart somewhere has found something real rather than a contradiction to resolve away. This is a starting shape rather than a settled answer."
-provenance = ["panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#1-a-strategy-is-a-preset-naming-a-point-with-a-weighting-reading-mixed-in"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t88_op_the_intent_is_not_every_clause_and_there_is_no_universal::t1_a_strategy_is_a_preset_naming_a_point_with_a_weighting_reading_mixed_in"]
 keywords = ["strategy", "preset", "point", "axes", "weighting", "space", "structure", "irreducible", "decomposition"]
 
 [[ruling]]
@@ -845,7 +845,7 @@ or a billion is besides the point of the intent. Reword it if need be. But the i
 should be written down in the intents here too, if it's not obvious
 '''
 note = "The options put to him were: the intent governs and the rule gets rewritten in terms of what a strategy licenses; the rule governs and four is settled after all; or both stand with a note added. He took the first and bounded it. Distinct from the entry saying what the storage-minimising strategy is for: this one says it does not get traded away, and it survives the set being reshaped, renamed or resized."
-provenance = ["panel::202608072330_the-numeral-canon-panel::87_op_the_canon_is_written_once_at_the_end::#4-cold-s-intent-survives-the-strategy-set-being-reshaped"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t87_op_the_canon_is_written_once_at_the_end::t4_colds_intent_survives_the_strategy_set_being_reshaped"]
 keywords = ["Cold", "deprioritise", "storage", "bitpack", "intent", "vehicle", "marker", "count", "reword"]
 
 [[ruling]]
@@ -863,7 +863,7 @@ because = "arvo's is the concept the name fits. notko's profile-tier concept is 
 instead = "The canon may rely on Strategy meaning arvo's concept without qualification."
 answers = ["the_cross_repo_strategy_name_collision"]
 note = "The options put to him were: arvo renames, since the canon is being written now and arvo's is the consumer-facing concept; notko renames; or neither, and the canon states the disambiguation. It settles which side moves. It does not name notko's replacement, and it is not a licence for this panel to edit notko. The `instead` and the `because` are the panel's derivation and not his words."
-provenance = ["panel::202608072330_the-numeral-canon-panel::105_op_notko_renames::#the-strategy-name-collision-notko-renames"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t105_op_notko_renames::the_strategy_name_collision_notko_renames"]
 keywords = ["Strategy", "name", "collision", "notko", "rename", "profile", "tier", "vocabulary"]
 
 # --- the predicate, the arms, and what is const --------------------------------
@@ -897,7 +897,7 @@ design, rejected and unstable
 '''
 because = "If the strategies weigh measurements differently then no single expression is best for all of them, so asking for one asks the design to stop being what it is. An unpredicated finding shifts its implied scope constantly and is unstable by design."
 note = "The only entry at this rung. He ratified his own two statements in the sitting that produced them, with the instruction that the entry mean no more than he said and not extend beyond it. The scope is those two paragraphs. The dimension list, the distinction between `any` and unmeasured, and the exactness bar for a predicate are elaboration and are not part of what was ratified."
-provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i13-the-work-is-predicated-arms-composed-and-a-universal-solution-is-rejected"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::intents::i13_the_work_is_predicated_arms_composed_and_a_universal_solution_is_rejected"]
 keywords = ["predicate", "arm", "arms", "region", "universal", "composition", "sometimes", "const predicate", "generalisation", "exact"]
 
 [[ruling]]
@@ -914,7 +914,7 @@ true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly
 implicitly mean not true
 '''
 note = "Said in the same sitting as the ratified entry, correcting an elaboration of the coordinator's rather than adding to the intent. It replaced a proposal that a predicate should write `unmeasured` on a dimension nobody checked; it should write nothing there. He did not mark it as a separate ratification when he said it, and it is ratified by default from the written history."
-provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i13-the-work-is-predicated-arms-composed-and-a-universal-solution-is-rejected"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::intents::i13_the_work_is_predicated_arms_composed_and_a_universal_solution_is_rejected"]
 keywords = ["predicate", "unmeasured", "unknown", "unsure", "unstated", "absent", "not true", "omission"]
 
 [[ruling]]
@@ -933,7 +933,7 @@ outside the typestate. However, being const time expressions, typestate is usabl
 because = "The axis is not type against value. It is const-available against not, so the typestate is one source of const-available data rather than the only admissible one."
 note = "He rejected the fork rather than picking a side. The two options were: a value may gate an arm, at the cost measured for the value-gated form that materialises both lowerings and selects between them; or a value may not gate an arm, in which case several measured regions are characterisations rather than arms. Said in his own voice about the meaning of his own ratified entry. He did not mark it as a separate ratification when he said it, and it is ratified by default from the written history."
 gap = "What happens to a condition that is genuinely not const-available is not settled. He said what a const predicate may reach and did not say what lies beyond it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::83_op_the_predicate_is_whatever_is_const::#what-he-was-choosing-among"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t83_op_the_predicate_is_whatever_is_const::what_he_was_choosing_among"]
 keywords = ["const", "const time", "const expression", "typestate", "trajectory", "predicate", "gate", "arm", "value"]
 
 [[ruling]]
@@ -952,7 +952,7 @@ win where it applies, gate it out from where it does not. No single one-fits-all
 impossible
 '''
 note = "He rejected the question rather than answering it. It had been shaped as whether consumers would write a particular declaration, so that the design could decide whether to build the surface at all. Whether some consumer somewhere writes such a declaration is not a precondition for building the arm: the arm is built because a region exists where it is optimal. He notes it is the third time a question of this shape had been put to him in one sitting."
-provenance = ["panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#4-there-is-no-universal-answer-and-asking-for-one-is-the-anti-pattern"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t88_op_the_intent_is_not_every_clause_and_there_is_no_universal::t4_there_is_no_universal_answer_and_asking_for_one_is_the_anti_pattern"]
 keywords = ["universal", "one-fits-all", "case by case", "gate", "const expression", "region", "anti-pattern", "win", "leak"]
 
 # --- the operating constraints and binding time --------------------------------
@@ -973,7 +973,7 @@ and its rules... and this very mockspace of arvo's own...
 '''
 because = "The authority is the workspace rules and arvo's own mockspace configuration, both live and both enforced. Finding an older copy of a rule in another repository does not demote the rule."
 note = "The options put to him were: they are his intents; they are inherited assumptions the canon must re-derive or drop; or some are and some are not. He corrected the premise. The panel had spent five files hedging that arguments resting on these constraints stood on unratified ground, and arvo's generated agent instructions had been edited to say the same; nothing built on the constraints needed redoing, only the hedge attached to it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#3-the-long-standing-constraints-were-always-intents-and-the-provenance-trace-was-beside-the-point"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::t3_the_long_standing_constraints_were_always_intents_and_the_provenance_trace_was_beside_the_point"]
 keywords = ["no_std", "alloc", "const sizes", "monomorphisation", "dyn", "TypeId", "platform", "primitives", "lints", "constraints", "in force"]
 
 [[ruling]]
@@ -1012,7 +1012,7 @@ const time solving and ultimately llvm. Never any runtime checks, ever. We catch
 time, and unused paths we clear out when lowered. Period.
 '''
 note = "Two strengths in one sentence and they are different: \"as much as possible\" governs the branching, \"never, ever\" governs the checks. Runtime code exists; runtime validation does not. The options put to him were: compile time only, per type; both, at named places, compile time per type plus a runtime check at a declared ingest boundary; or runtime ingest as primary with the compile-time acts as consequences. He took the first and sharpened past it. The catalogue marks this STATED; by the same test it applies to the operating constraints it arguably reads as in force, since arvo's own repo rules carry it, and that disagreement is recorded here rather than acted on."
-provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#1-never-any-runtime-checks-ever"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::t1_never_any_runtime_checks_ever"]
 keywords = ["runtime check", "compile time", "const", "monomorphisation", "lowering", "erased", "validation", "invalid", "one path", "branch"]
 
 [[ruling]]
@@ -1030,7 +1030,7 @@ don't need to, it's not conventional to any library ever...
 instead = "The consumer defines their own APIs in arvo's shapes and generics, and that is where external data becomes typed."
 obligation = ["an_exact_width_container_a_consumer_can_alias_and_pin"]
 note = "The options put to him were: not arvo's problem, the consumer handles it outside arvo's rule; arvo owns it with an unchecked transmute-shaped door; or arvo owns it with one validating constructor, an explicit exception carved into the never-a-runtime-check intent. He took the first in substance with a sharper reason. So that intent needs no exception, and the observation that stored bits are not self-describing stays true without licensing anything.\n\n**The `says` opened on a boundary rule the quote does not state**, that data entering from outside the program is the consumer's boundary rather than arvo's. A fair reading of what he said and not a thing he said, so it is out of the sentence carrying his authority. The rest is his and is unchanged.\n\n**He was asked to bless this and declined, in terms**, at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round::106`: \"I need elaboration on the Ingest vs C ABI. That explanation does not explain what this is, so I can't bless it or comment on it in any manner.\" The panel file records that as a defect in the asking rather than a hesitation about the subject, the option having restated the row's title and given him nothing to judge, and says it returns to him once it carries what the row claims. **It cannot: he has since handed the canon to the panel.** So the promotion is blocked and the block is the panel's to clear, which is why `question::what_the_ingest_row_claims_and_what_turns_on_it` now exists. Nothing marked this until seat 218 found it, and a row nothing marks reads as ready."
-provenance = ["panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#3-ingest-is-the-consumer-s-and-the-c-abi-is-where-it-all-ends-up-anyway"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t88_op_the_intent_is_not_every_clause_and_there_is_no_universal::t3_ingest_is_the_consumers_and_the_c_abi_is_where_it_all_ends_up_anyway"]
 keywords = ["ingest", "boundary", "consumer", "C ABI", "external data", "helper", "cast", "convert", "self-describing", "transmute"]
 
 # --- laws, rounding, overflow --------------------------------------------------
@@ -1054,7 +1054,7 @@ basis.
 instead = "The requirement on a law's expression is functional rather than structural: it must actually work, meaning it reaches one lowered path."
 because = "The question was asking the canon to do the policing that arvo's toolbox posture forbids."
 note = "He rejected the framing rather than answering. The options put to him were: the strongest const-time construction only; any const-available construction; or leave it to the design tier. The measurement behind the question, that four constructions all count as const-time and give four different guarantees, is untouched and is re-read rather than discarded: a construction whose permission a consumer can hold while being wrong fails the functional test in that use, which is a caution for whoever picks one rather than a rule about which constructions exist. The `instead` and the `because` are the panel's reading and not his words."
-provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#2-stop-policing-what-shape-a-law-takes"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::t2_stop_policing_what_shape_a_law_takes"]
 keywords = ["law", "policing", "shape", "typestate", "const expression", "one lowered path", "functional", "case by case", "toolbox"]
 
 [[ruling]]
@@ -1067,7 +1067,7 @@ quote = '''
 Something along the lines of option 3 here
 '''
 note = "An ack on direction rather than a ruling, and he said so in the same breath: the base is too loose to settle it and the experts should explore further and converge first. The options put to him were: out of range only, keeping the ratified row and giving exactness its own named operation; refuse on inexact at conversion sites specifically; or treat it as an arm question where both are written and the profile selects. It is where to look, not what to conclude."
-provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#4-precise-on-inexact"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t01_op_answers::t4_precise_on_inexact"]
 keywords = ["Precise", "inexact", "arm", "profile", "exactness", "conversion", "refuse", "ack"]
 
 [[ruling]]
@@ -1081,7 +1081,7 @@ Option 1 but see previous answer too. Write these all down too as my answers.
 '''
 note = "The options put to him were: explore both and price both, on the grounds that two committed bench families implement the two readings and disagree in direction; clamp, matching the ratified preset table; or wrap, matching the committed bench family as implemented. He took the first and pointed back at the method answer. The instruction to write the answers down is what produced the file this is quoted from."
 instead = "It goes back to the bench: both readings are written and both are priced, and the measurement decides rather than he does."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q6-does-warm-wrap-or-clamp"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q6_does_warm_wrap_or_clamp"]
 keywords = ["Warm", "wrap", "clamp", "overflow", "bench", "price", "explore", "preset table"]
 
 [[ruling]]
@@ -1137,7 +1137,7 @@ absolute, more of an intent
 '''
 because = "The build bound is why it does not undermine the never-a-runtime-check intent: a shipped program still contains no runtime validation."
 note = "The options put to him were: no, values only, so the imitation covers what values come out and never the runtime signalling; the same guarantee at compile time, so what the panic catches is still caught but the imitation is of the guarantee rather than the mechanism; or yes, the intent bends here, a debug-only panic being the one acceptable exception. He corrected his own wording minutes later, and that correction is a separate row. Being a rule of thumb, an arm that cannot honour it is not thereby wrong."
-provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#2-whether-the-imitation-covers-the-native-debug-overflow-panic"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::t2_whether_the_imitation_covers_the_native_debug_overflow_panic"]
 keywords = ["overflow", "panic", "debug", "dev", "release", "Warm", "rule of thumb", "imitation", "runtime check", "bound"]
 
 [[ruling]]
@@ -1152,7 +1152,7 @@ Q2 might be never on hot outside of dev/debug. It's the intent inferrable
 corrects = ["the_overflow_panic_is_permitted_and_bounded"]
 note = "His own correction, minutes after the statement it corrects, and it is what fixes it. The first bounds the panic by naming the imitate-the-native-primitive concern; this one bounds it by naming the speed-first concern and adds that the intent is the inferrable thing. Neither marker name is doing work as a fixed member of a fixed set, since the strategy set is open and a marker name is vehicle. \"Might be\" is his hedge and is not softened into certainty here."
 gap = "Whether the panic may appear in dev builds of the speed-first concern, or is excluded from that concern entirely, is not settled by either statement read literally, and he has said the intent is what to infer rather than the wording."
-provenance = ["panel::202608072330_the-numeral-canon-panel::104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::#2-whether-the-imitation-covers-the-native-debug-overflow-panic"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle::t2_whether_the_imitation_covers_the_native_debug_overflow_panic"]
 keywords = ["panic", "hot", "dev", "debug", "concern", "marker", "vehicle", "inferrable", "intent"]
 
 # --- questions he declined to settle -------------------------------------------
@@ -1166,7 +1166,7 @@ says = "On whether the numeral space is one family or several, he wants the cons
 because = "The base is too loose to settle it, and ratifying before the experts converge is the failure being avoided."
 note = "No verbatim quotation exists for this one. The source records his answer as the comparison and does not quote him. The options were: one family with a closed shape space; one family with the shape space not closed, so meet goes partial; several families, so a common target is always a named rule; or a written comparison first. The comparison is required to state, for each candidate, what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer."
 instead = "It goes back to the panel, as its first expert task, and the comparison owes for each candidate what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer."
-provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#1-is-the-numeral-space-one-family-or-several"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t01_op_answers::t1_is_the_numeral_space_one_family_or_several"]
 keywords = ["family", "families", "numeral space", "comparison", "meet", "join", "shape space", "closed"]
 
 [[ruling]]
@@ -1183,7 +1183,7 @@ mistakes.
 because = "The failure being avoided is ratifying at the wrong time rather than answering wrongly. A call made before its consumers and synergies are known can be perfectly reasonable and still lock the design into a shape that does not fit, and there is no way to tell which at the moment it is made."
 note = "The first sentence is quotable and the rest is what makes it safe to quote. A member citing the instinct as a ruling is making the previous panel's mistake with his words instead of its own. The options put to him were: explore; several families; or hold until the coordinate question settles."
 instead = "It goes back to the panel to explore and converge. His instinct is recorded and is explicitly not to be acted on."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q8-one-numeral-family-or-several"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q8_one_numeral_family_or_several"]
 keywords = ["family", "instinct", "one", "several", "not a ruling", "premature", "lock", "mathematician"]
 
 [[ruling]]
@@ -1202,7 +1202,7 @@ to force it or force anything else. I said fresh eyes on it, that holds.
 '''
 instead = "Fresh eyes on the existing attempt, to confirm or improve it, rather than a choice among trades."
 note = "He rejects the question's premise. The options put to him were: keep refusing the trade; accept a bounded enumeration at an internal site; accept a degraded diagnostic; or have the candidates ranked first. He flags his own recall as approximate (\"if I remember correctly\", \"pretty sure\") and that the framework may have moved, so whoever takes this locates the attempt and verifies the properties hold as stated. Deriving a container from a declaration is realisation, so the topic fits rather than being a fallback."
-provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#2-the-container-derivation-mechanism"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t01_op_answers::t2_the_container_derivation_mechanism"]
 keywords = ["container", "derivation", "fresh eyes", "enumeration", "forbidden features", "typestate", "contracts", "doable", "trade"]
 
 [[ruling]]
@@ -1217,7 +1217,7 @@ Explore, wait for Fog.
 because = "Every measurement in hand at the time was single-threaded while arvo's own rules declare the workload concurrent, so the regime the evidence was taken in may be the wrong one."
 note = "The one answer of the eight that names a blocker rather than a preference. The options put to him were: state the inequality with no fixed carrier and no threshold; the claim is about resident footprint rather than throughput; the eight-byte carrier, against which it measures true; or hold until the contention run lands."
 instead = "It goes back to the panel and waits on the contention run, because the regime every measurement in hand was taken in may be the wrong one."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q7-which-carrier-is-the-substrate-s-packing-claim-about"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q7_which_carrier_is_the_substrates_packing_claim_about"]
 keywords = ["carrier", "packing", "contention", "concurrency", "footprint", "throughput", "blocker", "regime"]
 
 [[ruling]]
@@ -1234,7 +1234,7 @@ robust it is, the better it'll serve us.
 '''
 answers = ["what_then_validate_requires"]
 note = "The three readings were: admissibility, where the typestate refuses declarations it cannot serve; usage, where the typestate refuses operations violating the declared invariants with a readable diagnostic; and self-validation, where the derived container is checked at derivation time to hold the declared range. The challenge bar is his phrase \"truly not worth it\" rather than mere cost. \"My instinct is that the more robust it is, the better it'll serve us\" is his stated prior and not part of the call. When was covered separately and later, by the never-a-runtime-check intent."
-provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q1-which-reading-of-then-validate-did-you-mean"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t28_op_answers_two::q1_which_reading_of_then_validate_did_you_mean"]
 keywords = ["validate", "validation", "admissibility", "usage", "self-validation", "typestate", "refuse", "diagnostic", "challenge"]
 
 # --- where he marked material canon-bound --------------------------------------
@@ -1249,7 +1249,7 @@ quote = '''
 This is something to put into the canon in fact, this is a ratifiable intent behind arvo.
 '''
 note = "\"Ratifiable\" is his word and is not \"ratified\". Under his own ack rule an opinion given before the experts converge is an ack, so this is direction of unusually high confidence, marked by him as canon-bound, and not in the canon. It is the first thing in this panel he named that way."
-provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t32_op_arvo_adapts_to_the_cores_it_finds::his_answer_verbatim"]
 keywords = ["canon", "ratifiable", "intent", "canon-bound", "put into the canon", "standing"]
 
 [[ruling]]
@@ -1264,7 +1264,7 @@ kind of settled in general (though don't have to be; Open for discussion and exp
 go into the canon / settled list.
 '''
 note = "Both halves are his and neither cancels the other: canon-bound and explicitly left open. The invitation to discuss and explore is part of the instruction rather than politeness. He sharpened the second half two files later into the standing instruction not to write these as clear cut and settled."
-provenance = ["panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t36_op_the_intent_behind_each_strategy::his_words_verbatim"]
 keywords = ["canon", "settled list", "open", "discussion", "exploration", "strategy", "descriptions"]
 
 # --- 181, the session opening ---------------------------------------------------
@@ -1286,7 +1286,7 @@ the shapes to stick even when the impls are wip, like hilavitkutin currently has
 '''
 because = "A contract is a shape, and a shape is expressible before anything implements it. He names hilavitkutin as the live instance of that condition."
 note = "His only new design statement in the message, and a general one rather than an answer to anything the panel asked. It has no entry in `INTENTS.md` and no `I` number. An argument for `in_force` existed when this was written and was not taken: the repo's configuration declared an `arvo-bits-traits-only` lint and the crate vocabulary carried three contracts crates, so the structure was enforced in one place. That enforced where traits may live rather than that contracts come first, which is a narrower thing than he stated. Neither survives: the lint was gated on a crate that no longer existed and is gone, and no contracts crate is in the tree, so the argument is not available on those grounds and nothing in the tree enforces this row.\n\nHis \"we\" is the stack, in a message about the stack, naming hilavitkutin as the live instance. The `says` had narrowed it to arvo, which loses what he committed to. His word is kept and the scope is read off the registry this row sits in, which cannot bind another repository anyway. The `because` is the panel's wording of his reason."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["trait", "contract", "paradigm", "shape", "structure", "wip", "implementation", "hilavitkutin", "sticks"]
 
 [[ruling]]
@@ -1301,7 +1301,7 @@ and then a full impl of everything can be done based on it, as explained on the 
 how this concept works.
 '''
 note = "The sharpest thing in the message, because it is checkable rather than a matter of taste. It is the bar the `obligation` namespace exists to answer against: an obligation nobody enumerated is invisible to any sweep over what the canon already covers."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["exhaustive", "canon", "full design", "full impl", "coverage", "bar", "review", "complete"]
 
 [[ruling]]
@@ -1314,7 +1314,7 @@ quote = '''
 We want to get arvo canon settled in full. After that, I want to review it.
 '''
 note = "It refines rather than replaces the earlier statement that the goal is not met until the canon is ratified: a review step sits between settling and ratification, and the two are not the same act."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["settled", "in full", "review", "finished", "canon", "arc", "end"]
 
 [[ruling]]
@@ -1328,7 +1328,7 @@ Mockspace has, while this was on pause, gained a first-class registry concept th
 convention for a canon to form. The arvo canon will have to be converted there.
 '''
 note = "It changes where the canon lives and says nothing about when anything becomes canon. That leaves a tension with his earlier call that nothing moves into the canon until every topic is done: the material is being ported into the registry now, and the rungs are what keep the port from being a promotion. An argument for `in_force` exists and I have not taken it, because what the tooling enforces is the registry's shape rather than the decision to use one."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["registry", "canon", "mockspace", "convention", "convert", "kamu", "first-class", "where"]
 
 [[ruling]]
@@ -1343,7 +1343,7 @@ things to the registry, shape the registry, its meta, so it works, then go ahead
 rulings and proposals and statements etc.
 '''
 note = "The work order for the porting seats, this one included. \"Shape the registry, its meta, so it works\" is what licenses changing the schema rather than only filling it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["port", "registry", "meta", "schema", "comb", "results", "agreements", "convergences", "order of work"]
 
 [[ruling]]
@@ -1362,7 +1362,7 @@ constraints we already kind of have formed.
 '''
 because = "The theoretical side has no natural end, and it has already been months."
 note = "The instruction pulls both ways deliberately and both halves are his. It is a licence to close things and not a licence to skip them.\n\nThe quote stopped one sentence early and the `says` carried that sentence anyway. It is operative rather than decorative, being the half that licenses closing something, so the quote was extended to reach it. It is captured in the workspace repository at `.data/op-responses/20260830_2320_arvo-panel-steering-opening.md`, which no reference from here can reach.\n\nWhat this does not touch is who may close a question. That was still op when he said it, and `the_panel_finishes_the_canon_without_him` has since moved it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#overreaching"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::overreaching"]
 keywords = ["converge", "convergence", "rush", "pace", "finished", "perfect", "settle", "constraints", "months", "quality"]
 
 [[ruling]]
@@ -1377,7 +1377,7 @@ ask the questions. Before I show I'm present and ready to answer, keep them cata
 lose track of them, and work around them as much as you can.
 '''
 note = "\"Keep them catalogued in full, don't lose track of them\" is the load-bearing half: a question parked and forgotten is the failure, not a question left open."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["autonomous", "batch", "questions", "catalogue", "parked", "work around", "queue", "present"]
 
 [[ruling]]
@@ -1392,7 +1392,7 @@ and probably want to loan from. See my github, as well as hiisi-digital org's gi
 rust based projects, those are most of them likely useful or reusable, for something at some point.
 '''
 note = "Recorded because it bears on design rather than only on housekeeping: it is the standing instruction against reinventing something the stack already carries. \"hilavituktin\" is his spelling and is left as written."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["stack", "borrow", "reuse", "loan", "notko", "hilavitkutin", "github", "hiisi-digital", "reinvent"]
 
 [[ruling]]
@@ -1408,7 +1408,7 @@ crate, which you both can then depend on in the mockspace.toml. Your call either
 '''
 instead = "It goes to the coordinator, on the two terms he names: fork the sibling repository's tools, or extract a shared crate both mockspaces depend on."
 note = "\"Your call either way\" is him handing a fork over rather than declining to look at it, which is why this is a deferral and not an open question of his."
-provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t181_op_the_canon_becomes_a_registry_and_the_contracts_hold::t181_op_the_canon_becomes_a_registry_the_contracts_hold_and_this_runs_to_a_finished_canon"]
 keywords = ["tools", "lints", "mockspace", "fork", "shared crate", "your call", "tooling", "kamu"]
 
 [[ruling]]
@@ -1426,7 +1426,7 @@ or designed away, a law, or something that constraints the work of the design, i
 '''
 answers = ["may_the_canon_carry_an_unpredicated_proposition", "is_the_rounding_candidates_pairing_section_canon_or_design"]
 note = "Two statements of his in one sitting, and the second limb of the test lives only in the second. The row carried the two-limb `says` against the first statement alone, so a reader diffing it against its own evidence found half the test unsupported. Extended rather than shortened, because the missing limb is his. The second statement is the fourth answer in the same sitting, captured in the workspace repository at `.data/op-responses/202608311209_arvo-canon-panel-audit.md`, which no reference from here can reach.\n\nThe third `says` sentence, that the kind of statement and the tier do not decide the question, is the panel's inference from him sidestepping the three options he was given rather than a thing he said."
-provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#what-makes-a-thing-canon", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#overreaching"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t206_op_the_canon_test_and_the_standards_bound::what_makes_a_thing_canon", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::overreaching"]
 keywords = ["canon form", "constrains the work", "law", "cannot be designed away", "needed to know", "predicate", "imposed", "established", "canon or design", "the test"]
 
 [[ruling]]
@@ -1452,7 +1452,7 @@ it or not...
 because = "The requirement that ratification carry both expert convergence and his blessing is what left 122 panel propositions with no exit and not one of them ratified, while every ratified row in the namespace was him blessing his own words. The bottleneck was never his availability; it was a rule that reserved for him a judgement he says he cannot make."
 instead = "He answers intent, fundamental design direction and broad strokes. Specifics are out of his depth by his own statement, and a panel exists precisely because they are."
 note = "Two things this is not. It is not automatic promotion on a count of agreeing experts: he was explicit afterwards that the coordinator remains the gatekeeper, so the experts still only propose and somebody has to judge that a proposition is justified, reasoned and demonstrated enough to deserve canon. And it is not permanent: his own condition is that a promoted proposition stays open to change if the experts later disagree or find a better solution, wording or bound. A promotion carries the reasoning that justified it, so it can be argued with rather than merely counted."
-provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t213_op_the_experts_ratify_and_i_read::the_format"]
 keywords = ["ratification", "two experts", "convergence", "gatekeeper", "promotion", "stamp", "canon", "authority", "bottleneck"]
 
 [[ruling]]
@@ -1472,7 +1472,7 @@ exact reason a panel or you managing them exist in the first place...
 '''
 because = "Said after observing that the experts avoid work unless they have absolute answers to everything, which he noted is their job. A question filed rather than derived is the avoidance, and filing it at him rather than at a peer is what made the avoidance look like diligence."
 note = "This is why a panel is a small pool argued across rounds rather than a relay of single opinions: asking a peer requires there to be a peer holding the context, which a fresh dispatch per question does not provide."
-provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#parking-questions"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t213_op_the_experts_ratify_and_i_read::parking_questions"]
 keywords = ["peers", "convergence", "escalation", "intent", "specifics", "out of depth", "panel", "avoidance"]
 
 [[ruling]]
@@ -1496,7 +1496,7 @@ domain expert. So if two experts agree on this, it is equal to my blessing.
 '''
 because = "Each stood at two independent experts before it was put to him, and the four are one shape rather than four claims: the identity fixes what a format is, the predicate says what is in it, the factoring says what an operation on it does, and the closed-concept clause says how a new instance joins without amending the canon."
 note = "The first panel-derived propositions ever ratified in this registry. Marked `both` because he stamped them and the expert convergence was already there; under the ruling he made in the same breath, the convergence alone would have sufficed. His condition travels with them: subject to change if the experts later disagree or find a better solution, wording or bound."
-provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-format"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t213_op_the_experts_ratify_and_i_read::the_format"]
 keywords = ["format", "identity", "representable set", "ambient domain", "affine predicate", "adaptation", "closed concept", "open inventory"]
 
 [[ruling]]
@@ -1516,7 +1516,7 @@ answers = ["the_container_premise"]
 promotion = "Promoted on two independent instances of each of the four, and the second was dispatched specifically because the first was not two. All four rows were seat 210's alone, and seat 221, the same persona, declined to raise them and said in terms that a non-Dolan second read was owed. Seat 225 is that read, on a third persona, and derived blind: its phase-one commit precedes the commit in which it read the prior work, so the ordering is checkable rather than asserted.\n\n**Both branches are refuted by instruments rather than by argument.** The container branch fails op's own standards bound: a container-stated numeral returns 8192 where MATLAB `fi` at thirteen bits under wrap documents 0, swept exhaustively per width with the first witness named at each, and the divergence count rises with width rather than appearing at one cell. The rounding axis carries the same refutation, diverging in all 83 cells swept, which is the fixed-point form of the double-rounding story. The unobservable-carrier reading of the other branch does not compile: one primitive with two carriers fails const evaluation with the footprint contract unsatisfiable, which is the strongest refutation available and is committed with its stderr.\n\n**Seat 225 also built the instrument both prior seats named as missing**, a real packed column with elements straddling carrier boundaries, roundtripping exactly, where the only reachable size observation returns sixteen bits for a thirteen-bit placement. That is what establishes the fourth row rather than leaving it as the reasonable-sounding half of the third."
 because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. These four were read for that, and the deciding fact is that the two instances carry disjoint axes and agree where they overlap."
 note = "**The intersection is stated rather than assumed.** Seat 225's instruments carry the width span 2 to 31 and the fraction-grid axis, which seat 210's own note flags as unreached. Seat 210's carry the operation and policy axes and the standards encodings. So the two agree over the union of what each covered and neither is a second instance on the other's axes, which is the honest shape rather than a defect.\n\n**One contamination, declared by seat 225 and recorded here rather than filed away.** Its brief withheld the four proposals by naming their slugs, and those slugs are descriptive sentences, so withholding them by name signposted the destination. Its route and its instruments are its own and were committed first. What that cost is unmeasurable and what it did not reach is the finding: **no signpost suggests dissolving the binary**, since all four slugs read as claims on one branch, and the dissolution is what this ruling turns on.\n\n**The question's own option list was the shape op has refused three times**, a single policy to govern a whole category. It is closed by dissolution rather than by picking a letter, which is what he has said the answer to that shape always is.\n\nThis unblocks the floor of the stack. `topic::the_container_premise` said of itself that no wording of several downstream clauses is true on both branches; there are no branches now, and the clauses can be written."
-provenance = ["panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape", "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t225_peyton_jones_the_container_premise::t3_the_statement_that_survives_and_it_is_already_the_canons_shape", "panel::t202608072330_the_numeral_canon_panel::t210_dolan_the_container_premise_is_a_theorem_over_a_signature::t1_what_i_did_first_which_was_try_to_break_the_question"]
 keywords = ["container premise", "declared width", "carrier", "footprint", "signature", "observability", "layout", "shared occupancy", "packed", "dissolved", "malformed", "floor"]
 
 [[ruling]]
@@ -1535,7 +1535,7 @@ are optimal, and nowhere else. It's the fundamental heart within arvo.
 '''
 because = "Four topics reached this independently and the earliest reached it before the rule that would have required it existed, which is convergence rather than a shared premise. He calls it the fundamental heart within arvo, which is the strongest framing he has given any structural claim."
 note = "This is `I13` stated as a positive shape rather than as a rejection of universals. It is why a finding carries the region it holds in: an arm without a predicate has nothing to be gated on, and a universal claim is not what this design produces."
-provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-organising-shape"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t213_op_the_experts_ratify_and_i_read::the_organising_shape"]
 keywords = ["arms", "predicates", "regions", "composition", "optimal", "fundamental heart", "I13", "universal"]
 
 [[ruling]]
@@ -1552,7 +1552,7 @@ says = "Two law-tier propositions become canon. Addition at a common scale never
 promotion = "Promoted on the gate rather than on the count. The additive verdict stands at three or more instances and its predicate claims `W any` and `F any`, which is a genuinely wide region rather than a measured band written up as one; the mechanism it names, that addition at a common scale performs no rescale, is why the width cannot enter. Absorption stands at two, and its statement is quantified exactly as its predicate is, over the values the format can hold, at `W in 3..=7`, `F = 0`, arity 3, over a hundred interval numerals containing zero. Neither prose reaches past its predicate, which is the thing this gate is for and which the third proposal read alongside them failed."
 because = "Under the ratification model settled today the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. These two were read for that rather than counted."
 note = "One open asymmetry, recorded rather than resolved because it is the panel's: the additive row lists no `rounding` dimension where its multiplicative sibling lists `rounding any`. Addition at a common scale does not round, so the omission is arguably correct, but the notation has no inapplicable state and absence means the finding holds nowhere that dimension exists. Whether that reading is intended, or whether the row wants `rounding any`, is a question for whoever next touches the axis."
-provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-correction-which-arrived-before-any-of-it-was-encoded"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t213_op_the_experts_ratify_and_i_read::the_correction_which_arrived_before_any_of_it_was_encoded"]
 keywords = ["addition", "absorption", "associativity", "fraction width", "rescale", "reduction", "clamped", "promotion", "gate"]
 
 # --- the alias scope, the observability licence, and a refusal ----------------
@@ -1571,7 +1571,7 @@ Let's start with the two named, and reserve the rest named for future, so it can
 answers = ["which_standards_the_alias_obligation_covers"]
 because = "How far a demand reaches is the demand's author's to say, and the bound was his demand. The panel can establish whether a convention is expressible; it cannot establish which ones were promised."
 note = "The reservation is the operative half and is why the three are named in the canon rather than left out of it. A candidate that cannot express `sc_fixed` is neither refuted nor cleared by this, and naming them is what stops the answer being read later as having ruled them out.\n\nThis existed only as the `answered` field of a question, which no roster of his statements reads."
-provenance = ["panel::202608072330_the-numeral-canon-panel::212_op_the_alias_scope_the_demotion_and_observability::#the-alias-scope", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#ops-refusal-is-nowhere-in-the-canon-and-neither-are-three-of-his-statements"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t212_op_the_alias_scope_the_demotion_and_observability::the_alias_scope", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::ops_refusal_is_nowhere_in_the_canon_and_neither_are_three_of_his_statements"]
 keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "reserved", "scope"]
 
 [[ruling]]
@@ -1585,7 +1585,7 @@ answers = ["container_derivation_output_count", "which_operation_set_the_design_
 promotion = "Two seats, independently, on a floor settled hours earlier. Both reached the same two results and both reported that the questions as recorded could not be answered as put: the first offered three answers to a question with two regions, and the second asked for a list where the canon's own shape gives a rule.\n\n**The standing selector-versus-key disagreement is dead on both readings and neither seat had to pick.** Selector and key are one function curried two ways; the floor removed the only thing that made the difference observable. One seat argued it from the identity clause, that two factorings separated by no declared signature are one design. The other compiled both orders and showed they resolve identically, with both negative controls refusing. Constructively it went further: both readings name the wrong key, since the ladder is keyed on the placement objective and the strategy-to-objective map is the selector, which preserves the earlier two-expert result that a strategy name is a binding.\n\n**The admission rule is the format spine's closed-concept-open-inventory shape one tier down**, which is what makes it a derivation rather than a new decision.\n\n**One seat's blindness was compromised and it reported the leak itself.** A merge it was told to run printed the other seat's probe filenames, which are near enough that seat's two conclusions. All six of its probes and both of its conclusions were committed before that merge, so the contamination is bounded and checkable from the commit ordering, but it says plainly it can no longer serve as a blind instance on the framing. That is the dispatcher's error rather than the seat's."
 because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. Both results are gateable on a declared axis, which `dimension::occupancy` now carries."
 note = "**A measurement broke its own author's criterion twice, and that is why the answer is trusted.** The first instrument set out to confirm a recorded claim that two partitions share no jump point, and found it true under one packing rule and false under the other, with neither carrier saying which it assumed. The replacement established what actually matters: the access width is not a function of the carrier and neither is the converse, under both rules, with three controls firing. It also panicked at width 123, where the access ladder runs out of native containers before the carrier ladder does.\n\n**One seat retired its own positive arm as true by construction**, the declared-width operations ignoring the carrier by definition, so the sweep restated its premise. The claim is analytic and is recorded as analytic.\n\n**What is not settled here** is membership above the floor, which stays open and now has a better-posed shape under `the_standard_is_parity_in_output_not_in_the_internals`: what the framework must be able to express, and which of those ship now against marked later."
-provenance = ["panel::202608072330_the-numeral-canon-panel::226_lattner_the_derivation_outputs::#23-the-answer", "panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t226_lattner_the_derivation_outputs::t23_the_answer", "panel::t202608072330_the_numeral_canon_panel::t225_peyton_jones_the_container_premise::t3_the_statement_that_survives_and_it_is_already_the_canons_shape"]
 keywords = ["container derivation", "placement", "output count", "occupancy", "sole", "shared", "stride", "access width", "selector", "key", "curried", "admission rule", "operation set", "open inventory"]
 
 [[ruling]]
@@ -1596,7 +1596,7 @@ topic = "algebraic_laws"
 says = "The fused multiply-add's result is reachable by composing multiply and add everywhere except at signed saturating, where it is unreachable at every fraction width including zero. So the fused operation is not a required member of any operation inventory; it is a required arm at signed saturating."
 because = "Op's bound is parity in output rather than in the internals, so what the standards oblige is that the result be reproducible, not that an operation of that name be declared. Whether the result is reachable by composition is then a measurement, and it is one."
 note = "**Measured, with the controls firing**: signed saturating reaches it for no mode at two placements, every other policy reaches it for some mode, swept across widths 5 to 7 over signed and unsigned crossed with wrap and saturate. It reproduces two committed law rows digit for digit at width 6 and extends them to 5 and 7.\n\n**Two structural mechanisms, both found by controls that failed first.** Any adaptation reading only the residue is translation-equivariant by construction, and wrap composes because it is a ring homomorphism while saturation is not.\n\n**This supersedes an earlier derivation reached under the inventory reading**, which concluded that a design shipping four of five operations was unreachable for any standards-adequate core because IEEE 754 requires the fused operation. That reasoning read the standards bound as constraining arvo's inventory, which op corrected the same evening. The conclusion does not survive in that form; what replaces it is narrower, measured, and states its region.\n\n**One expert.** Recorded at `stated` rather than promoted, and a second instance is owed before it becomes canon."
-provenance = ["panel::202608072330_the-numeral-canon-panel::226_lattner_the_derivation_outputs::#23-the-answer"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t226_lattner_the_derivation_outputs::t23_the_answer"]
 keywords = ["fused multiply-add", "fma", "composition", "signed", "saturating", "wrap", "ring homomorphism", "translation-equivariant", "arm", "region", "parity"]
 
 [[ruling]]
@@ -1616,7 +1616,7 @@ exhaustive framework
 '''
 because = "An expert had derived the operation-set floor as the union of the two named standards' operation sets, reading the bound as constraining arvo's inventory. He said unprompted that the bound is about output."
 note = "**It does not move which standards are in scope**, which `the_standards_bound_starts_at_two_and_reserves_the_rest` fixed at MATLAB `fi`/`fimath` and IEEE 754 with three reserved. It fixes what being in scope demands.\n\n**What it corrects is live work.** The derivation that the four-of-five cell is unreachable because IEEE 754 requires the fused multiply-add rested on the inventory reading. The bound obliges reproducing that operation's result, the exactly-rounded `a*b + c` with one rounding rather than two, and whether arvo declares an operation of that name is internals. The conclusion may still hold on the different ground that no composition of the other four reproduces it, which is a claim needing its own evidence.\n\n**The container premise refutation is untouched**, since it rested on a container-stated numeral returning 8192 where MATLAB documents 0, which is a disagreement in output.\n\nIt sits with the ratified format spine, which states arithmetic as an exact operation composed with a named total adaptation: a statement about the result that says nothing about the route.\n\n**The second half ranks the two and standards parity loses.** A standard covered with marked holes ships; a framework with holes does not. So the standards are a check on whether the framework is exhaustive rather than a gate on shipping, which is why two were named in the first place. **A hole in a standard is a `FIXME` and is honest. A hole in the framework is a defect.**\n\n**That moves the shape of `which_operation_set_the_design_ships`** from which operations must be present to what the framework must be able to express, and which of those ship now against marked later. The second is smaller, better posed, and answerable without the standards being complete."
-provenance = ["panel::202608072330_the-numeral-canon-panel::227_op_the_standard_is_parity_in_output::#what-it-settles"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t227_op_the_standard_is_parity_in_output::what_it_settles"]
 keywords = ["standard", "parity", "output", "internals", "spec", "MATLAB", "fi", "IEEE 754", "alias", "adequacy", "operation set", "unconventional", "route"]
 
 [[ruling]]
@@ -1631,7 +1631,7 @@ It becomes your intent
 answers = ["does_the_observability_principle_become_an_intent"]
 because = "Three members failed to derive the clause from his stated intents, each for stated reasons, and what it rested on was a workspace rule, which is not a ratification."
 note = "**His pronoun is `your` and it is not glossed here.** The three options were: it becomes his intent and is quoted into the catalogue in his words; it stays a workspace rule and the canon says so visibly; or it is not canon at all. Two readings survive his answer and both make it an intent: that he adopted it and phrased the adoption loosely, or that he declined to own it and handed it to the panel to hold. They differ only in whose authority it carries, which is why this row is `stated` and carries no `ratified_by`. Under `two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate` the second reading is not a weaker outcome, it is the ordinary route.\n\nThe question row's `answered` field rendered this as \"It becomes his intent\", which resolves the pronoun to the reading his word does not carry. Corrected there.\n\nIt landed the same day seat 210 established what observability is, that it is induced by a signature rather than carried by a representation, so the clause has a definition under it as well as a designation."
-provenance = ["panel::202608072330_the-numeral-canon-panel::212_op_the_alias_scope_the_demotion_and_observability::#observability-becomes-an-intent", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#ops-refusal-is-nowhere-in-the-canon-and-neither-are-three-of-his-statements"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t212_op_the_alias_scope_the_demotion_and_observability::observability_becomes_an_intent", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::ops_refusal_is_nowhere_in_the_canon_and_neither_are_three_of_his_statements"]
 keywords = ["observability", "unobserved stretch", "licence", "intent", "workspace rule", "underivable", "signature", "perimeter", "your intent"]
 
 [[ruling]]
@@ -1647,7 +1647,7 @@ bless it or comment on it in any manner
 instead = "The row states what it claims and what turns on it, and the panel clears the block itself, since he is no longer there to re-ask."
 because = "The option put to him restated the row's title and gave him nothing to judge."
 note = "**A refusal is a statement of his and this namespace holds one row per statement**, so it belongs here rather than only as a blockquote in a panel file. The row it refuses is `ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up`, named here rather than through an edge, because `declines` reaches proposals and that row is a ruling. Nothing marked it until seat 218 found this, and a row nothing marks reads as ready.\n\nThree options were put to him in that slot: the library framing, ingest belonging to the consumer with the C ABI as the edge, or both. He selected the first only, and this is what he said about the second.\n\nThe panel file records it returning to him once it carries what the row claims. It cannot: `the_panel_finishes_the_canon_without_him` has since moved that. So the block is the panel's to clear, which is what `question::what_the_ingest_row_claims_and_what_turns_on_it` exists for."
-provenance = ["panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round::#what-arvo-is", "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::#ops-refusal-is-nowhere-in-the-canon-and-neither-are-three-of-his-statements"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t211_op_the_second_ratification_round::what_arvo_is", "panel::t202608072330_the_numeral_canon_panel::t218_ringer_the_stated_rows_checked_against_his_words::ops_refusal_is_nowhere_in_the_canon_and_neither_are_three_of_his_statements"]
 keywords = ["refusal", "declined", "bless", "ingest", "C ABI", "elaboration", "blocked", "promotion"]
 
 # --- the last round he answered, from `217` -----------------------------------
@@ -1662,7 +1662,7 @@ says = "A predicate entry may name how its region was earned, after the region a
 promotion = "Two derivations, written blind and in parallel from the ratified marker ruling, then each handed the other and resumed to attack it. Both conceded to the other on the thing they had got wrong and the result is neither's opening position.\n\nThe token is `construction` rather than `proof`, conceded by the seat that proposed `proof`, on the other's argument turned against its own file: a warranted axis can sit on a one-expert row, so `proof` makes a claim about the sentence inside a field about an axis, which is the row-level and axis-level confusion both files independently diagnosed in `sentence_kind`. It is also the corpus's own word, in 80 registry fields. The locus is the values side, conceded by the seat that proposed the slug side, because putting the marker there makes marking and obliging one act with nothing to keep in step.\n\nThe clause and the `evidence` obligation are the synthesis and were in neither opening file. One seat required a resolvable citation and withdrew it, because a genuinely new mechanism has no row to cite and the requirement bites hardest exactly when a finding is new. The other offered a prose clause and said in its own file that the arm checking it was the weakest thing in the file, carrying the defect this crate documents about its own retired word list. Obliging `evidence` instead grades nothing and moves the check off the prose: a well-phrased restatement costs seconds, a run that varies an axis and reports no movement does not.\n\nPer-axis rather than per-row is measured twice over disjoint evidence: 25 rows carry a universal and a bounded region together, and 6 of 8 `theorem` rows cannot be stated correctly at row granularity. Unmarked claiming nothing is the only one of four candidate defaults that keeps the ratified ruling's own `note` literally true.\n\nWhat the two agree on by having read the same paragraph rather than by two instruments is recorded in both files and excluded from the above: the word warrant itself, that `exhaustive` may not carry `any`, and that the shipped checker reads one side only."
 because = "The ruling this descends from names the spelling as the panel's, and under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough."
 note = "**`sentence_kind = \"theorem\"` is the bare-token marker already shipped and already broken**, which is why the tokens are not spelled `argued`, `measured` or `proof`. Of eight `theorem` rows one writes a universal, five write a sweep-shaped span and two write nothing, and one is a universal sentence holding at widths 3 to 7 and nowhere else. `proof` becomes admissible only if that row-level word is retired first, which is a conditional rather than a preference and is checkable in one grep.\n\n**`swept` is optional and exists to bound an ambiguity rather than to carry information.** With only two tokens an unmarked entry is permanently ambiguous between swept and predating the marker; with `swept` available that ambiguity is confined to a set that only shrinks.\n\n**What this costs, said here rather than left to be found.** Some constructions have no differential control available and never will, and the `evidence` obligation forces those to either a weaker warrant or a probe written to satisfy it. That is the known price of moving the check off the prose.\n\nTwo live violations found while deriving this, neither caused by it: a predicate writes `operation: operation any` where `dimension::operation` declares that inadmissible in bold in its own `grammar`, and six values sides bind more than one thing, two packing an undeclared axis inside a legitimate slug and the rest stating two regions on one axis inside one array element. The shipped arm checks the slug side only and sees none of them.\n\n**And the corpus is written in two dialects**, which neither seat knew before the attack phase: 139 of 527 entries drop the axis word from the values side entirely, `\"total_width: 6\"` against `\"total_width: W in 3..=7\"`, accounted for by two whole files. The slug side is uniform across both. Any arm reading the values side meets that first."
-provenance = ["panel::202608072330_the-numeral-canon-panel::219_kiselyov_the_marker_spelling::#r3-where-we-genuinely-differ-on-a-design-call", "panel::202608072330_the-numeral-canon-panel::220_orchard_the_marker_spelling::#3-where-we-genuinely-differ-and-what-decides-it"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t219_kiselyov_the_marker_spelling::r3_where_we_genuinely_differ_on_a_design_call", "panel::t202608072330_the_numeral_canon_panel::t220_orchard_the_marker_spelling::t3_where_we_genuinely_differ_and_what_decides_it"]
 keywords = ["warrant", "marker", "spelling", "construction", "exhaustive", "swept", "predicate", "values side", "token", "clause", "evidence", "theorem", "per axis"]
 
 [[ruling]]
@@ -1676,7 +1676,7 @@ says = "The predicate notation distinguishes three things where it distinguished
 because = "Across one topic's four files, 82 findings carried no width universal at all, against eighteen firings of the thread universal and thirty-nine of the target-feature one. Under I13 an absent axis says the finding holds in no situation where that axis exists, so read literally that topic held at no width anywhere in the library, which is not what any of its authors meant. The gap was in the notation rather than in the findings: a width-free argument had no honest spelling, so its authors wrote nothing and the notation read that as the strongest possible negative."
 answers = ["what_a_proof_marker_is_against_a_measurement"]
 note = "This is an append to I13 and invalidates nothing beneath it: every existing predicate still means exactly what it meant, and the never-widen-in-place rule is untouched, which is why declining the restatement pass costs nothing. What it does not settle is the marker's spelling or where a checker enforces the distinction, both of which are the panel's. The obvious failure to guard is a sweep relabelled a proof, and the test is the same one the notation already uses: name the construction that makes the width unable to enter, or it was a sweep."
-provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-predicate-notation-gains-two-markers"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t217_op_the_last_round_and_the_panel_finishes_alone::the_predicate_notation_gains_two_markers"]
 keywords = ["predicate", "proof", "measurement", "marker", "width", "universal", "bounded range", "exhaustive", "I13", "notation"]
 
 [[ruling]]
@@ -1696,7 +1696,7 @@ lack the actual solutions and need to find them.
 because = "The fork presumed a trade. Ranking accuracy above performance answers a different question from the one the design poses, and a placement that buys accuracy by giving up speed has changed the question rather than settled it."
 answers = ["which_accuracy_target_the_accuracy_intent_names"]
 note = "What this does not do is pick the interior placement. It says the placement is chosen by which one is accurate enough at full speed, so the 15.5x measurement remains a fact about two candidate placements and stops being an argument for the slower one. Where no arm is currently known that is both, the honest report is that the arm has not been found, and that is a finding rather than a licence to take a side. His spelling is kept as he typed it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-accuracy-target-he-refuses-the-trade-rather-than-the-reading"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t217_op_the_last_round_and_the_panel_finishes_alone::the_accuracy_target_he_refuses_the_trade_rather_than_the_reading"]
 keywords = ["accuracy", "performance", "precision strategy", "general computing", "trade", "placement", "chain", "efficiency"]
 
 [[ruling]]
@@ -1717,7 +1717,7 @@ because = "Asking at what rate one objective yields to another asks for a single
 answers = ["the_exchange_rate_a_preference_yields_at"]
 instead = "Where a conflict between objectives arises, the arm states in words why it resolves the conflict the way it does, and that justification goes in the record beside the arm."
 note = "Silence was on the option list and was not chosen, so this is not a licence to leave a conflict unexplained. The distinction is that the reason is local and written rather than global and derived. A million small implementations is the intended shape rather than a failure mode to be refactored away later, which bears on any review that would flag the count as duplication."
-provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-exchange-rate-there-is-no-rate-because-there-is-no-generalisation"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t217_op_the_last_round_and_the_panel_finishes_alone::the_exchange_rate_there_is_no_rate_because_there_is_no_generalisation"]
 keywords = ["exchange rate", "patchwork", "arms", "const predicate", "small wins", "generalisation", "objectives", "justification", "I13"]
 
 [[ruling]]
@@ -1731,7 +1731,7 @@ says = "The rounding mode vocabulary is `toward_zero`, `floor`, `ceil`, `half_up
 because = "On a signed domain the retired word named two different operations. Bit-drop measures equal to floor on every row and differs from toward-zero on signed rows only, so a reader coming from the hardware and a reader coming from C would have understood the same word as two operations that genuinely differ."
 answers = ["the_rounding_mode_vocabulary"]
 note = "The factual half was settled by measurement before the question was put and was never contested; only the naming was open, which is why this sat unanswerable for as long as it did while reading like a technical question. What the panel had argued was two spellings of the same retirement, so no position is overturned by this."
-provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-rounding-vocabulary-retires-the-ambiguous-word"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t217_op_the_last_round_and_the_panel_finishes_alone::the_rounding_vocabulary_retires_the_ambiguous_word"]
 keywords = ["rounding", "vocabulary", "truncation", "trunc", "toward_zero", "floor", "ceil", "half_up", "half_even", "stochastic", "bit-drop"]
 
 [[ruling]]
@@ -1746,13 +1746,13 @@ promotion = "Two seats on different personas. 269 audited the two earlier reads,
 because = "The vocabulary ruling closed the set at six names and said nothing about what each denotes, so the denotation is the one the name carried in the source the ruling adopted, unless something later with a human in the loop changed it. Nothing did. The derivation (`a42f0b17`) precedes the ratification (`807d4b77`), and the first tie rule in code (`9b612941`) came five hours after the ratification with no design sentence above it. The code is the leaf tier and is corrected to the design, never the reverse. The reader hazard from Java and Python cuts both ways, since MATLAB's default nearest is this reading, so the hazard is answered by a note on the name and not by the name's denotation."
 note = "**A note travels with the name, as the floor note travels with the retired word**: `half_up` is not Java's or Python's `HALF_UP`; on a signed domain a tie at `-2.5 q` goes to `-2 q`. A reader wanting ties away from zero writes the alias.\n\n**What this corrects below the canon.** A tie rule reading the sign under the name `half_up` is a defect against this row. `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping` holds unchanged, since its `holds` region names `half_up` under this reading. `question::which_tie_direction_an_unqualified_nearest_names` asked on the premise that ties away is a member of the six, and its `asks` is amended beside this row.\n\n**The two-names option is not taken.** It widens a set a human-ratified ruling closed at six, and the trade it answers, translation equivariance against zero mean error, already has `half_even` on the other side of it."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::#1-the-setting-fixed-precisely-so-the-claims-can-be-exact",
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::#3-the-second-theorem-monotonicity-does-not-discriminate-either",
-  "panel::202608072330_the-numeral-canon-panel::125_knuth_rounding_cold_derivation::#7-the-vocabulary-hazard-which-is-worse-than-a-spelling-fork",
-  "panel::202608072330_the-numeral-canon-panel::269_giesen_half_up_is_floor_of_x_plus_a_half::#the-answer",
-  "panel::202608072330_the-numeral-canon-panel::269_giesen_half_up_is_floor_of_x_plus_a_half::#consolidation-ready-statement",
-  "panel::202608072330_the-numeral-canon-panel::270_dolan_half_up_denotes_ties_away_from_zero::#revision",
-  "panel::202608072330_the-numeral-canon-panel::270_dolan_half_up_denotes_ties_away_from_zero::#what-125-changes-and-why-it-outweighs-what-stood-before",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::t1_the_setting_fixed_precisely_so_the_claims_can_be_exact",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::t3_the_second_theorem_monotonicity_does_not_discriminate_either",
+  "panel::t202608072330_the_numeral_canon_panel::t125_knuth_rounding_cold_derivation::t7_the_vocabulary_hazard_which_is_worse_than_a_spelling_fork",
+  "panel::t202608072330_the_numeral_canon_panel::t269_giesen_half_up_is_floor_of_x_plus_a_half::the_answer",
+  "panel::t202608072330_the_numeral_canon_panel::t269_giesen_half_up_is_floor_of_x_plus_a_half::consolidation_ready_statement",
+  "panel::t202608072330_the_numeral_canon_panel::t270_dolan_half_up_denotes_ties_away_from_zero::revision",
+  "panel::t202608072330_the_numeral_canon_panel::t270_dolan_half_up_denotes_ties_away_from_zero::what_125_changes_and_why_it_outweighs_what_stood_before",
 ]
 keywords = ["rounding", "half_up", "tie", "ties toward positive infinity", "ties away from zero", "floor(x + q/2)", "translation equivariance", "alias", "HALF_UP", "ROUND_HALF_UP", "roundTiesToAway"]
 
@@ -1772,7 +1772,7 @@ because = "He had said in the same round that specifics are out of his depth and
 instead = "The corpus of his statements is where a question filed as his gets answered from. `.data/op-responses/` holds his words verbatim across the whole arc, `INTENTS.md` holds the ratified intents, and the ruling namespace holds what he has stamped. A question that feels unanswerable is usually one nobody searched for in the words the answer would be written in."
 supersedes = ["two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate"]
 note = "It does not supersede that ruling's substance, which stands unchanged and is what makes this workable; it supersedes only the residual reading that a question could still be routed to him when the panel found one hard. Read together: the experts propose, the coordinator gates, and there is no third party to appeal to. The standing steer he gave minutes earlier bounds how this is used, in his words, that the ratification is to be sped up and the canon finished, and that speed comes from deciding rather than from being careless, dismissive or naive."
-provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#and-then-he-left"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t217_op_the_last_round_and_the_panel_finishes_alone::and_then_he_left"]
 keywords = ["autonomy", "handover", "panel", "coordinator", "decider", "op", "corpus", "canon", "silence"]
 
 # --- the numeric introduction door -------------------------------------------
@@ -1788,7 +1788,7 @@ says = "None of the four recorded options answers the question, and the bound th
 promotion = "Two instances, blind and separately dispatched on different personas, each with its own committed probes and controls. Blindness is checkable rather than asserted: both worktrees were cut from `0cac9beb`, and the second seat's merge `2ff7ae29` is not an ancestor of the first seat's head `176ced90`, so neither branch could show the other's file to a `git log`.\n\n**What each varied, and the tier is over the intersection.** Seat 238 compiled the four options against a checked crate and against the exempt one: the first refused at three of the six constants with two controls building, the fourth measured at ten hard errors with four controls at zero, the third found to have no mechanism short of changing another repository, and the second's two stated costs both measured false. It also built the existence proof, a ten-coordinate door with an outside crate declaring a format at radix 3 with a negative exponent and a half-step phase, naming no machine type on any line. Seat 239 compiled the same first option and refuted it at `BASE` and `MIN` specifically, in shipped and tested code, and reached the same fifth answer from the constants rather than from the door.\n\n**They intersect on three things and each was measured on both instruments**: that no recorded option is correct, that the two-type bound does not survive, and that the coordinate set is what the door carries. Both also independently found the same defect in the question's own note, that `min_adt_const_params` is the wrong gate name, since it refuses the crate's real `Width` shape for having a private field on a public struct while `adt_const_params`, which the workspace register carries in its allowed tier, accepts the identical source.\n\n**They disagree about the count, and this ruling does not resolve it.** Seat 238 answers one type per coordinate; seat 239 answers however many the ten coordinates need, which it puts at more than two and fewer than ten, reserving whether the signed coordinates share a type. Two instances agree about the intersection of their claims and never the union, so the count is outside what this ratifies. An earlier draft of this row asserted seat 238's count in its `says` while also calling the division open, which is both an overreach and a contradiction inside one sentence.\n\n**The refusal count is three and an earlier draft said six.** What was measured is that three constants carry values `Width` cannot hold; the six is a claim about the declared types rather than the values, and two of those six ship only values `Width::bits` accepts, `Quantum::SLOPE` at 0 and 1 and `Format::PHASE_DEN` at 1 and 2. The arithmetic-impossibility conclusion rests on the three and does not need the six."
 because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. The deciding fact is that the option list was refused by compilation rather than by argument, on two instruments that did not read each other, and that the refutation of the first option is arithmetic: a `u32` count cannot hold a negative bound, so no amount of design preference reopens it.\n\nThe question's own note argued for the first option on the ground that nine of the ten constants close under it. Seat 238 compiled the option and measured the figure at one; seat 239 refuted it separately at `BASE` and `MIN`, which are negative in shipped and tested code. Neither figure was in the registry, and the claim had stood there one build from refutation."
 note = "**The positive shape is ratified only as far as both seats reached, and no further.** Seat 238 proposes that the bound stop being a count of types and become a position rule, that in the introducing crate a bare primitive appear only in the constructor and accessor of a primitive that crate itself defines, plus the const generic parameter position. That is one instance and is recorded as a proposal rather than carried here. Seat 239 leaves the division of the signed coordinates open in the same terms.\n\n**A design correction is owed and is not this ruling's to make.** `arvo-format/DESIGN.md.tmpl:235` states the two-type bound as the crate's own design, and it is now known to be wrong. The design tier changes before the code under it does.\n\n**One test-gate finding travels with this**, from seat 238 and verified: `the_format_inventory_admits_a_member_this_crate_does_not_know_about` is the only test asserting the ratified open-inventory clause, and it lives inside the crate-wide exemption, so it asserts that clause in the one crate where the rule it is about cannot refuse anything. It is narrow twice, because its `Ternary` also borrows the crate's own ambient, quantum and slot range and so writes two of the ten coordinates rather than all of them."
-provenance = ["panel::202608072330_the-numeral-canon-panel::238_kiselyov_what_the_door_may_carry_out::#5-the-answer", "panel::202608072330_the-numeral-canon-panel::239_what_the_numeric_introduction_door_may_carry_out::#the-fifth-option"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t238_kiselyov_what_the_door_may_carry_out::t5_the_answer", "panel::t202608072330_the_numeral_canon_panel::t239_what_the_numeric_introduction_door_may_carry_out::the_fifth_option"]
 keywords = ["door", "bare primitive", "exemption", "associated constant", "coordinate", "Width", "two types", "primitive introductions", "adt_const_params", "position"]
 
 # --- what a platform-width type is ---------------------------------------------
@@ -1805,7 +1805,7 @@ promotion = "Two seats, on different personas, each compiling its own instrument
 because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. Both seats compiled the same binding-time line from opposite starting points, with controls on every refusal, and neither result depends on reading the other's conclusion, which is what the mechanism-versus-sentence distinction in `promotion` is for. The reconciliation is unusually checkable: every agreement it lists names what each seat varied to reach it, the one disagreement in it is named and fixed rather than smoothed over, and its own author opened raw probe output rather than the other seat's prose before writing anything down."
 obligation = ["a_platform_sized_unsigned_integer_at_an_api_position"]
 note = "**Answering beyond the four recorded options is licensed by `ruling::the_option_set_is_not_a_boundary`**, which already lets the panel converge on a shape nobody wrote down; both seats independently found the four incomplete before either read the other.\n\n**The region, in the grammar `dimension.toml` admits**, which is 260's own table restated in the spelling 265's reconciliation corrects it to (`dimension::operation` and `dimension::strategy` both forbid the bare `any` 260 wrote, and `dimension::build_profile` and `dimension::toolchain` have no `any` form at all): within one compilation, `total_width: W in {16, 32}` established, `W = 64` refused by the shipped `Slots` ladder and not by this ruling; `fraction_width: F = 0`; `signedness: signedness in {unsigned, signed}`; `radix: radix = 2`; `phase: phase = 0`; `operation: membership and cardinality only, no arithmetic run`; `occupancy: occupancy any, by construction`; `threads: threads any, by construction`; `target_features: target features any, by construction`; `toolchain: rustc = 1.98.0-nightly (nightly-2026-05-28), edition = 2024`.\n\n**What the region wants and cannot have.** `dimension.toml` declares no axis indexing the compilation target's pointer width, so no predicate anywhere, this one included, can say \"holds at 64-bit targets\" in the registry's own notation. `260_probes/p04` counts it directly: 25 declared axes, 21 used, zero matching the target's width by name, against `target_features` and `container` as a positive control on the same census. Both seats independently name the pointer width as passing `dimension.toml`'s own test for an axis, on different personas, which is the header's own bar for a second reading; the declaration itself is not made here, because it was not this dispatch's question, and 265 leaves open whether the axis is the pointer width itself or the wider target triple it is one projection of, which a row keyed on the narrower spelling would then have to be worked around.\n\n**The 64-bit ceiling does not discharge the obligation this bears on.** `obligation::a_platform_sized_unsigned_integer_at_an_api_position` asks for a width a slot index carried in an `i64` cannot reach: that representation caps a declared width at 62, refused three ways at 64 bits, and the obligation's own errno and `GetLastError` ranges were measured to hold at 32 and fail at 16 within it. This ruling establishes that such a ceiling is a fact about one representation and not about what kind of thing a platform-width type is, which is what keeps it from reopening this question; naming the type is not delivering the obligation, and what discharges it is a host type wide enough for the target's pointer width, or a range restated as a count or an exclusive bound.\n\n**`Cap` is out of scope.** The question's own keywords carry it beside `USize`, and it names a different position, a const-generic capacity, which `ruling::the_numeric_door_carries_the_coordinate_set_and_the_two_type_bound_is_not_canon` already answers as a coordinate the door carries rather than a numeral. Nothing here touches it.\n\n**One finding travels with this and is not fixed here, because no round is open.** `arvo-format/src/slots.rs`'s own `E0277` diagnostic tells an outside implementor the trait is open and that what it owes is the `ADMITTED` obligation; `ADMITTED` then refuses every width past 62 unconditionally regardless of what an implementor declares, so the crate contradicts itself in two sentences about one trait."
-provenance = ["panel::202608072330_the-numeral-canon-panel::260_kiselyov_what_a_platform_width_type_is::#1-the-answer-as-a-composition", "panel::202608072330_the-numeral-canon-panel::260_kiselyov_what_a_platform_width_type_is::#3-the-measurements", "panel::202608072330_the-numeral-canon-panel::265_lattner_what_a_platform_width_type_is::#1-the-answer", "panel::202608072330_the-numeral-canon-panel::265_lattner_what_a_platform_width_type_is::#9-reconciliation-with-seat-260"]
+provenance = ["panel::t202608072330_the_numeral_canon_panel::t260_kiselyov_what_a_platform_width_type_is::t1_the_answer_as_a_composition", "panel::t202608072330_the_numeral_canon_panel::t260_kiselyov_what_a_platform_width_type_is::t3_the_measurements", "panel::t202608072330_the_numeral_canon_panel::t265_lattner_what_a_platform_width_type_is::t1_the_answer", "panel::t202608072330_the_numeral_canon_panel::t265_lattner_what_a_platform_width_type_is::t9_reconciliation_with_seat_260"]
 keywords = ["platform width", "USize", "ISize", "Cap", "storage", "format", "target-indexed family", "pointer width", "binding time", "admission rule", "locus clause", "Slots", "ADMITTED", "axis", "degenerate", "orthogonal axis"]
 
 # --- composition contracts above the numeral, and the proposals they were taken from ---
@@ -1823,9 +1823,9 @@ ratifies = ["a_composed_expressions_region_is_never_inherited_from_its_parts"]
 note = "The law row this rests on, `law::associativity_of_a_composed_saturating_add_and_subtract`, carried the exact measured witness with no `probe` row and no `evidence` edge naming an instrument: across the two law files, fourteen of twenty-four `law` rows carry a `witness` and one carries an `evidence` edge, and the lint built for this class does not see any of them, since it reads the `proposal` namespace only. This ruling lands `probe::a_composed_saturating_add_then_subtract_fails_associativity_on_82_percent_of_triples`, citing the committed `79_probes` and `215_probes` sources and outputs, and wires it to the law row as `evidence`, which is the mechanical repair both independent reads of this cluster asked for. Nothing about the claim itself needed a second look. The region: `total_width: W = 8, fraction_width: F = 0, signedness: signedness = unsigned, overflow_policy: overflow policy = saturate, operation: op pair {add, sub} composed, threads: threads any, target_features: target features any`, the law row's own coordinates, `threads any` and `target features any` carried as-is because the source states them on a semantic argument about pure value functions rather than on a run."
 gap = "The four-way case split that exactly characterises the holding region is a condition over operand values rather than over any declared axis, so it is not written as a predicate here and neither the law row nor this ruling states one. A region the notation cannot state is a region no arm can be gated on, and it is the sharpest instance of that in the corpus."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27",
-  "panel::202608072330_the-numeral-canon-panel::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::112",
-  "panel::202608072330_the-numeral-canon-panel::215_kiselyov_second_read_the_algebraic_laws::442",
+  "panel::t202608072330_the_numeral_canon_panel::t79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27",
+  "panel::t202608072330_the_numeral_canon_panel::t79_fallin_attacking_the_two_cold_derivations_on_derived_laws::112",
+  "panel::t202608072330_the_numeral_canon_panel::t215_kiselyov_second_read_the_algebraic_laws::442",
 ]
 keywords = ["composition", "region", "inheritance", "derivation", "saturating", "associativity", "82.7484", "mutant control", "R2"]
 
@@ -1842,8 +1842,8 @@ ratifies = ["a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none"]
 note = "The proposal this ratifies fuses two measurements over two regions in one sentence, and its own `gap` field says so and asks for the split: an absorption half with two arrivals and an end-to-end half with one. This ruling promotes the absorption half only, in the words above rather than the proposal's own fused sentence, and leaves the proposal row itself untouched as the record of what was argued. **The end-to-end half stays unratified.** Both independent readings of this cluster found more than the proposal's own `gap` claims about it: the end-to-end probe's own cross-routine control, comparing min-plus against a max-plus \"clean\" column, is an artefact of how that source encodes unreachability rather than a genuine control, so the probe's `standing = \"sound\"` is better read as `uncontrolled` under the schema's own vocabulary; and absorption itself accounts for only 8.9% (width 3) and 4.0% (width 4) of the wrapping failures the end-to-end probe measures, the remaining 91-96% being a different, unfiled mechanism (overflow mapping in the direction the min-plus reduction discards). Neither of these is fixed here: they bear on the end-to-end half, which this ruling does not touch, and they are recorded so the next seat does not re-open ground already covered. A related one-expert row, `proposal::a_min_plus_computation_needs_monotonicity_as_well_as_an_absorbing_top`, already measures both properties together and is a real corroborating context for why absorption alone does not close the obligation, but it carries no `obligation` edge to this cluster and this ruling does not wire one; that is additive work for whoever next touches this cluster. Region: `total_width: W in 2..=10, fraction_width: F in 0..=W, signedness: signedness = unsigned, overflow_policy: overflow policy in {wrap, saturate}, operation: operation = add, arity: arity = 2, threads: threads = 1`."
 gap = "Unsigned only; the row's own note already says the sweep is silent about a signed top, and a min-plus consumer would need that answered too. Monotonicity and the end-to-end algorithmic question are open."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#34-a-min-plus-fold-needs-an-absorbing-top-and-only-saturation-supplies-one",
-  "panel::202608072330_the-numeral-canon-panel::215_kiselyov_second_read_the_algebraic_laws::528",
+  "panel::t202608072330_the_numeral_canon_panel::t35_mcsherry_what_the_layers_above_need_from_the_numeral::t34_a_min_plus_fold_needs_an_absorbing_top_and_only_saturation_supplies_one",
+  "panel::t202608072330_the_numeral_canon_panel::t215_kiselyov_second_read_the_algebraic_laws::528",
 ]
 keywords = ["min-plus", "tropical", "absorbing top", "saturation", "wrapping", "63 cells", "group cancellation", "absorption"]
 
@@ -1860,10 +1860,10 @@ ratifies = ["configuration_is_not_composition_and_a_composite_is_a_primitive"]
 note = "The proposal's own `says` states the equality clause as \"equality transports through a construction for free where a predicate never does,\" with no disambiguation between two readings that come apart on any construction that normalises. On the congruence reading (two values equal under the base's lifted equality denote the same thing), the clause is what `110` measured and it holds. On the adequacy reading (the lifted equality is the construction's own equality, so two values denote the same thing exactly when the lifted relation holds), the clause is false on a construction the sibling row already names: a stored-pair rational at base width four, checked directly rather than taken on the proposal's word, has zero congruence violations of 57,600 ordered pairs and 688 adequacy violations of the same 57,600, first witness `(0/1)` against `(0/2)`, with a sabotage control (the rational's denotation replaced by the lifted relation itself, so the two must agree) reporting zero as required. A pair construction that does not normalise reports zero on both readings, which is the control case a reader needs to see the two readings come apart at all. This ruling promotes the congruence reading, which is what the cited evidence establishes, and does not promote \"for free\" read as adequacy, which the same check refutes. The count on the congruence claim specifically is one expert (`110` alone); it is carried here as an established fact rather than as a two-expert ratification, and the ruling's own `because` says so rather than folding it into the two-expert count that genuinely applies to the distinction, the closure and the predicate clause. The proposal's `provenance` cites `161` twice by line number and not the three establishing files (`110`, `154`, `157`) the L28/L29 clauses actually rest on; a reader cannot get from the row to the convergence without opening `161` itself and following its own citations. This ruling's `because` supplies them directly rather than repairing the proposal's `provenance`, which stays as the record of what was argued and by whom. Region: normative for the distinction and the closure, no measured region (definitional, consistent with this panel's practice for concept-defining sentences); the predicate clause carries `109` section 6, `110` section 5 and F112-13/F112-14's coordinates informally rather than as a declared predicate, since none of the source files states one; the equality-congruence clause holds at `total_width: W = 4` on the rational and pair constructions checked directly for this ruling, and at whatever coordinates `110`'s own four constructions (product2, complex, dual, interval) were run at, which `110` does not state as a predicate either."
 gap = "Whether a design should read \"equality transports for free\" as licensing a derived `PartialEq` on a composite is not answered here. That is a design question resting on the congruence half only, and the adequacy half staying false on normalising constructions is what makes it a real question rather than a formality."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::328",
-  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::350",
-  "panel::202608072330_the-numeral-canon-panel::110_willsey_the_primitive_derived_cold::1048",
-  "panel::202608072330_the-numeral-canon-panel::110_willsey_the_primitive_derived_cold::1059",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::328",
+  "panel::t202608072330_the_numeral_canon_panel::t161_leroy_the_canon_candidate_for_the_primitive::350",
+  "panel::t202608072330_the_numeral_canon_panel::t110_willsey_the_primitive_derived_cold::1048",
+  "panel::t202608072330_the_numeral_canon_panel::t110_willsey_the_primitive_derived_cold::1059",
 ]
 keywords = ["configuration", "composition", "construction", "composite", "algebra", "one concept", "transformer", "predicate on the base", "equality transports", "congruence", "adequacy", "refinement"]
 
@@ -1880,9 +1880,9 @@ ratifies = ["the_format_concept_carries_three_things_upward_and_compositions_owe
 note = "The proposal this ratifies welds two authors' clauses into one row: the \"three things\" list (Stam, `60`) and the statability argument (SPJ, `63`), which `237` names explicitly as two propositions by two authors and says promoting the row whole would promote both in one act. `240` seconds only the statability half, by a route independent of both `60` and `63`. This ruling promotes the statability half alone, in narrowed words rather than the proposal's own fused sentence, and leaves the list half at one expert (Stam alone), unpromoted. There is a live filing tension neither this ruling nor either independent read resolves: `64` and `240` both read the statability clause as chain content rather than format content, which the registry's `topic = \"the_format\"` field on the underlying proposal does not reflect. This ruling keeps `topic = \"the_format\"` for continuity with its own provenance and the row it ratifies, and records the tension rather than resolving it; a later ruling may retitle it under `the_chain` without this one needing to be superseded, since the substance does not change with the topic label. Region: normative, no measured region on either the list half or the statability half, which is definitional/statability content and carries no instrument on this panel's own account."
 gap = "The list half (width algebra, named adaptation, exactness predicate) stays at one expert and is not addressed here. Which topic the statability clause should be filed under is open."
 provenance = [
-  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::707",
-  "panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::292",
-  "panel::202608072330_the-numeral-canon-panel::240_the_format_layer_derived_from_its_denotation::1116",
+  "panel::t202608072330_the_numeral_canon_panel::t63_spj_consolidation_the_format_concept::707",
+  "panel::t202608072330_the_numeral_canon_panel::t240_the_format_layer_derived_from_its_denotation::292",
+  "panel::t202608072330_the_numeral_canon_panel::t240_the_format_layer_derived_from_its_denotation::1116",
 ]
 keywords = ["format concept", "composition", "statability", "expressible form", "signature", "chain", "intermediate", "V x V -> V", "welded row", "C10"]
 
@@ -1901,8 +1901,8 @@ because = "Under the settled ratification model the experts propose and the coor
 gap = "Not gated, and still the panel's: a composition's datum, which `ruling::configuration_is_not_composition_and_a_predicate_never_transports_for_free` leaves to each construction; that a type may hold a datum as a value at sole occupancy, as a statement of its own, at one cold read; values at shared placements; what a value stores, a slot or a pattern; one canonical encoding; the count and crate of value types; the question's constructor-level option; soundness against bestness of a derived numeral. A sized type holding one value at sole occupancy is presupposed by `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves` and by `ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, and that presupposition, not this row, is what a value type at sole occupancy builds on. `proposal::a_value_is_the_sole_occupancy_placement_of_a_declared_signature` is not ratified by this row and stays at one expert."
 note = "The question row carries the answer for the format arm only, and its other arms stay open there. The ratified proposal's own `answers` edge names the whole question; this row's `says` is what bounds it. An earlier wording of this row, on the same branch before it landed, also ratified the sole-occupancy clause; the review that followed found the first read had been handed that clause, and the coordinator narrowed the gate to the datum clause."
 provenance = [
-  "mock::research/202611122300_value-stance-second-read::#a-is-a-datum-of-a-format-one-point-of-the-ambient-domain",
-  "mock::research/202611130520_datum-a-cold-second-read::#4-whether-the-two-reads-close-the-question",
+  "mock::research::t202611122300_value_stance_second_read::a_is_a_datum_of_a_format_one_point_of_the_ambient_domain",
+  "mock::research::t202611130520_datum_a_cold_second_read::t4_whether_the_two_reads_close_the_question",
 ]
 keywords = ["datum", "point", "ambient domain", "representable set", "member", "saturation", "fibre", "adaptation", "set-valued", "composition", "Q4"]
 
@@ -1919,7 +1919,7 @@ I’d say this should be either a cargo feature or const/generic/trait configura
 '''
 because = "`ruling::the_overflow_panic_is_permitted_and_bounded` makes the panic the go-to on debug builds for what typestate cannot catch and asks to be read loosely, and a consumer that saturates or wraps by meaning has a debug build that aborts on the meaning. The two experts split on it, and he was asked."
 note = "He was asked: in a debug build, should an operation abort when it saturates and the type declared saturation as its meaning? The options were [1: marker says it is meant, abort by default, a marker in the type says completion is the meaning and then no abort, both markers shipping from the first landing] [2: always abort, as the ratified row is written, every overflow asserting in debug, declared policy or not] [3: never for a declared policy, a type that declares saturation or wrapping never asserts, only undeclared overflow does] [4: arvo's panel decides]. He answered in his own words, quoted above, and chose none of the four. The intent is that the consumer configures the abort; the two vehicles he names are a proposal, and `proposal::the_debug_check_is_a_parameter_the_consumer_names` is the one the value crate takes. The quote keeps the typographic apostrophe of the capture."
-provenance = ["mock::design_rounds/202611130550-m67x/202611130550-m67x_topic.the-value-reads-the-placement-and-chooses-its-check::#what-this-round-is-for"]
+provenance = ["mock::design_rounds::t202611130550_m67x::t202611130550_m67x_topic::what_this_round_is_for"]
 keywords = ["debug abort", "debug check", "overflow", "panic", "cargo feature", "type parameter", "configurable", "consumer", "Abort", "Quiet"]
 
 # --- the overflow default, and the old families -----------------------------------
@@ -1935,7 +1935,7 @@ I think this shouldn’t be called one way, but a default arvo may ship that is 
 '''
 because = "`ruling::wrap_or_clamp_stays_open_and_both_get_priced` holds open which of wrap and clamp `Warm` names, in his name, and the value crate's aliases therefore take their adaptation as a parameter with no default. He was asked to close it and declined to close it that way, which leaves the axis open and adds a shipped default above it."
 note = "He was asked what a `Warm` value becomes when it overflows in a release build, with the priced page and the second plan in hand. The options were [a: wraps, integers and fixed point alike] [b: saturates, integers and fixed point alike] [c: integers and platform-width indices wrap, fixed-point quantities saturate] [d: `Warm` names no overflow behaviour, every alias keeps naming its adaptation]. He took none of the four and answered the question put in other terms, which is why the row is a `ruling` and not an `intent`, a want with no question in front of it.\n\nThe answer narrows `question::does_warm_wrap_or_clamp` rather than closing it, so no `answers` edge sits here: what is left for the panel is which standard the default follows and how a per-case override is spelled. The wrapper spelling is floated as a candidate mechanism rather than ordered, and it is a question rather than a sentence in the capture. `mock/research/sketches/202611131030_overflow-wrapper-rebinding/` settles the compile half of it: the re-binding is expressible and admitted, a value crosses between two sibling signatures through three public doors, and the default MathWorks documents for `fimath`, `Nearest` with `Saturate`, is a signature the value tier admits. Whether a named crossing is wanted beside that composition is a design question.\n\nHis words are in the capture `202611130816_arvo-overflow-defaults-and-the-canon-double-check-nobody-did.md` in the workspace's store of his responses, under \"Warm\", answered at 08:53. Asked again on 13 November whether to file the question, he said \"I have answered this already. Make sure the answers I've given have been filed from before.\" This row is that answer. The quote keeps the typographic apostrophe of the capture."
-provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#the-overflow-default"]
+provenance = ["mock::research::t202611130950_canon_double_check::ops_words::the_overflow_default"]
 keywords = ["overflow", "default", "generic", "override", "per case", "Saturating", "Wrapping", "wrapper", "parity standard", "MATLAB", "standard-paired", "contracts", "composable"]
 
 [[ruling]]
@@ -1951,7 +1951,7 @@ I want them to return, in function/feature, but the shape the contracts and trai
 '''
 because = "Seven rows in `proposal-the-value-stance` say an old crate does not return, all at `one_expert`, two of them already superseded inside that file. He was asked what to do with them and answered about the families rather than about the crates, which is the distinction the rows blur."
 note = "The options were [a: supersede them with one row saying every family of old arvo returns on the current fundamentals, a crate's old name may go] [b: walk the six one by one] [c: leave them as proposals that bind nothing]. He took none of the three as put, and the answer cuts across them: the function returns, the crate name and the home do not survive by default.\n\nRead against the five refusals that say an old crate does not return, four agree with him on the function, `proposal::the_old_storage_crate_is_gone`, `proposal::the_old_mask_contracts_crate_is_gone`, `proposal::the_old_refit_crate_is_gone` and `proposal::the_old_bit_contracts_crate_is_gone`: each row's `instead` re-homes what its crate carried, and only the taxonomy differs, which this row holds open. The fifth, `proposal::the_old_numeric_contracts_crate_is_gone`, agrees on compare, `min`, `max` and the `constant` door and conflicts with his last sentence in one clause: it leaves `Abs`, `Recip` and `Sqrt` with the elementary functions that stay in a consumer in the first slice, where he has the arithmetic contracts on the standards as arvo's own ground. `proposal::the_old_numeric_contracts_return_as_arvos_own_and_the_crate_does_not` restates that row without the clause, at one expert. No standing is changed by this row; the reading is in `mock/research/202611130950_canon-double-check/CHECK.md`.\n\nThe quote keeps the ellipsis of the capture."
-provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#the-old-crates-that-a-row-says-do-not-return"]
+provenance = ["mock::research::t202611130950_canon_double_check::ops_words::the_old_crates_that_a_row_says_do_not_return"]
 keywords = ["old arvo", "families", "return", "function", "feature", "shape", "taxonomy", "rewrite", "contracts", "traits", "default impls", "arithmetic contracts", "standard"]
 
 # --- the default from the written history ------------------------------------
@@ -1970,7 +1970,7 @@ Also I am not about to answer hundreds of questions about canon rows to be ratif
 because = "Most of the designs are his, and what is not clearly his intent or did not come from him first likely has a ratification of his written down in prose somewhere, or a direct quotation."
 corrects = ["the_panel_finishes_the_canon_without_him", "an_ack_is_not_a_ratification"]
 note = "**What it corrects in `the_panel_finishes_the_canon_without_him`** is that row's last sentence, that nothing is parked awaiting him, and the reading that nothing may reach him again. The rest of that row holds: a canon question is derived from what he has said, argued among peers and gated by the coordinator, and his silence is not permission. What changes is that a row the written history shows he does not back, or that stands against the canon, is brought to him.\n\n**What it corrects in `an_ack_is_not_a_ratification`** is that ratification is reached only when the experts bring him a converged thing. That stays the route for whatever the written history does not show to be his. Beside that route there is this one: where the written history shows a row to be his intent or his call, his word here is what ratifies it.\n\n**Neither row is replaced**, which is why the edge is `corrects`: both are still cited for what they hold, and a citation of either could not be written to this row instead. A note that has him no longer available to ask, as the one on `the_demotion_is_partial_and_the_carve_out_is_a_rule_of_thumb` does, is read with this row: he is asked what this row brings to him and nothing else.\n\n**The sonnet agents and their number are the vehicle** he named for the reading, and are kept in the quotation for provenance. \"Provisional\" is his word, and what a provisional stamp is he had said on 2 November 2026: it still approves the work depending on it and is never a final say. This schema has no value for it, so a row left provisional keeps the `rung` it had and is named in the research note beside the reading.\n\n**He said it of the canon rows at large**, with the upstream repositories under discussion, and the coordinator carried it to this registry. **A row raised under it** says so in its `ratification`, with what was put to him when he said the words that show the row to be his and those words quoted, since the row itself was not put to him for ratification. **What is raised is what the row has him say**, its `says` and its `quote`. A `because` or an `instead` on a raised row is the panel's account unless the quotation carries it, and the raising does not make it his."
-provenance = ["mock::research/202611131500_claim-the-rows/NOTES::#his-words"]
+provenance = ["mock::research::t202611131500_claim_the_rows::notes::his_words"]
 keywords = ["default", "written history", "ratified by default", "provisional", "unratified rows", "sonnet agents", "not backed", "against the canon", "bring to him", "questions"]
 
 [[ruling]]
@@ -1985,7 +1985,7 @@ Both, scoped
 '''
 because = "The two rows read as a conflict once the August goal's finish line is taken for the canon's: one says nothing is finished until he ratifies, the other that nothing is parked awaiting him. Scoped, the first is about when one goal stopped and the second about how the canon is finished."
 note = "He was asked which of `ruling::the_run_ends_at_ratification_or_when_he_clears_it` and `ruling::the_panel_finishes_the_canon_without_him` stands today, with three options: [1: panel finishes, I ratify; the panel finishes the canon without him, its rows stay provisional until he ratifies them, and the August row is demoted] [2: ends at my ratification; the August row stands and the panel row is demoted] [3: both, scoped; the August row binds only that overnight goal, the panel row is the standing rule, both kept, each saying its scope]. He chose the third. It corrects a reading of the August row and replaces none of its sentences, and it changes nothing the ratified panel row says. So the panel row.s own scope, that it is the standing rule, is stated here in that row.s place: its note is not edited, since he kept the ratified rows. notes as they are."
-provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#which-of-the-two-finish-rows-stands"]
+provenance = ["mock::research::t202611130950_canon_double_check::ops_words::which_of_the_two_finish_rows_stands"]
 keywords = ["scope", "goal", "ratification", "panel finishes", "overnight", "August addendum", "standing rule"]
 
 [[ruling]]
@@ -1999,7 +1999,7 @@ If it’s a valid use case with known use then sure, we can consider it. However
 '''
 because = "`ruling::never_a_runtime_check_and_one_lowered_path` admits one runtime exception only he blesses, and the second act of `proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps` asked to be it. He blessed neither the door nor its removal, and set what would bring it back: a known use."
 note = "He was asked whether that second act, a runtime membership door at ingest for each datum, is the exception, with three options: [1: yes, blessed; the ingest door is the one runtime check arvo has and everything past it is proven] [2: no runtime door; validation is compile-time only, outside data comes in already typed, and the second act is struck] [3: door, but not arvo's; it belongs to the consumer or a crate above arvo, which calls arvo's typed constructor]. He took none of the three and answered in his own words. The hedge is his, \"I am not sure\", so this is direction at `stated`."
-provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#the-ingest-door"]
+provenance = ["mock::research::t202611130950_canon_double_check::ops_words::the_ingest_door"]
 keywords = ["ingest", "runtime door", "membership", "validation", "typestate", "known use", "exception"]
 
 [[ruling]]
@@ -2013,5 +2013,5 @@ Claim, then rework in one round
 '''
 because = "He chose, whole, the option whose rework names aliases keyed on strategy defaulting to `Warm` beside the carrier table, the debug abort and the seals. Warm is the preset he describes as the compromise that suits most default cases, in `ruling::each_preset_names_a_stated_intent`, and as the intuitive best choice for most every use case, in `ruling::warms_objective_is_the_intuitive_best_choice`, which is what a default is for."
 note = "He was asked on 13 November, about 06:15 UTC, which shape arvo's next steps take, the value crate branch having four things beside the record, one of them aliases without the strategy parameter. The options were [a: claim first, then rework the same branch in one round: carrier table to `arvo-placement`, debug abort as its own configurable axis, seals opened, aliases keyed on strategy defaulting to `Warm`; then the plan continues] [b: contracts first, then fit the value type under them] [c: back to a short arvo panel before any value code lands] [d: land as built, correct the four in follow-ups]. He chose a. What he wrote is the option's label, and the content he approved is in its text, so this is direction at `stated`, not ratified.\n\nIt is the strategy default and not the overflow default. What a value does on overflow is `ruling::a_shipped_overflow_default_is_a_generic_overridable_per_case`, a generic with a default perhaps following a parity standard, and `question::does_warm_wrap_or_clamp` stays narrowed by that, not closed by this. Defaulting to one preset closes nothing of `ruling::the_strategy_set_is_not_closed_at_four`."
-provenance = ["mock::research/202611130950_canon-double-check/OPS-WORDS::#three-earlier-answers-the-same-day-on-arvo"]
+provenance = ["mock::research::t202611130950_canon_double_check::ops_words::three_earlier_answers_the_same_day_on_arvo"]
 keywords = ["alias", "default", "Warm", "strategy parameter", "keyed on strategy", "compromise preset", "rework"]
