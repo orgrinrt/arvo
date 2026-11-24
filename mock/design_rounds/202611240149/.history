@@ -1,0 +1,50 @@
+399acb54 chore: lock src changelist 202611240149
+119b9ef1 chore: open src changelist 202611240149
+f2e1e0d0 chore: lock doc changelist 202611240149
+283c83b4 chore: take `search` from the lint pack and rewrite references
+c607a05b chore: prepare arvo for the v2 migration
+37e092ee chore: prepare arvo for the v2 migration
+432e9054 docs: record how arvo stands before the v2 migration
+ab49297a docs: land the bits review passes and the variance sketch
+25bf125c bench: land the linux records of 15 november
+c2069f36 chore: move the live lockfiles onto the current mockspace dev
+eb17dd15 feat: form the exact step over members in the format
+bf5a98b9 feat: form the exact step over members in the format
+defb2d5d chore: record the test history of the member step round
+b0efff8a docs: regenerate the format document
+d1caa074 chore: close design round 202611201340
+3905f438 chore: lock src changelist 202611201341
+9a4f8966 docs: say the ratio bench timed deleted code and map the replayed shas
+23275be0 test: hold the member step bound at its edge above a zero exponent
+4a6f4c19 chore: lock doc changelist 202611201340
+380abdb2 docs: hold the member step's bound above a zero exponent
+d0a3d0b5 docs: add the first review of the member step to the research
+1aee528e test: record the suites at the member step
+a28bd4cd chore: close design round 202611200735
+5f9b1b5e chore: lock src changelist 202611200739
+6a1f3f2d test: hold the step's bound at every width and its 128-bit division
+325d035f chore: resolve the bench arms' lockfiles with arvo-contracts
+6c44396e test: run the member step's two flags red and regenerate its ui output
+dccc3a19 feat: form the exact step over members in the format, not the value
+f6d6eb89 chore: lock doc changelist 202611200735
+457a9c04 docs: design the exact step over members and call it from the value
+571d17f2 docs: open the topic on the exact step over members
+46029f8d Merge remote-tracking branch 'origin/dev' into work/arvo-numeral-exact-step
+d1dc33d6 chore: close design round 202611200116
+827c4b03 chore: lock src changelist 202611200117
+84038865 test: hold the room's predicates at their edge at every radix
+daf7fb3d chore: lock doc changelist 202611200116
+ac223d0e docs: say what the format lacks for the room arm and who takes it
+09b750cc docs: open the topic on the second review's findings
+d0c43424 docs: add the first review of the numeral operations to the research
+24e44561 chore: close design round 202611200019
+4bc69b47 chore: lock src changelist 202611200021
+e382b82f test: hold the room arm at its edge and every landing of a divisor
+0bd1ec48 chore: lock doc changelist 202611200019
+a5f3c874 docs: state the room bound as it is and regenerate the numeral docs
+9f6d0bae docs: attribute each remainder row to the derivation that stated it
+ae06c0a9 docs: record the remainder panel and where its proposals agree
+18f76cfa chore: close design round 202611192051
+2b2fb3bc chore: lock src changelist 202611192056
+27b85cb6 docs: name the run and the baseline fix in the src changelist
+ffe2274b test: record the numeral-ratio run and what it decides

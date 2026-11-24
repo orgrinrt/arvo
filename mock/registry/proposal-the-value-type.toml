@@ -13,8 +13,8 @@ says = "A value held in a machine carrier admits a format only where the format 
 because = "At a constant quantum and a zero phase the sum of two slots is the slot of the sum, so the carrier's own integer add is the format's add and the order of the carrier is the order of the slots; anywhere else the carrier would need an offset or a scale it does not hold. The admission is one constant every door forces, so a signature outside it never yields a value and nothing checks it later."
 instead = "A format outside the admission is held by a composition that carries what the carrier cannot: its phase, its quantum, or its dither."
 provenance = [
-  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#what-a-value-signature-admits",
-  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#how-the-value-holds-its-carrier",
+  "mock::design_rounds::t202611130342::t202611130342_topic::what_a_value_signature_admits",
+  "mock::design_rounds::t202611130342::t202611130342_topic::how_the_value_holds_its_carrier",
 ]
 keywords = ["value", "carrier", "admission", "constant quantum", "zero phase", "Sole", "ADMITTED", "Clamp", "Stochastic", "dither", "deterministic rounding", "machine integer"]
 
@@ -28,7 +28,7 @@ says = "Each completing overflow policy is spelled twice over one policy constan
 because = "The ratified overflow-panic row puts a debug panic on what the typestate cannot catch, and asks to be read loosely and sharpened as the boundaries are found. Shipping both readings keeps the row's letter as the default while the declaration that turns it off sits in the type rather than in a build flag, which is what the one-lowered-path ruling leaves open. The host's `core::num::Wrapping` and `core::num::Saturating` are the precedent for what the second names mean to a reader of Rust."
 note = "The compromise is stated in the topic: a consumer writing the plain marker gets a debug abort on a sum that wraps, one word away from the marker that does not."
 provenance = [
-  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#the-overflow-assertion-and-the-second-marker-of-each-pair",
+  "mock::design_rounds::t202611130342::t202611130342_topic::the_overflow_assertion_and_the_second_marker_of_each_pair",
 ]
 keywords = ["overflow", "debug assertion", "panic", "Wrap", "Saturate", "Wrapping", "Saturating", "marker", "verdict", "fits_add", "debug_assertions", "typestate"]
 
@@ -41,7 +41,7 @@ topic = "algebraic_laws"
 says = "A value's identity under an operation is one associated constant, computed from the format's own predicate for that identity and asserting it first, so on a format without the identity the constant fails to evaluate with a message naming what is missing. The implementation exists for every admitted signature and the refusal is a failed constant, never a missing implementation."
 because = "Computing the identity from the format's predicate makes it a checked claim rather than a marker an author writes, which is the repair the row on author-written law markers asks for. A failed constant names the missing identity in its message, where a missing implementation would only say a bound is unmet. Associativity stays the format's own verdict and gains no marker beside the identity."
 provenance = [
-  "mock::design_rounds/202611130342/202611130342_topic.the-value-type-on-the-integer-points::#identities",
+  "mock::design_rounds::t202611130342::t202611130342_topic::identities",
 ]
 keywords = ["identity", "Identity", "Additive", "IDENTITY", "failed constant", "has_additive_identity", "law marker", "associativity", "monoid", "zero"]
 
@@ -55,7 +55,7 @@ says = "A value in a crate that does not introduce fallibility implements neithe
 because = "The bare-option refusal holds in every crate that does not introduce the fallibility category, and an ordering trait from core cannot be implemented without naming one. The order is total over the admitted values, so nothing is lost by reaching it through inherent operations."
 instead = "The value's order is its inherent `cmp`, returning `Ordering`, beside `lt`, `le`, `gt`, `ge`, `min` and `max`, each reading the carrier."
 provenance = [
-  "mock::design_rounds/202611130342/202611130342_changelist.doc.lock::#change-the-crates-design-document",
+  "mock::design_rounds::t202611130342::t202611130342_changelist<doc_lock_md>::change_the_crates_design_document",
 ]
 keywords = ["ordering", "PartialOrd", "Ord", "partial_cmp", "Option", "cmp", "Ordering", "comparison", "no-bare-option", "fallibility"]
 
@@ -72,7 +72,7 @@ says = "Whether a debug build aborts when an operation leaves the range is a sec
 because = "`ruling::the_debug_abort_is_configured_by_the_consumer` names two vehicles, a cargo feature or const, generic or trait configuration. Under a feature, cargo unifies features across a build, so a crate that names no feature has its sum complete once another crate in the same build turns the feature on, and a consumer with no feature line cannot choose; under a type parameter each choice is in the type its consumer spelled, and the default costs a consumer that wants the abort nothing. The superseded row tied the abort to a second marker of each policy, which made the check a property of the policy and doubled every policy to carry it."
 note = "The sketch `202611130550-m67x_the-debug-check-axis` builds both vehicles; `outputs/app-both.txt` shows the feature reaching a crate that never named it."
 provenance = [
-  "mock::research/sketches/202611130550-m67x_the-debug-check-axis/FINDINGS::#what-each-run-shows",
-  "mock::design_rounds/202611130550-m67x/202611130550-m67x_topic.the-value-reads-the-placement-and-chooses-its-check::#what-this-round-is-for",
+  "mock::research::sketches::t202611130550_m67x_the_debug_check_axis::findings::what_each_run_shows",
+  "mock::design_rounds::t202611130550_m67x::t202611130550_m67x_topic::what_this_round_is_for",
 ]
 keywords = ["debug check", "debug abort", "DebugCheck", "Abort", "Quiet", "type parameter", "cargo feature", "feature unification", "overflow", "Wrap", "Saturate"]
